@@ -1,5 +1,5 @@
 <script lang="ts">
-    import giellatekno_logo from "$assets/giellatekno_logo_text_under.svg";
+    import giellatekno_logo from "$assets/giellatekno_logo.svg";
     import uit_logo_sme from "$assets/uit_logo/uit_logo_sme.png";
     import { m } from "$lib/paraglide/messages";
 </script>
