@@ -54,7 +54,7 @@ export const actions = {
         }
 
         // Call backend API
-        const backendUrl = `${env.PUBLIC_API_ROOT}/lemma-count`;
+        const backendUrl = `${env.PUBLIC_API_ROOT}/lemmacount`;
 
         try {
             const response = await fetch(backendUrl, {

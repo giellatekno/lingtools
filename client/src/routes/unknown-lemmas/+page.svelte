@@ -76,7 +76,7 @@
 </script>
 
 <svelte:head>
-    <title>{m.unknownlemmas_title()} • {m.page_title()}</title>
+    <title>{m.unknownlemmas_title()} | Giellatekno Webpipeline</title>
 </svelte:head>
 
 <div class="mb-32 grid grid-cols-2 items-start gap-4">
