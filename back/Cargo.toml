@@ -6,28 +6,23 @@ authors = [
     "Anders Lorentsen <anders.lorentsen@uit.no>"
 ]
 
-[build]
-target = "target"
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-# TODO this should be out, but ideally libhfst itself should also be updated
-# to support it
-#hfst-rs = { path = "/home/anders/projects/cpp_library_to_rust_demo/hfst-rs/" }
+# Our hfst wrapper library
+hfst = { version = "0.1", features = ["tokio-actors"] }
 
-# the web framework (built on top of tower, uses 
-axum = { version = "0.8.6", features = ["multipart", "macros"] }
+# the web framework (built on top of tower)
+axum = { version = "0.8.8", features = ["multipart", "macros"] }
 
-# base64.. does it need explaining?
+# base64
 base64 = "0.22.1"
 
 # function memoization. provides a #[cached] macro that you just slap on a function
-cached = { version = "0.56.0", features = ["async"] }
+# unused (for now?)
+#cached = { version = "0.56.0", features = ["async"] }
 
+# to run shell pipelines in rust code
 cmd_lib = "2.0.0"
-
-# A tracing-subscriber Layer that can talk with tokio-console...
-console-subscriber = "0.4.1"
 
 # for parsing .docx Word files
 docx-rs = "0.4.7"
@@ -100,6 +95,17 @@ http-body-util = "0.1.2"
 # used by the panic handler
 # MIT
 bytes = "1.6.0"
+
+# fast string searching
+memchr = "2.7.6"
+
+# simplify writing error types
 thiserror = "2.0.17"
 
+analysis-string-parser = { git = "https://github.com/giellatekno/analysis-string-parser.git" }
+
 #validator = { version = "0.16.1", features = ["derive"] }
+
+# tool to strip out @...@ from strings, used to remove flag diacrictics from analyser
+# output
+without-ats = "0.1"

@@ -14,6 +14,9 @@ build:
 image:
     podman build -t lingtools-api -f Containerfile .
 
+errors:
+    CARGO_BUILD_WARNINGS=allow cargo +nightly check -Zwarnings
+
 # push the container image to gtlabcontainerregistry.azurecr.io
 push:
     podman tag lingtools-api gtlabcontainerregistry.azurecr.io/lingtools-api

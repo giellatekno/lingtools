@@ -109,7 +109,27 @@ files:
 
   - filename: "transcriptor-numbers-digit2text.filtered.lookup.hfstol"
     repo_path: "src/transcriptions/transcriptor-numbers-digit2text.filtered.lookup.hfstol"
-    methods: ["transcribe"]
+    methods: ["numbers"]
+
+  - filename: "transcriptor-numbers-text2digit.filtered.lookup.hfstol"
+    repo_path: "src/transcriptions/transcriptor-numbers-text2digit.filtered.lookup.hfstol"
+    methods: ["numbers"]
+
+  - filename: "transcriptor-clock-digit2text.filtered.lookup.hfstol"
+    repo_path: "src/transcriptions/transcriptor-clock-digit2text.filtered.lookup.hfstol"
+    methods: ["numbers"]
+
+  - filename: "transcriptor-clock-text2digit.filtered.lookup.hfstol"
+    repo_path: "src/transcriptions/transcriptor-clock-text2digit.filtered.lookup.hfstol"
+    methods: ["numbers"]
+
+  - filename: "transcriptor-date-text2digit.filtered.lookup.hfstol"
+    repo_path: "src/transcriptions/transcriptor-date-text2digit.filtered.lookup.hfstol"
+    methods: ["numbers"]
+
+  - filename: "transcriptor-date-digit2text.filtered.lookup.hfstol"
+    repo_path: "src/transcriptions/transcriptor-date-digit2text.filtered.lookup.hfstol"
+    methods: ["numbers"]
 
   - filename: "korpustags.{lang}.txt"
     repo_path: "test/data/korpustags.{lang}.txt"

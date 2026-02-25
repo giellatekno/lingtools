@@ -1,327 +1,324 @@
-use itertools::Itertools;
-use once_cell::sync::Lazy;
 use std::collections::{HashMap, HashSet};
 
-use axum::{
-    extract::{Path, Query},
-    response::{IntoResponse, Response},
-};
-use http::StatusCode;
-use serde::{de::IntoDeserializer, Deserialize, Serialize};
+use itertools::Itertools;
+use once_cell::sync::Lazy;
+use serde::Serialize;
 use tokio::sync::RwLock;
 use tokio::{fs::File, io::AsyncReadExt};
 
-use tracing::trace;
+use crate::pipelines::{PipelineError, gather};
+use crate::pipelines::generate::{GenerateResult, parse_generate_subprocess_results};
 
-use crate::analysis::{analyze_async, Analysis};
-use crate::langmodel_files::get_langfile;
+use crate::pipelines::analyze::{AnalysisResult, parse_analyse_subprocess_results};
+use crate::pipelines::analyze::analyze_libhfst;
 
-//use cached::proc_macro::cached;
-//use cached::TimedSizedCache;
+use crate::pipelines::analyze::analyze_subprocess;
+use crate::pipelines::generate::generate_libhfst;
+use crate::pipelines::generate::generate_subprocess;
+use analysis_string_parser::{AnalysisParts, Pos, parse_analysis_parts};
 
-use crate::pipelines::generate::generate_async;
+use crate::paradigm::ParadigmSize;
 
-#[derive(Deserialize)]
-pub struct LangAndStringParams {
-    lang: String,
-    string: String,
-}
-
-#[derive(Deserialize, Serialize, Debug, PartialEq, Eq, Hash, Clone, Copy)]
-enum ParadigmSize {
-    #[serde(rename(deserialize = "minimal", serialize = "min"))]
-    Minimal,
-    #[serde(rename = "standard")]
-    Standard,
-    #[serde(rename = "full")]
-    Full,
-}
-
-impl std::fmt::Display for ParadigmSize {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.serialize(f)
-    }
-}
-
-#[derive(Deserialize, Serialize, Debug, PartialEq, Eq, Hash, Clone, Copy)]
-enum Pos {
-    #[serde(alias = "any")]
-    Any,
-    #[serde(alias = "a")]
-    A,
-    #[serde(alias = "n")]
-    N,
-    #[serde(alias = "v")]
-    V,
-    #[serde(alias = "adv")]
-    Adv,
-    #[serde(alias = "num")]
-    Num,
-    #[serde(alias = "pron")]
-    Pron,
-}
-
-impl Pos {
-    fn is_any(&self) -> bool {
-        matches!(self, Pos::Any)
-    }
-
-    fn is_specific(&self) -> bool {
-        !self.is_any()
-    }
-}
-
-// rustc: conflicting implementations of trait `TryFrom<&str>` for type `Pos`
-// conflicting implementation in crate `core`:
-// - impl<T, U> TryFrom<U> for T
-//   where U: Into<T>; [E0119]
-/*
-impl std::convert::TryFrom<&str> for Pos {
-    type Error = serde::de::value::Error;
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        Self::deserialize(value.into_deserializer())
-    }
-}
-*/
-
-impl std::convert::From<&str> for Pos {
-    fn from(value: &str) -> Self {
-        Self::deserialize::<serde::de::value::StrDeserializer<'_, serde::de::value::Error>>(
-            value.into_deserializer(),
-        )
-        .unwrap_or(Pos::Any)
-        //Self::try_from(value).unwrap_or(Pos::Any)
-    }
-}
-
-impl std::fmt::Display for Pos {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.serialize(f)
-    }
-}
-
-#[derive(Deserialize, Debug, PartialEq, Eq, Hash, Clone, Copy)]
-enum Format {
-    #[serde(alias = "json")]
-    Json,
-    #[serde(alias = "text")]
-    Text,
-}
-
-#[derive(Deserialize)]
-pub struct QueryParams {
-    size: Option<ParadigmSize>,
-    pos: Option<Pos>,
-    format: Option<Format>,
-}
-
-pub async fn paradigm_endpoint(
-    Path(LangAndStringParams { lang, string }): Path<LangAndStringParams>,
-    Query(query_params): Query<QueryParams>,
-) -> Response {
-    trace!("paradigm_endpoint()");
-    let pos = query_params.pos.unwrap_or(Pos::Any);
-    let size = query_params.size.unwrap_or(ParadigmSize::Standard);
-    let format = query_params.format.unwrap_or(Format::Text);
-
-    let paradigm_file = match get_paradigmfile(&lang, size).await {
-        Ok(paradigm_file) => paradigm_file,
-        Err(e) => match format {
-            Format::Json => {
-                return axum::response::Json(serde_json::json!({
-                    "error": e,
-                }))
-                .into_response()
-            }
-            Format::Text => return format!("error: {e}").into_response(),
-        },
-    };
-
-    let analyses_raw = match analyze_async(&string, &lang, false).await {
-        Ok(analyses) => analyses,
-        Err(e) => return format!("{}", e).into_response(),
-    };
-
-    let analyses = crate::analysis::analyses_raw_to_vec(&analyses_raw);
-
-    let mut results = vec![];
-    let mut other_forms = vec![];
-    let mut errors = vec![];
-
-    let mut seen = HashSet::new();
-
-    for analysis in analyses.iter() {
-        if pos.is_specific() && pos != analysis.pos().into() {
-            continue;
-        }
-
-        let lemma = analysis.lemma();
-        let pos = analysis.pos();
-        if seen.contains(&(lemma, pos)) {
-            continue;
-        }
-        seen.insert((lemma, pos));
-
-        if analysis.lemma() == string {
-            match all_paradigms(
-                &paradigm_file,
-                analysis.lemma(),
-                &lang,
-                analysis.pos().into(),
-                size,
-            )
-            .await
-            {
-                Ok(result) => results.push(result),
-                Err(e) => errors.push(e),
-            };
-        } else {
-            other_forms.push(analysis);
-        }
-    }
-
-    match format {
-        Format::Json => {
-            let other_forms: Vec<_> = other_forms.iter().map(|form| form.to_json()).collect();
-            let obj = serde_json::json!({
-                "results": results,
-                "other_forms": other_forms,
-            });
-            (StatusCode::OK, axum::Json(obj)).into_response()
-        }
-        Format::Text => {
-            let text = results
-                .iter()
-                .map(|result| result.iter().join("\n"))
-                .join("\n");
-            let other = other_forms
-                .iter()
-                .map(|form| format!("- {}", form))
-                .join("\n");
-            (
-                StatusCode::OK,
-                format!("{text}\n\n{string} is also a form of:\n{other}"),
-            )
-                .into_response()
-        }
-    }
-}
-
-// This takes it from 500ms -> 130ms. Analysis usually takes 130ms.
-//#[cached(
-//    ty = r"TimedSizedCache<(String, String, Pos, ParadigmSize), Result<String, String>>",
-//    create = "{ TimedSizedCache::with_size_and_lifespan_and_refresh(15, std::time::Duration::from_secs(10), true) }",
-//    convert = "{ (String::from(input_lemma), String::from(lang), pos, size) }",
-//)]
-async fn all_paradigms(
-    paradigm_file: &str,
-    input_lemma: &str,
-    lang: &str,
-    pos: Pos,
-    size: ParadigmSize,
-) -> Result<Vec<ParadigmResultLine>, String> {
-    let pos = &pos.to_string();
-
-    let generator_input = paradigm_file
-        .lines()
-        .filter(|para| para.starts_with(pos))
-        .map(|para| format!("{input_lemma}+{para}"))
-        .join("\n");
-
-    let t0 = std::time::Instant::now();
-    let output_lines = generate_async(&generator_input, lang).await?;
-    trace!("generating took: {}ms", t0.elapsed().as_millis());
-    let output_lines = output_lines
-        .split('\n')
-        .flat_map(<ParadigmResultLine as std::str::FromStr>::from_str)
-        .filter(|paradigm| paradigm.weight.is_none_or(|w| w.is_finite()))
-        .collect();
-    Ok(output_lines)
-}
-
-enum ParseParadigmResultLineError {
-    Empty,
-    MissingFirst,
-    MissingLemma,
-    MissingPos,
-    MissingTags,
-    MissingWordform,
-}
+// (lang, size) => Result<paradigm_file (string), error message string>
+static PARADIGM_FILES: Lazy<RwLock<HashMap<(String, ParadigmSize), Result<String, String>>>> =
+    Lazy::new(|| RwLock::new(HashMap::with_capacity(16)));
 
 #[derive(Serialize)]
-struct ParadigmResultLine {
-    lemma: String,
-    pos: Pos,
-    tags: Vec<String>,
-    wordform: String,
-    weight: Option<f64>,
+pub struct ParadigmOutput {
+    /// The input.
+    pub input: (String, Option<Pos>),
+    /// All the generated forms.
+    pub generated_forms: Vec<GenerateResult>,
+    /// A list of other analyses for which the input lemma was a conjugated form
+    /// of another word.
+    pub other_forms: Vec<AnalysisParts>,
 }
 
-impl std::str::FromStr for ParadigmResultLine {
-    type Err = ParseParadigmResultLineError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        use ParseParadigmResultLineError::*;
-        if s.is_empty() {
-            return Err(Empty);
-        }
-        let mut splits = s.split('\t');
-        let Some(first) = splits.next() else {
-            return Err(MissingFirst);
-        };
-        let mut first_splits = first.split('+');
-        let Some(lemma) = first_splits.next() else {
-            return Err(MissingLemma);
-        };
-        let lemma = lemma.to_string();
-        let Some(pos) = first_splits.next() else {
-            return Err(MissingPos);
-        };
-        let pos = Pos::from(pos);
-        let tags = first_splits.map(|tag| tag.to_string()).collect_vec();
-        if tags.is_empty() {
-            return Err(MissingTags);
-        }
-        let Some(wordform) = splits.next() else {
-            return Err(MissingWordform);
-        };
-        let wordform = wordform.to_string();
-        let weight = splits.next().and_then(|w| w.parse::<f64>().ok());
-
-        Ok(Self {
-            lemma,
-            pos,
-            tags,
-            wordform,
-            weight,
-        })
-    }
-}
-
-impl std::fmt::Display for ParadigmResultLine {
+impl std::fmt::Display for ParadigmOutput {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}+{}", self.lemma, self.pos)?;
-        for tag in self.tags.iter() {
-            write!(f, "+{tag}")?;
-        }
-        write!(f, "\t{}", self.wordform)?;
-        if let Some(weight) = self.weight {
-            write!(f, "\t{weight}")?;
-        }
+        if self.generated_forms.len() == 0 {
+            writeln!(f, "[no results]")?;
+        } else {
+            for result in self.generated_forms.iter() {
+                writeln!(f, "{result}")?;
+            }
+        };
+        writeln!(f)?;
+        write!(f, "'{}' is ", self.input.0)?;
+        if self.other_forms.len() == 0 {
+            writeln!(f, "not a conjugated form of any other lemmas")?;
+        } else {
+            writeln!(f, "also a conjugated form of:")?;
+            for form in self.other_forms.iter() {
+                writeln!(f, "- {form}")?;
+            }
+        };
         Ok(())
     }
 }
 
-fn is_derivation(tags: &str) -> bool {
-    tags.contains("Der")
+/*
+#[derive(Debug, thiserror::Error)]
+pub enum AllParadigmsError {
+    #[error("paradigm definition file error: {0}")]
+    ParadigmDefintionError(String),
+    #[error("generator error: {0}")]
+    Generate(#[from] GenerateLibhfstError),
 }
 
-fn is_compound(tags: &str) -> bool {
-    // from original source (smi.cgi)
-    // if tags contains a '#', and does not start with something else than '+'
-    // followed by '#', in that case it is a compound
-    // if ($anl =~/\#/ && $anl !~ /^[^\+]+\#[^\#]+$/) {
-    !tags.starts_with("+#") && tags.contains("#")
+/// Generate paradigms, using the libhfst generator. The output item is the analysis
+/// string that produced the item, as well as the item itself. If the `pos` is `None`,
+/// it means 'any'.
+///
+/// ```not_rust
+/// Output: [
+///     ["lemma+pos+A+B+C+D", [ "form1", "form2", ... ],
+///     ["lemma+pos+A+B+F+G", [ "form1", "form2", ... ],
+///     ...
+/// ]
+/// ```
+async fn all_paradigms_libhfst(
+    input_lemma: &str,
+    lang: &str,
+    pos: Option<Pos>,
+    size: ParadigmSize,
+) -> Result<Vec<GenerateResult>, AllParadigmsError> {
+    let paradigm_file = get_paradigmfile(lang, size)
+        .await
+        .map_err(|e| AllParadigmsError::ParadigmDefintionError(e))?;
+
+    let all_potential_forms = get_potential_forms(
+        &lang, size, pos, &input_lemma, &paradigm_file);
+    Ok(generate_libhfst(&all_potential_forms, lang)
+        .await?)
+}
+*/
+
+pub async fn paradigm_libhfst(
+    lang: &str,
+    input: &str,
+    wanted_pos: Option<Pos>,
+    size: ParadigmSize,
+) -> Result<ParadigmOutput, PipelineError> {
+    let mut seen = HashSet::new();
+    let mut generated_forms: Vec<GenerateResult> = vec![];
+    let mut other_forms = vec![];
+
+    let analyses = analyze_libhfst(lang, input).await?;
+
+    for AnalysisResult { wordform, analyses } in analyses {
+        for analysis in analyses {
+            let analysis = without_ats::without_ats(&analysis);
+            let Some(analysed) = parse_analysis_parts(&analysis, "+") else {
+                tracing::trace!(analysis, "raw analysis line failed to parse");
+                continue;
+            };
+            let analysis_pos = analysed
+                .pos
+                .expect("every analysis string we get back from analysis has a pos");
+
+            // Filter so that we only show the pos that was wanted. If wanted_pos is
+            // None, then we don't filter out anything, because user wants all.
+            if let Some(wanted_pos) = wanted_pos
+                && wanted_pos != analysis_pos
+            {
+                continue;
+            }
+
+            let anl_lemma = analysed.lemma().expect("all analyses have a lemma");
+            let key = (anl_lemma.to_owned(), analysed.pos);
+            if seen.contains(&key) {
+                continue;
+            }
+            seen.insert(key);
+
+            if anl_lemma != input {
+                other_forms.push(analysed);
+                continue;
+            }
+
+            // Find all paradigms of this (lemma, pos)
+            // this is what `all_paradigm_forms` also does
+            let paradigm_file = get_paradigmfile(lang, size)
+                .await
+                .map_err(|e| PipelineError::ParadigmFile(e))?;
+            let all_potential_forms = get_potential_forms(input, wanted_pos, &paradigm_file);
+
+            generated_forms = generate_libhfst(lang, &all_potential_forms).await?;
+        }
+    }
+
+    let input = (input.to_owned(), wanted_pos);
+    Ok(ParadigmOutput {
+        input,
+        generated_forms,
+        other_forms,
+    })
+}
+
+pub async fn paradigm_subprocess(
+    lang: &str,
+    input: &str,
+    wanted_pos: Option<Pos>,
+    size: ParadigmSize,
+) -> Result<ParadigmOutput, PipelineError> {
+    let analyses = analyze_subprocess(lang, input, false).await?;
+    let analyses = parse_analyse_subprocess_results(&analyses);
+
+    let mut seen = HashSet::new();
+    let mut generated_forms: Vec<GenerateResult> = vec![];
+    let mut other_forms = vec![];
+    for AnalysisResult { wordform, analyses } in analyses {
+        for analysis in analyses {
+            let analysis = parse_analysis_parts(&analysis, "+")
+                .expect("analysis from analysis is not empty");
+            let pos = analysis.pos.expect("analysis from analysis has a pos");
+
+            // if wanted_pos is None, that means any, so will never hit. If a specific
+            // pos is wanted, continue if the analysis doesn't have that pos
+            if let Some(wanted_pos) = wanted_pos && wanted_pos != pos {
+                continue;
+            }
+
+            let lemma = analysis.lemma().expect("all analyses have lemmas");
+
+            if seen.contains(&(lemma.clone(), pos)) {
+                // this (lemma, pos) has already been covered
+                continue;
+            } else {
+                seen.insert((lemma.clone(), pos));
+            }
+
+            if lemma != input {
+                other_forms.push(analysis);
+                continue;
+            }
+
+            let paradigm_file = get_paradigmfile(lang, size)
+                .await
+                .map_err(|e| PipelineError::ParadigmFile(e))?;
+            let all_potential_forms = get_potential_forms(input, Some(pos), &paradigm_file);
+            let generated = generate_subprocess(lang, &all_potential_forms).await?;
+            let vec = parse_generate_subprocess_results(&generated);
+            generated_forms.extend(vec);
+        }
+    }
+
+    let input = (input.to_owned(), wanted_pos);
+    Ok(ParadigmOutput { input, generated_forms, other_forms })
+}
+
+/// Generate a newline delimited `String` of the `input_lemma+tags`, where `tags`
+/// are all the potential forms that can have a generated form, for the given language,
+/// and paradigm size. Used as input to the generator when finding all paradigms.
+fn get_potential_forms(lemma: &str, pos: Option<Pos>, paradigm_file: &str) -> String {
+    use std::fmt::Write;
+    let mut out = String::new();
+    paradigm_file
+        .lines()
+        .map(|line| {
+            parse_analysis_parts(line, "+").expect("line in paradigm file parses as an analysis")
+        })
+        .filter(|para| {
+            match (pos, para.pos) {
+                (Some(x), Some(y)) => x == y,
+                (Some(_x), None) => panic!("paradigm file line has no pos?"),
+                // We're asking for all poses
+                (None, _) => true,
+            }
+        })
+        .for_each(|analysis_parts| {
+            writeln!(out, "{lemma}+{analysis_parts}").expect("write! to String is ok");
+        });
+    out
+}
+
+/// Get the paradigm file for a 2-tuple of (lang, size) from the cache. The error
+/// variant of the Result is a `String`, because it's easier to store for later,
+/// than a `std::io::Error`.
+async fn get_paradigmfile(lang: &str, size: ParadigmSize) -> Result<String, String> {
+    let key = (lang.to_owned(), size);
+    let guard = PARADIGM_FILES.read().await;
+    match guard.get(&key) {
+        Some(paradigm_file) => paradigm_file.clone(),
+        None => {
+            drop(guard);
+            let paradigm_file = generate_paradigm_file(lang, size)
+                .await
+                .map_err(|e| e.to_string());
+            let mut guard = PARADIGM_FILES.write().await;
+            guard.insert(key, paradigm_file.clone());
+            paradigm_file
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum GenerateParadigmFileError {
+    #[error("missing definition file: {0}")]
+    MissingDefinitionFile(String),
+    #[error("Io error: {0}")]
+    Io(#[from] std::io::Error),
+}
+
+/// Generate the file of all paradigms
+async fn generate_paradigm_file(
+    lang: &str,
+    size: ParadigmSize,
+) -> Result<String, GenerateParadigmFileError> {
+    use crate::langmodel_files::get_langfile;
+
+    let paradigm_text_file = format!("paradigm_{size}.{lang}.txt");
+    let korpustags_file = format!("korpustags.{lang}.txt");
+    let gramfile = get_langfile(&lang, &paradigm_text_file)
+        .ok_or_else(|| GenerateParadigmFileError::MissingDefinitionFile(paradigm_text_file))?;
+    let tagfile = get_langfile(&lang, &korpustags_file)
+        .ok_or_else(|| GenerateParadigmFileError::MissingDefinitionFile(korpustags_file))?;
+
+    let gram_entries = read_gramfile(gramfile).await?;
+    let tagmap = read_tagfile(tagfile).await?;
+
+    Ok(expand_gram_entries(gram_entries, tagmap))
+}
+
+fn expand_gram_entries(
+    // N+Stemtype?+Case+...
+    grammar_entries: Vec<String>,
+    // Stemtype = [A, B, C] ...
+    tagmap: HashMap<String, Vec<String>>,
+) -> String {
+    let mut out = vec![];
+
+    for entry in grammar_entries {
+        let splits = entry.split('+');
+        let classes = splits.map(|mut split| {
+            let mut v = vec![];
+
+            if let Some(stripped) = split.strip_suffix('?') {
+                v.push("".to_owned());
+                split = stripped;
+            }
+
+            match tagmap.get(split) {
+                Some(s) => v.extend(s.iter().map(|s| s.clone())),
+                None => v.push(split.to_owned()),
+            };
+
+            v
+        });
+
+        out.extend(
+            classes
+                .into_iter()
+                .multi_cartesian_product()
+                .map(|tags_vec| {
+                    let tags_s = tags_vec.iter().filter(|s| s.len() > 0).join("+");
+                    format!("{tags_s}")
+                }),
+        );
+    }
+
+    out.join("\n")
 }
 
 async fn read_gramfile(gramfile: std::path::PathBuf) -> Result<Vec<String>, std::io::Error> {
@@ -345,11 +342,12 @@ async fn read_gramfile(gramfile: std::path::PathBuf) -> Result<Vec<String>, std:
 ///   "Person-Number" => ["Sg1", "Sg2", "Sg3", "Du1", ...]
 ///   "Transitivity" => ["TV", "IV"]
 ///   "Infinite" => ["Inf", "PrfPrc", "PrsPrc", "Sup", "VGen", ...]
-async fn read_tagfile(tagfile: std::path::PathBuf) -> Result<HashMap<String, Vec<String>>, std::io::Error> {
+async fn read_tagfile(
+    tagfile: std::path::PathBuf,
+) -> Result<HashMap<String, Vec<String>>, std::io::Error> {
     let mut file = File::open(tagfile).await?;
     let mut contents = String::new();
-    file.read_to_string(&mut contents)
-        .await?;
+    file.read_to_string(&mut contents).await?;
 
     let mut m: HashMap<String, Vec<String>> = HashMap::new();
     let mut current_vec = vec![];
@@ -357,7 +355,7 @@ async fn read_tagfile(tagfile: std::path::PathBuf) -> Result<HashMap<String, Vec
     contents
         .lines()
         .map(|line| line.trim())
-        .filter(|line| line.len() > 0)
+        .filter(|line| !line.is_empty())
         .filter(|line| !line.starts_with(&['%', '$']))
         .filter(|line| !line.contains('='))
         .for_each(|line| {
@@ -374,156 +372,4 @@ async fn read_tagfile(tagfile: std::path::PathBuf) -> Result<HashMap<String, Vec
         });
 
     Ok(m)
-}
-
-struct Hit {
-    lemma_match: bool,
-    rank: u32,
-}
-
-/// Given a sequence of Analyses, produce two HashSets of (lemma, pos)-tuples,
-/// one where the lemma matches the word_form given, and one where it doesn't.
-fn find_poses_from_analyses<'a, T>(
-    analyses: &[Analysis],
-    word_form: T,
-) -> (HashSet<(&str, Pos)>, HashSet<(&str, Pos)>)
-where
-    T: AsRef<str>,
-{
-    // TODO: This gives all poses. There is no ranking of which is most likely.
-    // We want to guess the most likely pos
-    let mut direct_hits = HashSet::new();
-    let mut other_hits = HashSet::new();
-
-    // searched for (word_form): vieso  (conjugation of viessu)
-    // wordform,  lemma,  pos,  tags
-    // vieso   viessut+V+IV+Imprt+ConNeg   0,000000
-    // vieso   viessut+V+IV+Imprt+Sg2   0,000000
-    // vieso   viessut+V+IV+Ind+Prs+ConNeg   0,000000
-    // vieso   viessu+N+Sg+Gen+Allegro   0,000000
-
-    for analysis in analyses.iter() {
-        // If input wordform matches lemma from analysis directly, then
-        // add (lemma, pos) to `direct` hits, otherwise it's an `other` hit
-        if word_form.as_ref() == analysis.lemma() {
-            direct_hits.insert((analysis.lemma(), analysis.pos().into()));
-        } else {
-            other_hits.insert((analysis.lemma(), analysis.pos().into()));
-        }
-
-        if analysis.is_derivation() {
-            // higher "rank" here?
-        } else {
-            if analysis.is_compund() {
-                // higher "rank" here?
-            } else {
-                // a bit lower "rank" here?
-            }
-        }
-    }
-
-    (direct_hits, other_hits)
-}
-
-static PARADIGM_FILES: Lazy<RwLock<HashMap<(String, ParadigmSize), Result<String, GenerateParadigmFileError>>>> =
-    Lazy::new(|| {
-        let m = HashMap::with_capacity(16);
-        RwLock::new(m)
-    });
-
-/// Get the paradigm file for a 3-tuple of (lang, size, pos)
-/// From a cache
-async fn get_paradigmfile(lang: &str, size: ParadigmSize) -> Result<String, GenerateParadigmFileError> {
-    let key = (lang.to_string(), size);
-    let guard = PARADIGM_FILES.read().await;
-
-    match guard.get(&key) {
-        Some(paradigm_file) => paradigm_file.clone(),
-        None => {
-            let t0 = std::time::Instant::now();
-            drop(guard);
-            let paradigm_file = generate_paradigm_file(lang, size).await;
-            let mut guard = PARADIGM_FILES.write().await;
-            guard.insert(key.clone(), paradigm_file);
-            let dur = t0.elapsed();
-            trace!("generate_paradigm_file took {dur:?}");
-            guard.get(&key).unwrap().clone()
-        }
-    }
-}
-
-#[derive(Clone, Debug, thiserror::Error, serde::Serialize)]
-enum GenerateParadigmFileError {
-    #[error("Missing language file: {0}")]
-    MissingFile(String),
-    // notice: not storing the std::io::Error, because it can't be cloned
-    // (and we need to clone when return results from the hashmap, since
-    // returning references to it proved too difficult (even though the hashmap
-    // is static..))
-    #[error("Error reading language file: {0}")]
-    ReadFile(String),
-}
-
-/// Generate the file of all paradigms
-async fn generate_paradigm_file(
-    lang: &str,
-    size: ParadigmSize,
-) -> Result<String, GenerateParadigmFileError> {
-    let paradigm_text_file = format!("paradigm_{size}.{lang}.txt");
-
-    let gramfile = get_langfile(&lang, &paradigm_text_file)
-        .ok_or(GenerateParadigmFileError::MissingFile(paradigm_text_file))?;
-
-    let korpustags_file = format!("korpustags.{lang}.txt");
-
-    let tagfile = get_langfile(&lang, &korpustags_file)
-        .ok_or(GenerateParadigmFileError::MissingFile(korpustags_file))?;
-
-    let gram_entries = read_gramfile(gramfile).await
-        .map_err(|e| GenerateParadigmFileError::ReadFile(e.to_string()))?;
-    let tagmap = read_tagfile(tagfile).await
-        .map_err(|e| GenerateParadigmFileError::ReadFile(e.to_string()))?;
-
-    Ok(expand_gram_entries(gram_entries, tagmap))
-}
-
-fn expand_gram_entries(
-    // N+Stemtype?+Case+...
-    grammar_entries: Vec<String>,
-    // Stemtype = [A, B, C] ...
-    tagmap: HashMap<String, Vec<String>>,
-) -> String {
-    let mut out = vec![];
-
-    for entry in grammar_entries {
-        let mut splits = entry.split('+');
-        let pos = splits.next().unwrap();
-        let classes = splits.map(|mut split| {
-            let mut v = vec![];
-
-            if let Some(stripped) = split.strip_suffix('?') {
-                v.push("".to_owned());
-                split = stripped;
-            }
-
-            match tagmap.get(split) {
-                Some(s) => v.extend(s.iter().map(|s| s.clone())),
-                None => v.push(split.to_owned()),
-            };
-
-            v
-        });
-
-        out.extend(
-            classes
-                .into_iter()
-                .multi_cartesian_product()
-                .map(|tags_vec| {
-                    let tags_s = tags_vec.iter().filter(|s| s.len() > 0).join("+");
-                    format!("{pos}+{tags_s}")
-                }),
-        );
-    }
-
-    out.join("\n")
 }

@@ -1,9 +1,9 @@
 use notify::RecommendedWatcher;
-use notify_debouncer_full::new_debouncer;
 use notify_debouncer_full::DebounceEventHandler;
 use notify_debouncer_full::DebounceEventResult;
 use notify_debouncer_full::Debouncer;
 use notify_debouncer_full::NoCache;
+use notify_debouncer_full::new_debouncer;
 use std::time::Duration;
 use tokio::sync::mpsc::{Receiver, Sender};
 

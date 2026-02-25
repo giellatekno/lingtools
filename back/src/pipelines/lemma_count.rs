@@ -4,11 +4,11 @@ use axum::{
     extract::Json,
     response::{IntoResponse, Response},
 };
-use base64::{engine::general_purpose, Engine as _};
+use base64::{Engine as _, engine::general_purpose};
 use cmd_lib::spawn_with_output;
 use http::StatusCode;
 use nix::{
-    sys::signal::{kill, Signal},
+    sys::signal::{Signal, kill},
     unistd::Pid,
 };
 use serde::Deserialize;

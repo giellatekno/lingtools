@@ -1,46 +1,17 @@
-use axum::{
-    extract::Path,
-    response::{IntoResponse, Response},
-};
-use cmd_lib::run_fun;
-use http::StatusCode;
-use serde::Deserialize;
+use crate::pipelines::PipelineError;
+use crate::pipelines::get_langfile_hyphenator;
 
-use crate::langmodel_files::get_langfile;
-use crate::pipelines::run_pipeline_single_lang;
-use cached::proc_macro::cached;
-
-//#[cached]
-pub fn hyphenate(input: &str, lang: &str) -> Result<String, String> {
-    let hyphenate_hfstol = get_langfile(&lang, "hyphenator-gt-desc.hfstol").ok_or_else(|| {
-        format!(
-            "language not supported \
-            (hyphenator-gt-desc.hfstol doesn't exist for language {}",
-            lang
-        )
-    })?;
-
+pub async fn hyphenate_subprocess(lang: &str, input: &str) -> Result<String, PipelineError> {
+    let hyphenator = get_langfile_hyphenator(lang)?;
     let input = input.replace(" ", "\n");
 
-    run_fun!(
-        echo -e "$input" |
-        hfst-lookup -q $hyphenate_hfstol
+    tokio::task::spawn_blocking(
+        move || cmd_lib::run_fun!(echo "$input" | hfst-lookup -q $hyphenator),
     )
-    .map_err(|e| e.to_string())
+    .await?
+    .map_err(PipelineError::from)
 }
 
-#[derive(Deserialize)]
-pub struct LangAndStringParams {
-    lang: String,
-    string: String,
-}
-
-pub async fn hyphenate_endpoint(
-    Path(LangAndStringParams { lang, string }): Path<LangAndStringParams>,
-) -> Response {
-    match run_pipeline_single_lang(hyphenate, &string, &lang).await {
-        Ok(text) => (StatusCode::OK, text),
-        Err(errmsg) => (StatusCode::UNPROCESSABLE_ENTITY, errmsg),
-    }
-    .into_response()
+pub async fn hyphenate_libhfst(_lang: &str, _input: &str) -> Result<Vec<String>, PipelineError> {
+    unimplemented!("hyphenate libhfst")
 }

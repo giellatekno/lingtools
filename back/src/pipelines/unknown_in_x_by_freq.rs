@@ -1,15 +1,6 @@
 use crate::langmodel_files::get_langfile;
-use crate::pipelines::run_pipeline_two_langs;
-use crate::util::{gunzip, read_docx_text};
-use axum::{
-    extract::Json,
-    response::{IntoResponse, Response},
-};
-use base64::{Engine as _, engine::general_purpose};
-use cmd_lib::run_fun;
-use http::StatusCode;
+use crate::pipelines::PipelineError;
 use itertools::Itertools;
-use serde::Deserialize;
 use std::collections::HashMap;
 use std::io::Write;
 use tempfile::NamedTempFile;
@@ -57,51 +48,53 @@ fn unwanted_words((word, _analysis): &(&str, &str)) -> bool {
     word.contains(NOB_ALPHABET)
 }
 
-pub fn unknown_in_x_by_freq(input: String, lang1: String, lang2: String) -> Result<String, String> {
-    let tokdisamb = get_langfile(&lang1, "tokeniser-disamb-gt-desc.pmhfst").ok_or_else(|| {
-        format!(
-            "cannot find tokeniser-disamb-gt-desc.pmhfst \
-            for language {}",
-            lang1
-        )
-    })?;
+pub async fn unknown_in_x_by_freq_subprocess(
+    input: String,
+    lang1: String,
+    lang2: String,
+) -> Result<String, PipelineError> {
+    let Some(tokdisamb) = get_langfile(&lang1, "tokeniser-disamb-gt-desc.pmhfst") else {
+        return Err(PipelineError::missing_tokenizer_pmhfst(&lang1));
+    };
     let disambcg = get_langfile(&lang1, "disambiguator.cg3")
         .or_else(|| get_langfile(&lang1, "disambiguator.bin"))
         .ok_or_else(|| {
-            format!(
-                "cannot find disambiguator.cg3 \
-            for language {}",
-                lang1
-            )
+            let file = "disambiguator.(cg3|bin)".to_string();
+            PipelineError::missing_files(&lang1, Some(vec![file]))
         })?;
 
-    let dict = get_langfile(&lang1, format!("{}{}-all.hfst", lang1, lang2).as_str())
-        .ok_or_else(|| format!("cannot find {}{}-all.hfst", lang1, lang2))?;
+    let dicthfst = format!("{}{}all.hfst", lang1, lang2);
+    let Some(dict) = get_langfile(&lang1, &dicthfst) else {
+        return Err(PipelineError::missing_files(&lang1, Some(vec![dicthfst])));
+    };
 
-    let temp_file = NamedTempFile::new().map_err(|e| e.to_string())?;
-    let path = temp_file.path();
+    let temp_file = NamedTempFile::new()?;
+    let path = temp_file.path().to_path_buf();
     temp_file
         .as_file()
         .write_all(input.as_bytes())
-        .map_err(|e| e.to_string())?;
+        .map_err(PipelineError::from)?;
 
     //let cut_delim = "-d\"";
-    let results = run_fun!(
-        cat $path |
-        hfst-tokenise -cg $tokdisamb |
-        vislcg3 -g $disambcg |
-        grep -v "^[:\"]"// |
-        //cut $cut_delim -f2 |
-        //uniq |
-        //sort |
-        //uniq -c |
-        //sort -nr |
-        //cut -c9- |
-        //grep -v "[0-9A-ZÆØÅ]" |
-        //grep "[a-zæøå]" |
-        //lookup $dict
-    )
-    .map_err(|e| e.to_string())?;
+    let results = tokio::task::spawn_blocking(move || {
+        cmd_lib::run_fun!(
+            cat $path |
+            hfst-tokenise -cg $tokdisamb |
+            vislcg3 -g $disambcg |
+            grep -v "^[:\"]"// |
+            //cut $cut_delim -f2 |
+            //uniq |
+            //sort |
+            //uniq -c |
+            //sort -nr |
+            //cut -c9- |
+            //grep -v "[0-9A-ZÆØÅ]" |
+            //grep "[a-zæøå]" |
+            //lookup $dict
+        )
+    })
+    .await?
+    .map_err(PipelineError::from)?;
 
     let recognized_words = results
         .lines()
@@ -109,17 +102,17 @@ pub fn unknown_in_x_by_freq(input: String, lang1: String, lang2: String) -> Resu
         .filter(|line| line.len() > 0)
         .map(extract_word_and_analysis)
         .filter(unwanted_analyses)
-        .filter(unwanted_words)
+        .filter(|(word, _analysis)| word.contains(NOB_ALPHABET))
         .map(|(word, _analysis)| word)
         .collect::<Vec<_>>()
         .join("\n");
 
-    let temp_file2 = NamedTempFile::new().map_err(|e| e.to_string())?;
+    let temp_file2 = NamedTempFile::new().map_err(PipelineError::from)?;
     let path = temp_file2.path();
     temp_file2
         .as_file()
         .write_all(recognized_words.as_bytes())
-        .map_err(|e| e.to_string())?;
+        .map_err(PipelineError::from)?;
 
     trace!(recognized_words);
 
@@ -131,7 +124,7 @@ pub fn unknown_in_x_by_freq(input: String, lang1: String, lang2: String) -> Resu
     )
     .map_err(|e| e.to_string())?;
     */
-    //let cmd_str = format!("hfst-lookup -q --input={path:?} 
+    //let cmd_str = format!("hfst-lookup -q --input={path:?}
 
     let mut cmd = std::process::Command::new("hfst-lookup");
     cmd.arg("-q");
@@ -141,7 +134,7 @@ pub fn unknown_in_x_by_freq(input: String, lang1: String, lang2: String) -> Resu
     cmd.stderr(std::process::Stdio::piped());
 
     match std::fs::exists(path) {
-        Ok(true) => {},
+        Ok(true) => {}
         Ok(false) => {
             panic!("file {path:?} verified to not exist!");
         }
@@ -150,38 +143,43 @@ pub fn unknown_in_x_by_freq(input: String, lang1: String, lang2: String) -> Resu
         }
     }
 
-    let mut child_handle = match cmd.spawn() {
-        Ok(handle) => handle,
-        Err(error) => {
+    let mut child_handle = cmd
+        .spawn()
+        .inspect_err(|error| {
             let command = format!("{cmd:?}");
             tracing::warn!(?command, ?error, "could not run command");
-            return Err(format!("Could not run command: {command}: {error}"));
-        }
-    };
+        })
+        .map_err(PipelineError::from)?;
 
-    child_handle.stdin.as_mut().unwrap().write_all(recognized_words.as_bytes())
-        .map_err(|error| {
-            tracing::warn!(?error, "could not write to stdin of subcommand");
-            format!("could not write to stdin of subcommand: error: {error}")
-        })?;
+    child_handle
+        .stdin
+        .as_mut()
+        .unwrap()
+        .write_all(recognized_words.as_bytes())
+        .map_err(PipelineError::from)?;
 
     let lookup_results = match child_handle.wait_with_output() {
         Ok(output) => {
             if output.status.code().expect("child output has status code") == 0 {
-                String::from_utf8(output.stdout)
-                    .expect("stdout from hfst-lookup is valid utf-8")
+                String::from_utf8(output.stdout).expect("stdout from hfst-lookup is valid utf-8")
             } else {
                 let stdout = String::from_utf8_lossy(&output.stdout);
                 let stderr = String::from_utf8_lossy(&output.stderr);
                 let command = format!("{cmd:?}");
                 tracing::warn!(?stdout, ?stderr, command, "non-0 output from cmd");
-                return Err("non-0 from command".into());
+                let err = PipelineError::SubprocessError {
+                    source: std::io::Error::other("non-0 from command"),
+                };
+                return Err(err);
             }
         }
         Err(error) => {
             let command = format!("{cmd:?}");
             tracing::warn!(?error, command, "could not run command");
-            return Err("could not run command".into());
+            let err = PipelineError::SubprocessError {
+                source: std::io::Error::other("could not run command"),
+            };
+            return Err(err);
         }
     };
 
@@ -227,60 +225,4 @@ pub fn unknown_in_x_by_freq(input: String, lang1: String, lang2: String) -> Resu
     trace!(final_results, "final results to be sent");
 
     Ok(final_results)
-}
-
-// The endpoint
-
-const UE: StatusCode = StatusCode::UNPROCESSABLE_ENTITY;
-
-// fn valid_lang(lang: &str) -> bool {
-//     lang == "sma" || lang == "sme" || lang == "fin" || lang == "fkv"
-// }
-
-#[derive(Deserialize)]
-pub struct InputBody {
-    typ: String,
-    lang1: String,
-    lang2: String,
-    data: String,
-}
-
-pub async fn unknown_in_x_by_freq_endpoint(Json(body): Json<InputBody>) -> Response {
-    let lang1 = body.lang1;
-    let lang2 = body.lang2;
-
-    let text: String = match body.typ.as_str() {
-        "text" => body.data,
-        "text+gz+b64" => {
-            let Ok(gz_data) = general_purpose::STANDARD.decode(body.data) else {
-                return (UE, "could not base64 decode data").into_response();
-            };
-
-            let Ok(text_data) = gunzip(gz_data) else {
-                return (UE, "failed to gunzip data").into_response();
-            };
-
-            let Ok(text) = String::from_utf8(text_data) else {
-                return (UE, "text not valid utf-8").into_response();
-            };
-            text
-        }
-        "docx" => {
-            let Ok(decoded) = general_purpose::STANDARD.decode(body.data) else {
-                return (UE, "could not base64 decode data").into_response();
-            };
-
-            let Some(text) = read_docx_text(decoded) else {
-                return (UE, "could not read docx file").into_response();
-            };
-            text
-        }
-        _ => return (UE, "'typ' field must be text, text+gz+b64 or docx").into_response(),
-    };
-
-    match run_pipeline_two_langs(unknown_in_x_by_freq, text, lang1, lang2).await {
-        Ok(text) => (StatusCode::OK, text),
-        Err(errmsg) => (StatusCode::INTERNAL_SERVER_ERROR, errmsg),
-    }
-    .into_response()
 }

@@ -1,43 +1,21 @@
-use axum::{
-    extract::Path,
-    response::{IntoResponse, Response},
-};
-use cmd_lib::run_fun;
-use http::StatusCode;
-use serde::Deserialize;
-
 use crate::langmodel_files::get_langfile;
-use crate::pipelines::run_pipeline_single_lang;
-//use cached::proc_macro::cached;
+use crate::pipelines::PipelineError;
 
-pub fn transcribe(input: &str, lang: &str) -> Result<String, String> {
-    let txt2ipa = get_langfile(&lang, "txt2ipa.lookup.hfstol").ok_or_else(|| {
-        format!(
-            "language not supported \
-            (txt2ipa.lookup.hfstol doesn't exist for language {})",
-            lang
-        )
-    })?;
+pub async fn transcribe_subprocess(lang: &str, input: &str) -> Result<String, PipelineError> {
+    let file = "txt2ipa.lookup.hfstol";
+    let Some(txt2ipa) = get_langfile(&lang, file) else {
+        return Err(PipelineError::missing_files(
+            lang,
+            Some(vec![file.to_string()]),
+        ));
+    };
 
-    run_fun!(
-        echo -e "$input" |
-        hfst-lookup -q $txt2ipa
-    )
-    .map_err(|e| e.to_string())
+    let input = input.to_owned();
+    tokio::task::spawn_blocking(move || cmd_lib::run_fun!(echo "$input" | hfst-lookup -q $txt2ipa))
+        .await?
+        .map_err(PipelineError::from)
 }
 
-#[derive(Deserialize)]
-pub struct LangAndStringParams {
-    lang: String,
-    string: String,
-}
-
-pub async fn transcribe_endpoint(
-    Path(LangAndStringParams { lang, string }): Path<LangAndStringParams>,
-) -> Response {
-    match run_pipeline_single_lang(transcribe, &string, &lang).await {
-        Ok(text) => (StatusCode::OK, text),
-        Err(errmsg) => (StatusCode::INTERNAL_SERVER_ERROR, errmsg),
-    }
-    .into_response()
+pub async fn transcribe_libhfst(_lang: &str, _input: &str) -> Result<String, PipelineError> {
+    unimplemented!()
 }

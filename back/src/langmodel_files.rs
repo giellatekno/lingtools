@@ -4,18 +4,17 @@ use std::sync::RwLock;
 
 use axum::extract::Query;
 use axum::response::{IntoResponse, Json, Response};
-use dotenv;
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use tracing::{debug, error, info, span, Level};
 
-use crate::util::query_param_is_trueish;
+use crate::common_url::{BoolQueryParam, Format, FormatQueryParam};
 
 /// Total number of languages we have. Change this if we add or remove any.
 const NUM_LANGS: usize = 51;
 
-const LANGS: [&str; NUM_LANGS] = [
+pub const LANGS: [&str; NUM_LANGS] = [
     "bxr", "chr", "ciw", "cor", "crk", "deu", "est", "evn", "fao", "fin", "fit", "fkv", "gle",
     "hdn", "hun", "ipk", "izh", "kal", "kca", "koi", "kom", "kpv", "lav", "liv", "lut", "mdf",
     "mhr", "mns", "mrj", "myv", "nio", "nno", "nob", "olo", "rmf", "rup", "rus", "sje", "sma",
@@ -30,18 +29,17 @@ pub static LANGFILES: Lazy<RwLock<HashMap<(String, String), PathBuf>>> =
 // The parsed langmodel_files.yaml, with definitions of all language model
 // files, where they are located in the repositories, and which pipelines
 // they are used for
-const LANGMODEL_FILES: Lazy<LangmodelFiles> = Lazy::new(|| {
+pub static LANGMODEL_FILES: Lazy<LangmodelFiles> = Lazy::new(|| {
     let yaml = include_str!("langmodel_files.yaml");
     serde_yaml::from_str(yaml).unwrap()
 });
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LangmodelFiles {
-    files: Vec<LangmodelFile>,
+    pub files: Vec<LangmodelFile>,
 }
 
 impl LangmodelFiles {
-    ///
     /*
     fn all_filenames(&self) -> impl Iterator<Item = &str> {
         self.files
@@ -72,14 +70,14 @@ impl LangmodelFiles {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct LangmodelFile {
+pub struct LangmodelFile {
     /// The name of this file. May include the special "{lang}" substring,
     /// which would be replaced by the language it is in. For example, there
     /// is a file "paradigm_full.sme.txt", in the "sme" repository. In the
     /// yaml definition, it would be listed as "paradigm_full.{lang}.txt",
     /// so that the "paradigm_full.smj.txt" file in the "smj" repo could be
     /// found in the same way.
-    filename: String,
+    pub filename: String,
 
     /// Sometimes, an alternative file can be used instead, interchangably.
     /// Typically a source file can be used instead of a binary compiled file.
@@ -118,19 +116,19 @@ impl LangmodelFile {
     /// and the filename it was found under, which just so happens to be
     /// the exact same type as the key of the LANGFILES hashmap.
     #[tracing::instrument(level = "trace", skip(self, base), fields(file = self.filename))]
-    fn find_on_system(&self, base: &PathBuf, repo: &str) -> Option<(PathBuf, String)> {
+    pub fn find_on_system(&self, base: &PathBuf, repo: &str) -> Option<(PathBuf, String)> {
         // try WP_LANGFOLDER/REPO/FILENAME
         let filename = self.filename.replace("{lang}", repo);
         let path = base.join(repo).join(&filename);
         if path.is_file() {
-            debug!(path = ?path, "found file");
+            //debug!(path = ?path, "found file");
             return Some((path, filename));
         }
 
         // try WP_LANGFOLDER/REPO/bin/FILENAME (how it is on gtweb)
         let path = base.join(repo).join("bin").join(&filename);
         if path.is_file() {
-            debug!(path = ?path, "found file");
+            //debug!(path = ?path, "found file");
             return Some((path, filename));
         }
 
@@ -144,7 +142,7 @@ impl LangmodelFile {
                 .to_str()
                 .expect("this filename is a valid str")
                 .to_string();
-            debug!(path = ?path, "found file");
+            //debug!(path = ?path, "found file");
             return Some((path, filename));
         }
 
@@ -154,7 +152,7 @@ impl LangmodelFile {
             let alt_filename = self.alt_filename.as_ref().unwrap().replace("{lang}", repo);
             let path = base.join(repo).join(&alt_filename);
             if path.is_file() {
-                debug!(path = ?path, "found file");
+                //debug!(path = ?path, "found file");
                 return Some((path, alt_filename));
             }
 
@@ -168,21 +166,20 @@ impl LangmodelFile {
                     .to_str()
                     .expect("this filename is a valid str")
                     .to_string();
-                debug!(path = ?path, "found file");
+                //debug!(path = ?path, "found file");
                 return Some((path, filename));
             }
         }
 
-        debug!("file not found");
+        //debug!("file not found");
         None
     }
 }
 
 /// Read the WP_LANGFOLDER, and fill the LANGFILES hashmap with the paths to
 /// where the specified files in LANGMODEL_FILES are found.
-/// Returns the number of files found.
 #[tracing::instrument(level = "trace")]
-pub fn load_langfiles() -> usize {
+pub fn load_langfiles() {
     let langfolder = PathBuf::from(&*WP_LANGFOLDER);
     let mut langfiles = LANGFILES.write().unwrap();
 
@@ -239,21 +236,16 @@ pub fn load_langfiles() -> usize {
             "{}/{}/bin/{}{}-all.hfst",
             *WP_LANGFOLDER, l1, l1, l2
         ));
-        debug!(?path_server, "looking for file");
+        //debug!(?path_server, "looking for file");
         let path = if path_server.exists() {
-            debug!(?path_server, "found file on server");
+            //debug!(?path_server, "found file on server");
             path_server
         } else {
-            let path =
-                std::path::PathBuf::from(format!("/usr/share/giella/{l1}/{l1}{l2}-all.hfst"));
-            debug!(?path, "found file locally");
-            path
+            std::path::PathBuf::from(format!("/usr/share/giella/{l1}/{l1}{l2}-all.hfst"))
         };
 
         langfiles.insert((l1.to_string(), fst), path);
     }
-
-    langfiles.len()
 }
 
 /// Try to add a new file to the LANGFILES hashmap.
@@ -345,7 +337,7 @@ pub fn remove_langfile(path: &std::path::Path) {
             info!("file removed from LANGFILES");
         }
         None => {
-            let mut langfiles = LANGFILES.write().unwrap();
+            let _langfiles = LANGFILES.write().unwrap();
             // remove all keys (lang, _)  - but to do this, we must know
             // the full key, meaning all files
             /*
@@ -355,7 +347,6 @@ pub fn remove_langfile(path: &std::path::Path) {
             let key =
             info!("entire language folder deleted");
             */
-            ()
         }
     }
 }
@@ -373,20 +364,42 @@ pub fn get_langfile(lang: &str, file: &str) -> Option<PathBuf> {
 // The environment variable WP_LANGFOLDER
 pub static WP_LANGFOLDER: Lazy<String> = Lazy::new(|| {
     dotenv::var("WP_LANGFOLDER").unwrap_or_else(|_| {
-        eprintln!("environment variable WP_LANGFOLDER not set (or somehow not unicode)");
+        eprintln!("environment variable WP_LANGFOLDER not set (or not unicode)");
         std::process::exit(2);
     })
 });
 
-pub async fn endpoint_info_all(Query(params): Query<HashMap<String, String>>) -> Response {
-    // info about which capabilities the api has
-    // mainly: which endpoints are supported for which languages
-    // for example something like this:
-    // {
-    //   "analyze": ["nob", "sme", "sma"],
-    //   "dependency": ["nob"],
-    // }
-    // method => list of files
+#[derive(serde::Deserialize)]
+pub struct Detailed {
+    #[serde(
+        default,
+        deserialize_with = "crate::common_url::deserialize_boolqueryparam"
+    )]
+    detailed: Option<BoolQueryParam>,
+}
+
+/// Return information about which capabilities the API has. Mainly: which endpoints
+/// are supported for which languages.
+///
+/// # Example:
+/// ```json
+/// {
+///     "analyze": ["nob", "sme", "sma"],
+///     "dependency": ["nob"],
+/// }
+/// ```
+#[axum::debug_handler]
+pub async fn info_endpoint(
+    Query(format): Query<FormatQueryParam>,
+    wants_detailed: Query<Detailed>,
+) -> Response {
+    let format = format.unwrap_or(Format::Json);
+    let wants_detailed = wants_detailed
+        .detailed
+        .as_ref()
+        .map(|detailed| detailed.0)
+        .unwrap_or(false);
+
     let mut methods: HashMap<String, HashSet<String>> = HashMap::new();
 
     for file in LANGMODEL_FILES.files.iter() {
@@ -396,7 +409,6 @@ pub async fn endpoint_info_all(Query(params): Query<HashMap<String, String>>) ->
         }
     }
 
-    info!("{:?}", methods);
     // method => HashMap<lang, Vec<(filename, bool)>>
     let mut detailed: HashMap<&str, HashMap<&str, Vec<(String, bool)>>> = HashMap::new();
     let mut simple: HashMap<&str, HashSet<String>> = HashMap::new();
@@ -424,13 +436,15 @@ pub async fn endpoint_info_all(Query(params): Query<HashMap<String, String>>) ->
         }
     }
 
-    let wants_pretty = query_param_is_trueish(&params, "pretty");
-    let wants_detailed = query_param_is_trueish(&params, "detailed");
-    match (wants_pretty, wants_detailed) {
-        (false, false) => Json(json!(simple)).into_response(),
-        (false, true) => Json(json!(detailed)).into_response(),
-        (true, false) => PrettyJson(simple).into_response(),
-        (true, true) => PrettyJson(detailed).into_response(),
+    match (format, wants_detailed) {
+        (Format::Text, _) => {
+            // TODO actually give text, and respect detailed
+            Json(json!(detailed)).into_response()
+        }
+        (Format::Json, false) => Json(json!(simple)).into_response(),
+        (Format::Json, true) => Json(json!(detailed)).into_response(),
+        (Format::PrettyJson, false) => PrettyJson(simple).into_response(),
+        (Format::PrettyJson, true) => PrettyJson(detailed).into_response(),
     }
 }
 

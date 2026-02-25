@@ -1,13 +1,22 @@
 mod analysis;
 mod async_watcher;
+mod common_url;
+mod endpoints;
 mod file_watcher;
+mod generate;
+mod grammarcheck;
 mod langmodel_files;
+mod memmem_split;
+mod multimap;
+mod paradigm;
 mod pipelines;
 mod timing;
 mod util;
+mod utils;
+mod weight;
 
-use crate::async_watcher::make_async_watcher;
-use crate::langmodel_files::WP_LANGFOLDER;
+use std::{path::Path, time::Duration};
+
 use axum::{
     error_handling::HandleErrorLayer,
     extract::DefaultBodyLimit,
@@ -15,27 +24,7 @@ use axum::{
     routing::{get, post},
     BoxError, Router,
 };
-use dotenv;
 use listenfd::ListenFd;
-use notify::Watcher;
-use pipelines::{
-    analyze::{analyze2_endpoint, analyze_endpoint},
-    dependency::dependency_endpoint,
-    disambiguate::disambiguate_endpoint,
-    generate::generate_endpoint,
-    hyphenate::hyphenate_endpoint,
-    lemma_count::lemma_count_endpoint,
-    paradigm::paradigm_endpoint,
-    transcribe::transcribe_endpoint,
-    unknown_in_x_by_freq::unknown_in_x_by_freq_endpoint,
-};
-use std::{
-    collections::HashMap,
-    path::{Path, PathBuf},
-    sync::{Arc, Mutex},
-    time::Duration,
-};
-use timing::timing_middleware;
 use tokio::{self, net::TcpListener};
 use tower::{limit::ConcurrencyLimitLayer, ServiceBuilder};
 use tower_http::{
@@ -45,27 +34,13 @@ use tower_http::{
     trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer},
     LatencyUnit,
 };
-use tracing::{error, info, Level};
+use tracing::{info, Level};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-use crate::langmodel_files::LANGFILES;
-
-/*
-use hfst_rs::{HfstInputStream, HfstTransducer};
-
-#[derive(Default)]
-struct AppState {
-    analysis_files: Arc<Mutex<HashMap<String, HfstTransducer>>>,
-}
-
-impl Clone for AppState {
-    fn clone(&self) -> Self {
-        Self {
-            analysis_files: Arc::clone(&self.analysis_files),
-        }
-    }
-}
-*/
+use crate::async_watcher::make_async_watcher;
+use crate::langmodel_files::WP_LANGFOLDER;
+use crate::pipelines::lemma_count::lemma_count_endpoint;
+use crate::timing::timing_middleware;
 
 async fn handle_error(err: BoxError) -> Response {
     if err.is::<tower::timeout::error::Elapsed>() {
@@ -114,16 +89,14 @@ async fn main() {
 
     tracing_subscriber::registry()
         .with(
-            console_subscriber::ConsoleLayer::builder()
-                .retention(Duration::from_secs(30))
-                .spawn(),
-        )
-        .with(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
                 // axum logs rejections from built-in extractors with the `axum::rejection`
                 // target, at `TRACE` level. `axum::rejection=trace` enables showing those events
-                "lingtools=trace,tower_http=debug,axum::rejection=trace,tokio=debug,runtime=debug"
-                    .into()
+                format!(
+                    "{}=trace,tower_http=debug,axum::rejection=trace,tokio=debug,runtime=debug",
+                    env!("CARGO_CRATE_NAME")
+                )
+                .into()
             }),
         )
         .with(tracing_subscriber::fmt::layer())
@@ -133,11 +106,15 @@ async fn main() {
     // reading it the first time (which is also part of the reason why we
     // print it out here - to actually read it, to run the check and exit
     // if it was not found..probably a better way to do this)
-    info!("language folder: {}", &*WP_LANGFOLDER);
+    info!("Language folder: {}", &*WP_LANGFOLDER);
 
     // populate the hashmap of known files by reading the file system
-    let num_files_total = langmodel_files::load_langfiles();
-    info!("Found {} language files in total", num_files_total);
+    langmodel_files::load_langfiles();
+    let n_langfiles = langmodel_files::LANGFILES
+        .read()
+        .expect("LANGFILES is not poisoned")
+        .len();
+    info!("Found {n_langfiles} language model files");
 
     // Set up the file watcher that watches the WP_LANGFOLDER for changes
     let (mut debouncer, rx) = make_async_watcher(Duration::from_secs(1)).unwrap();
@@ -158,155 +135,37 @@ async fn main() {
         .spawn(rx)
         .await;
 
-    /*
-    let _filewatcher_jh = tokio::spawn(async move {
-        while let Some(res) = rx.recv().await {
-            match res {
-                Ok(events) => {
-                    for ev in events.iter() {
-                        match ev.kind {
-                            notify::EventKind::Create(_create_kind) => {
-                                // create kind: any, file, folder, other
-                                for path in ev.paths.iter() {
-                                    langmodel_files::add_langfile(path);
-                                }
-                            }
-                            notify::EventKind::Modify(modify_kind) => {
-                                // TODO for _this_ filewatcher, we don't really
-                                // care about modified language model files,
-                                // because all pipelines read all language
-                                // model files from disk on every request
-                                // .... mostly - except the paradigms -
-                                // but if there is a change or new paradigm-
-                                // related file added, it would be easier to
-                                // just restart the server.
-                                match modify_kind {
-                                    notify::event::ModifyKind::Name(rename_mode) => {
-                                        // a file was renamed. This could be
-                                        // a file is no longer watched, or a
-                                        // file was copied in under a different
-                                        // name, and got `mv`ed to be the correct
-                                        // name
-                                        match rename_mode {
-                                            notify::event::RenameMode::To => {
-                                                // notifier only knows TO,
-                                                // which means `mv`ed INTO
-                                                // WP_LANGFOLDER. Treat it same
-                                                // as a file that was created.
-                                                for path in ev.paths.iter() {
-                                                    langmodel_files::add_langfile(path);
-                                                }
-                                            }
-                                            notify::event::RenameMode::From => {
-                                                // `mv`ed OUT of WP_LANGFOLDER
-                                                // so, same as delete
-                                                info!("renamed FROM");
-                                                for path in ev.paths.iter() {
-                                                    langmodel_files::remove_langfile(path);
-                                                }
-                                            }
-                                            notify::event::RenameMode::Both => {
-                                                // `mv`ed FROM inside TO inside,
-                                                // so we need to check both
-                                                // for deletion and removal
-                                                info!("renamed, BOTH TO AND FROM");
-                                                info!(paths = ?ev.paths, "paths");
-                                            }
-                                            _ => {
-                                                // Any and Other ignored
-                                            }
-                                        }
-                                    }
-                                    _ => {
-                                        // not interested in the other
-                                        // modification kinds (Any, Data,
-                                        // Metadata, Other)
-                                    }
-                                }
-                            }
-                            notify::EventKind::Remove(remove_kind) => {
-                                // remove_kind can be Folder - in which
-                                // case we want to remove the entire folder
-                                // from watched - if it's a folder we
-                                // care about
-                                for path in ev.paths.iter() {
-                                    langmodel_files::remove_langfile(path);
-                                }
-                            }
-                            // We don't care about Access, Other, and Any
-                            _ => {}
-                        }
-                    }
-                }
-                Err(errors) => {
-                    error!("Errors from file watcher: {:?}", errors);
-                }
-            }
-        }
-    });
-    */
-
-    /*
-    let langfiles = LANGFILES.read().unwrap();
-    let analyzers = langfiles.iter()
-        .filter(|((_lang, file), _path)| file == "analyser-gt-desc.hfstol")
-        .map(|((lang, _filename), path)| (lang, HfstInputStream::new(&path)))
-        .filter_map(|(lang, input_stream_result)| match input_stream_result {
-            Ok(input_stream) => Some((lang, input_stream)),
-            Err(_) => None,
-        })
-        .map(|(lang, input_stream)| {
-            (lang, input_stream.read_transducers())
-        })
-        .filter(|(_lang, transducers)| transducers.len() > 0)
-        .map(|(lang, transducers)| {
-            (
-                lang.clone(),
-                transducers.into_iter().nth(0).unwrap()
-            )
-        });
-    let analysis_files = HashMap::from_iter(analyzers);
-
-    info!("loaded {} analyzers", analysis_files.len());
-
-    let shared_state = AppState {
-        analysis_files: Arc::new(Mutex::new(analysis_files)),
-    };
-    */
-
     let app = Router::new()
         .route(
             "/unknown-lemmas-in-dict",
-            post(unknown_in_x_by_freq_endpoint),
+            post(endpoints::unknown_in_x_by_freq).layer(
+                ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .load_shed()
+                    .concurrency_limit(2), //.timeout(Duration::from_secs(2))
+            ),
         )
-        .layer(
-            ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(handle_error))
-                .load_shed()
-                .concurrency_limit(2), //.timeout(Duration::from_secs(2))
+        .route(
+            "/lemma-count",
+            post(lemma_count_endpoint).layer(
+                ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .timeout(Duration::from_secs(60)),
+            ),
         )
-        .route("/lemma-count", post(lemma_count_endpoint))
-        .layer(
-            ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(handle_error))
-                .timeout(Duration::from_secs(60)),
-        )
-        .route("/analyze/{lang}/{string}", get(analyze_endpoint))
-        .route("/analyze2/{lang}/{string}", get(analyze2_endpoint))
-        //.with_state(shared_state)
-        .route("/dependency/{lang}/{string}", get(dependency_endpoint))
-        .route("/disambiguate/{lang}/{string}", get(disambiguate_endpoint))
-        .route("/generate/{lang}/{string}", get(generate_endpoint))
-        .route("/hyphenate/{lang}/{string}", get(hyphenate_endpoint))
-        .route("/transcribe/{lang}/{string}", get(transcribe_endpoint))
-        .route("/paradigm/{lang}/{string}", get(paradigm_endpoint))
-        .route("/info", get(langmodel_files::endpoint_info_all))
-        // global concurrency limit (applies to all paths)
-        // does NOT have load_shed, so will queue requests (requests are
-        // technically blocked on an async semaphore, so I guess there's
-        // no strict queue in the "first-come-first-serve" sense)
+        .route("/analyze/{lang}/{input}", get(endpoints::analyze))
+        .route("/dependency/{lang}/{input}", get(endpoints::dependency))
+        .route("/disambiguate/{lang}/{input}", get(endpoints::disambiguate))
+        .route("/generate/{lang}/{input}", get(endpoints::generate))
+        .route("/hyphenate/{lang}/{input}", get(endpoints::hyphenate))
+        .route("/numbers/{lang}/{input}", get(endpoints::numbers))
+        .route("/paradigm/{lang}/{input}", get(endpoints::paradigm))
+        .route("/transcribe/{lang}/{input}", get(endpoints::transcribe))
+        .route("/info", get(langmodel_files::info_endpoint))
         .layer(axum::middleware::from_fn(timing_middleware))
-        .layer(ConcurrencyLimitLayer::new(10))
+        // global concurrency limit (applies to all paths)
+        // does NOT have load_shed, so will queue requests (on the internal, hidden queue)
+        .layer(ConcurrencyLimitLayer::new(200))
         .layer(CatchPanicLayer::custom(handle_panic))
         .layer(
             TraceLayer::new_for_http()
@@ -322,18 +181,23 @@ async fn main() {
         .layer(DefaultBodyLimit::disable())
         .fallback_service(ServeDir::new("assets"));
 
-    info!("binding and listening");
-
     let mut listenfd = ListenFd::from_env();
 
     let listener = match listenfd.take_tcp_listener(0).unwrap() {
         // if we are given a tcp listener on listen fd 0, we use that one
         Some(listener) => {
+            let port = listener.local_addr().unwrap().port();
             listener.set_nonblocking(true).unwrap();
-            TcpListener::from_std(listener).unwrap()
+            let ret = TcpListener::from_std(listener).unwrap();
+            info!("Listening on port {port} (via listenfd)");
+            ret
         }
         // otherwise fall back to local listening
-        None => TcpListener::bind("0.0.0.0:3000").await.unwrap(),
+        None => {
+            let ret = TcpListener::bind("0.0.0.0:3000").await.unwrap();
+            info!("Listening on port 3000");
+            ret
+        }
     };
 
     axum::serve(listener, app).await.unwrap();

@@ -1,50 +1,14 @@
-use crate::langmodel_files::get_langfile;
-use crate::pipelines::run_pipeline_single_lang;
-use axum::{
-    extract::Path,
-    response::{IntoResponse, Response},
-};
-use cached::proc_macro::cached;
-use cmd_lib::run_fun;
-use http::StatusCode;
-use serde::Deserialize;
+use crate::pipelines::PipelineError;
+use crate::pipelines::get_langfile_dependency;
+use crate::pipelines::get_langfile_disambiguator;
+use crate::pipelines::get_langfile_korp;
+use crate::pipelines::get_langfile_tokenizer;
 
-//#[cached]
-pub fn dependency(input: &str, lang: &str) -> Result<String, String> {
-    let tokdisamb = get_langfile(&lang, "tokeniser-disamb-gt-desc.pmhfst").ok_or_else(|| {
-        format!(
-            "language not supported \
-            (tokeniser-disamb-gt-desc.pmhfst doesn't exist for language {}",
-            lang
-        )
-    })?;
-    let disambiguator_cg3 = get_langfile(&lang, "disambiguator.cg3")
-        .or_else(|| get_langfile(&lang, "disambiguator.bin"))
-        .ok_or_else(|| {
-            format!(
-                "language not supported \
-            (disambiguator.[cg3|bin] not found for language {})",
-                lang
-            )
-        })?;
-    let korp_cg3 = get_langfile(&lang, "korp.cg3")
-        .or_else(|| get_langfile(&lang, "functions.bin"))
-        .ok_or_else(|| {
-            format!(
-                "language not supported \
-            (korp.cg3 AND functions.bin not found for language {})",
-                lang
-            )
-        })?;
-    let dependency_cg3 = get_langfile(&lang, "dependency.cg3")
-        .or_else(|| get_langfile(&lang, "dependency.bin"))
-        .ok_or_else(|| {
-            format!(
-                "language not supported \
-            (dependency.cg3 not found for language {})",
-                lang
-            )
-        })?;
+pub async fn dependency_subprocess(lang: &str, input: &str) -> Result<String, PipelineError> {
+    let tokenizer = get_langfile_tokenizer(lang)?;
+    let disambiguator = get_langfile_disambiguator(lang)?;
+    let korp = get_langfile_korp(lang)?;
+    let dependency = get_langfile_dependency(lang)?;
 
     let use_weight = match lang {
         "rus" => true,
@@ -54,28 +18,20 @@ pub fn dependency(input: &str, lang: &str) -> Result<String, String> {
 
     let tokenize_params = if use_weight { "-cg" } else { "-cgW" };
 
-    run_fun!(
-        echo $input |
-        hfst-tokenize $tokenize_params $tokdisamb |
-        vislcg3 -g $disambiguator_cg3 |
-        vislcg3 -g $korp_cg3 |
-        vislcg3 -g $dependency_cg3
-    )
-    .map_err(|e| e.to_string())
+    let input = input.to_owned();
+    tokio::task::spawn_blocking(move || {
+        cmd_lib::run_fun!(
+            echo "$input" |
+            hfst-tokenize $tokenize_params $tokenizer |
+            vislcg3 -g $disambiguator |
+            vislcg3 -g $korp |
+            vislcg3 -g $dependency
+        )
+    })
+    .await?
+    .map_err(PipelineError::from)
 }
 
-#[derive(Deserialize)]
-pub struct LangAndStringParams {
-    lang: String,
-    string: String,
-}
-
-pub async fn dependency_endpoint(
-    Path(LangAndStringParams { lang, string }): Path<LangAndStringParams>,
-) -> Response {
-    match run_pipeline_single_lang(dependency, &string, &lang).await {
-        Ok(text) => (StatusCode::OK, text),
-        Err(errmsg) => (StatusCode::UNPROCESSABLE_ENTITY, errmsg),
-    }
-    .into_response()
+pub async fn dependency_libhfst(_lang: &str, _input: &str) -> Result<String, PipelineError> {
+    unimplemented!("dependency can't make use of libhfst, need to implmenent at least tokenize");
 }
