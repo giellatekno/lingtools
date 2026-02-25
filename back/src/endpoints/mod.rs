@@ -131,7 +131,7 @@ pub async fn analyze(
             .into_response()
     } else {
         // TODO: tokenize? third parameter, the bool, set to false for now
-        analyze_subprocess(&lang, &input, false)
+        analyze_subprocess(&lang, &input, true)
             .await
             .map(|s| crate::pipelines::analyze::parse_analyse_subprocess_results(&s))
             .map(|vec| StructuredOutput { results: vec })

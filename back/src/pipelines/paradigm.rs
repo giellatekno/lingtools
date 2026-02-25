@@ -161,7 +161,7 @@ pub async fn paradigm_subprocess(
     wanted_pos: Option<Pos>,
     size: ParadigmSize,
 ) -> Result<ParadigmOutput, PipelineError> {
-    let analyses = analyze_subprocess(lang, input, false).await?;
+    let analyses = analyze_subprocess(lang, input, true).await?;
     let analyses = parse_analyse_subprocess_results(&analyses);
 
     let mut seen = HashSet::new();
