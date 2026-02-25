@@ -12,7 +12,6 @@ mod paradigm;
 mod pipelines;
 mod timing;
 mod util;
-mod utils;
 mod weight;
 
 use std::{path::Path, time::Duration};

@@ -61,6 +61,7 @@ pub fn gunzip(data: Vec<u8>) -> std::io::Result<Vec<u8>> {
 /// let s = String::from_iter(intersperse_newlines(v.iter()));
 /// assert_eq!(s, String::from("these\nare\nsome\nwords"));
 /// ```
+#[allow(unused)]
 pub fn intersperse_newlines<'a>(
     mut it: impl Iterator<Item = &'a str>,
 ) -> impl Iterator<Item = &'a str> {

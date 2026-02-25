@@ -1,3 +1,4 @@
+
 /// Split the string [`s`] by [`delim`], and return an iterator that yields
 /// [`std::ops::Range<usize>`] that slices the individual pieces of [`s`].
 ///
@@ -13,6 +14,7 @@
 /// assert_eq!(&s[it.next().unwrap()], "Sg2");
 /// assert_eq!(it.next(), None);
 /// ```
+#[allow(unused)]
 pub fn memmem_split<'a>(
     delim: &'a str,
     s: &'a str,

@@ -6,12 +6,11 @@ use serde::Serialize;
 use tokio::sync::RwLock;
 use tokio::{fs::File, io::AsyncReadExt};
 
-use crate::pipelines::{PipelineError, gather};
+use crate::pipelines::PipelineError;
 use crate::pipelines::generate::{GenerateResult, parse_generate_subprocess_results};
 
 use crate::pipelines::analyze::{AnalysisResult, parse_analyse_subprocess_results};
 use crate::pipelines::analyze::analyze_libhfst;
-
 use crate::pipelines::analyze::analyze_subprocess;
 use crate::pipelines::generate::generate_libhfst;
 use crate::pipelines::generate::generate_subprocess;

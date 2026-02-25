@@ -149,14 +149,6 @@ pub fn get_langfile_tokenizer(lang: &str) -> Result<std::path::PathBuf, Pipeline
         .ok_or(PipelineError::missing_tokenizer_pmhfst(lang))
 }
 
-pub fn get_langfile_numbers(lang: &str) -> Result<std::path::PathBuf, PipelineError> {
-    get_langfile(
-        lang,
-        "transcriptor-numbers-digit2text.filtered.lookup.hfstol",
-    )
-    .ok_or(PipelineError::missing_tokenizer_pmhfst(lang))
-}
-
 pub fn get_langfile_disambiguator(lang: &str) -> Result<std::path::PathBuf, PipelineError> {
     get_langfile(lang, "disambiguator.cg3")
         .or_else(|| get_langfile(&lang, "disambiguator.bin"))
