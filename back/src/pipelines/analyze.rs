@@ -107,7 +107,11 @@ pub async fn analyze_libhfst(
             .results
             .into_iter()
             .map(|(item, _weight)| (input, without_ats(&item)));
-        out.extend(crate::pipelines::gather(it, AnalysisResult::from));
+        out.extend(
+            gather_consecutive_equals(it)
+                .into_iter()
+                .map(AnalysisResult::from)
+        );
     }
     Ok(out)
 }

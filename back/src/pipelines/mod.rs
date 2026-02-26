@@ -116,8 +116,12 @@ impl PipelineError {
     }
 }
 
-// TODO change the name of this
-pub fn gather<OutputType>(
+// TOOD: Unused. It is similar to `gather_consecutive_equals`, in that it will gather
+// equal values under the same key as a vec of all values for that key - however, it
+// is unordered when it returns the key. That is, the order of the keys in the input
+// is not the same as the output, which for our purposes is not what we want. Keeping
+// the unused code here for now, tough.
+pub fn _gather_same_key_unordered<OutputType>(
     it: impl Iterator<Item = (impl AsRef<str>, impl AsRef<str>)>,
     output_map_fn: impl Fn((String, Vec<String>)) -> OutputType,
 ) -> Vec<OutputType> {

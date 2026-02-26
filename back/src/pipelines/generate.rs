@@ -74,7 +74,11 @@ pub async fn generate_libhfst(
             .results
             .into_iter()
             .map(|(form, _weight)| (input, without_ats(&form)));
-        out.extend(crate::pipelines::gather(it, GenerateResult::from));
+        out.extend(
+            gather_consecutive_equals(it)
+                .into_iter()
+                .map(GenerateResult::from)
+        );
     }
     Ok(out)
 }
