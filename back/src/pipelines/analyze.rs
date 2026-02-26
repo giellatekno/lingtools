@@ -4,7 +4,7 @@ use std::sync::LazyLock;
 use without_ats::without_ats;
 
 use crate::langmodel_files::get_langfile;
-use crate::pipelines::{PipelineError, get_langfile_tokenizer};
+use crate::pipelines::{PipelineError, gather_consecutive_equals, get_langfile_tokenizer};
 
 #[derive(Debug, serde::Serialize)]
 pub struct AnalysisResult {
@@ -40,10 +40,18 @@ pub fn parse_analyse_subprocess_results(s: &str) -> Vec<AnalysisResult> {
             let wordform = it.next()?;
             let analysis = it.next()?;
             let _weight = it.next()?;
-            assert_eq!(it.next(), None);
+            assert_eq!(
+                it.next(),
+                None,
+                "never more than 3 fields in analysis output"
+            );
             Some((wordform, analysis))
         });
-    crate::pipelines::gather::<AnalysisResult>(it, AnalysisResult::from)
+
+    gather_consecutive_equals(it)
+        .into_iter()
+        .map(AnalysisResult::from)
+        .collect()
 }
 
 /// Analyse the `input` with the analyser for language `lang`. The `tokenize` argument

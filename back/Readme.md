@@ -17,6 +17,9 @@ languages from apertium nightly, it will be
 
 ## Todos
 
+Derivations:
+
+```
 cuvkejuvvot  - alle passive derivasjoner, vil se paradigmer
 
 alle derivasjoner egentlig
@@ -24,3 +27,8 @@ alle derivasjoner egentlig
  -goahtit  (begynne å gjøre noe)
  -stit  (gjøre noe litt)
  ....
+```
+
+
+- Endpoint `/analyze` with `libhfst=1` does not tokenize, because `hfst-tokenize` isn't
+supported in `hfst-rs`.

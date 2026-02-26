@@ -1,4 +1,3 @@
-
 /// Split the string [`s`] by [`delim`], and return an iterator that yields
 /// [`std::ops::Range<usize>`] that slices the individual pieces of [`s`].
 ///

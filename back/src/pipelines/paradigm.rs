@@ -9,9 +9,9 @@ use tokio::{fs::File, io::AsyncReadExt};
 use crate::pipelines::PipelineError;
 use crate::pipelines::generate::{GenerateResult, parse_generate_subprocess_results};
 
-use crate::pipelines::analyze::{AnalysisResult, parse_analyse_subprocess_results};
 use crate::pipelines::analyze::analyze_libhfst;
 use crate::pipelines::analyze::analyze_subprocess;
+use crate::pipelines::analyze::{AnalysisResult, parse_analyse_subprocess_results};
 use crate::pipelines::generate::generate_libhfst;
 use crate::pipelines::generate::generate_subprocess;
 use analysis_string_parser::{AnalysisParts, Pos, parse_analysis_parts};
@@ -169,13 +169,15 @@ pub async fn paradigm_subprocess(
     let mut other_forms = vec![];
     for AnalysisResult { wordform, analyses } in analyses {
         for analysis in analyses {
-            let analysis = parse_analysis_parts(&analysis, "+")
-                .expect("analysis from analysis is not empty");
+            let analysis =
+                parse_analysis_parts(&analysis, "+").expect("analysis from analysis is not empty");
             let pos = analysis.pos.expect("analysis from analysis has a pos");
 
             // if wanted_pos is None, that means any, so will never hit. If a specific
             // pos is wanted, continue if the analysis doesn't have that pos
-            if let Some(wanted_pos) = wanted_pos && wanted_pos != pos {
+            if let Some(wanted_pos) = wanted_pos
+                && wanted_pos != pos
+            {
                 continue;
             }
 
@@ -204,7 +206,11 @@ pub async fn paradigm_subprocess(
     }
 
     let input = (input.to_owned(), wanted_pos);
-    Ok(ParadigmOutput { input, generated_forms, other_forms })
+    Ok(ParadigmOutput {
+        input,
+        generated_forms,
+        other_forms,
+    })
 }
 
 /// Generate a newline delimited `String` of the `input_lemma+tags`, where `tags`

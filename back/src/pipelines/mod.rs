@@ -130,6 +130,29 @@ pub fn gather<OutputType>(
     map.drain().map(output_map_fn).collect()
 }
 
+pub fn gather_consecutive_equals(
+    mut it: impl Iterator<Item = (impl AsRef<str>, impl AsRef<str>)>,
+) -> Vec<(String, Vec<String>)> {
+    let mut out = vec![];
+    let Some((mut last_key, value)) = it.next() else {
+        return out;
+    };
+
+    let mut current = vec![value.as_ref().to_owned()];
+    for (key, value) in it {
+        if key.as_ref() == last_key.as_ref() {
+            current.push(value.as_ref().to_owned());
+            continue;
+        } else {
+            out.push((last_key.as_ref().to_owned(), current));
+            last_key = key;
+            current = vec![value.as_ref().to_owned()];
+        }
+    }
+    out.push((last_key.as_ref().to_owned(), current));
+    out
+}
+
 pub fn get_langfile_generator(lang: &str) -> Result<std::path::PathBuf, PipelineError> {
     get_langfile(lang, "generator-gt-norm.hfstol")
         .ok_or(PipelineError::missing_generator_hfstol(lang))
