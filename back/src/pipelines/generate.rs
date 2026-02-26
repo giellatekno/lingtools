@@ -95,7 +95,8 @@ pub fn parse_generate_subprocess_results(s: &str) -> Vec<GenerateResult> {
             let _weight = it.next()?;
             assert_eq!(it.next(), None);
             Some((analysis, generated_form))
-        });
+        })
+        .filter(|(_analysis, generated_form)| !generated_form.contains("+?"));
     gather_consecutive_equals(it)
         .into_iter()
         .map(GenerateResult::from)
