@@ -5,6 +5,7 @@ use hfst::transducer_actor::HfstTransducerActor;
 use without_ats::without_ats;
 
 use crate::pipelines::PipelineError;
+use crate::pipelines::gather_consecutive_equals;
 use crate::pipelines::get_langfile_generator;
 
 #[derive(serde::Serialize)]
@@ -91,7 +92,10 @@ pub fn parse_generate_subprocess_results(s: &str) -> Vec<GenerateResult> {
             assert_eq!(it.next(), None);
             Some((analysis, generated_form))
         });
-    crate::pipelines::gather(it, GenerateResult::from)
+    gather_consecutive_equals(it)
+        .into_iter()
+        .map(GenerateResult::from)
+        .collect()
 }
 type ActorMap = HashMap<String, hfst::transducer_actor::HfstTransducerActor>;
 
