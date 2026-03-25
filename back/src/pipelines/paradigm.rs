@@ -23,11 +23,46 @@ static PARADIGM_FILES: Lazy<RwLock<HashMap<(String, ParadigmSize), Result<String
     Lazy::new(|| RwLock::new(HashMap::with_capacity(16)));
 
 #[derive(Serialize)]
+pub struct Form {
+    /// The rest of the tags, "+Sg+Nom",
+    pub tags: String,
+    /// Forms of the word,
+    pub forms: Vec<String>,
+}
+
+#[derive(Serialize)]
+pub struct ParadigmForm {
+    pub lemma: String,
+    pub pos: Pos,
+    pub subclasses: Vec<String>,
+    pub forms: Form,
+}
+
+impl From<GenerateResult> for ParadigmForm {
+    fn from(GenerateResult { analysis, wordforms }: GenerateResult) -> Self {
+        unimplemented!()
+    }
+}
+
+impl std::fmt::Display for ParadigmForm {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for form in self.forms.forms.iter() {
+            write!(f, "{}+{}", self.lemma, self.pos)?;
+            for subclass in self.subclasses.iter() {
+                write!(f, "+{subclass}");
+            }
+            write!(f, "{}\t{form}", self.forms.tags)?;
+        }
+        Ok(())
+    }
+}
+
+#[derive(Serialize)]
 pub struct ParadigmOutput {
     /// The input.
     pub input: (String, Option<Pos>),
     /// All the generated forms.
-    pub generated_forms: Vec<GenerateResult>,
+    pub paradigm_forms: Vec<ParadigmForm>,
     /// A list of other analyses for which the input lemma was a conjugated form
     /// of another word.
     pub other_forms: Vec<AnalysisParts>,
@@ -35,10 +70,10 @@ pub struct ParadigmOutput {
 
 impl std::fmt::Display for ParadigmOutput {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        if self.generated_forms.len() == 0 {
+        if self.paradigm_forms.len() == 0 {
             writeln!(f, "[no results]")?;
         } else {
-            for result in self.generated_forms.iter() {
+            for result in self.paradigm_forms.iter() {
                 writeln!(f, "{result}")?;
             }
         };
@@ -150,7 +185,7 @@ pub async fn paradigm_libhfst(
     let input = (input.to_owned(), wanted_pos);
     Ok(ParadigmOutput {
         input,
-        generated_forms,
+        paradigm_forms,
         other_forms,
     })
 }
