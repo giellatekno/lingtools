@@ -1,5 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "allowTrailingCommas": true,
     "type": "object",
     "required": ["sections"],
     "properties": {
@@ -8,6 +9,7 @@
             "items": {
                 "type": "object",
                 "required": ["tables"],
+                "additionalProperties": false,
                 "properties": {
                     "sId": {
                         "type": "string"
@@ -29,6 +31,7 @@
                         "items": {
                             "type": "object",
                             "required": ["headers", "rows"],
+                            "additionalProperties": false,
                             "properties": {
                                 "tId": {
                                     "type": "string"
@@ -53,6 +56,7 @@
                                     "items": {
                                         "type": "object",
                                         "required": ["label", "tags"],
+                                        "additionalProperties": false,
                                         "properties": {
                                             "label": {
                                                 "type": "string"

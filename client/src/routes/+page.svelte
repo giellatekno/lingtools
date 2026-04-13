@@ -32,7 +32,7 @@
 
     async function onenter(ev: KeyboardEvent) {
         if (ev.key === "Enter" && visible_langs.length === 1) {
-            const lang = Array.from(visible_langs)[0];
+            const lang = visible_langs[0].iso;
             await goto(resolve(`/${lang}`));
         }
     }
