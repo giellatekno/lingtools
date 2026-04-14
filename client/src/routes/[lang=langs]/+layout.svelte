@@ -11,7 +11,7 @@
     let locale = $derived(getLocale());
 
     let maturity_url = $derived(
-        `https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgiellalt%2Flang-${lang}%2Fgh-pages%2Fmaturity.json`,
+        `https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgiellalt%2Flang-${lang}%2Fgh-pages%2Fbadgedata%2Ffst-maturity.json`,
     );
 </script>
 
@@ -20,7 +20,7 @@
         <a href={resolve(`/${lang}`)} class="lg:h3 h6 hover:underline">
             {langname(lang, locale)}
         </a>
-        <a href="https://giellalt.github.io/MaturityClassification.html" class="shadow">
+        <a href={`https://giellalt.github.io/lang-${lang}`} class="shadow">
             <img src={maturity_url} alt="" class="h-5 lg:h-7" />
         </a>
     </div>
