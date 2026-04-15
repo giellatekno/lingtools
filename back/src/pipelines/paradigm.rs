@@ -34,27 +34,31 @@ pub struct Form {
 pub struct ParadigmForm {
     pub lemma: String,
     pub pos: Pos,
-    pub subclasses: Vec<String>,
-    pub forms: Form,
-}
-
-impl From<GenerateResult> for ParadigmForm {
-    fn from(GenerateResult { analysis, wordforms }: GenerateResult) -> Self {
-        unimplemented!()
-    }
+    pub subclass: Option<String>,
+    pub forms: Vec<Form>,
 }
 
 impl std::fmt::Display for ParadigmForm {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        for form in self.forms.forms.iter() {
-            write!(f, "{}+{}", self.lemma, self.pos)?;
-            for subclass in self.subclasses.iter() {
-                write!(f, "+{subclass}");
+        for Form { tags, forms } in self.forms.iter() {
+            for form in forms.iter() {
+                write!(f, "{}+{}", self.lemma, self.pos)?;
+                if let Some(ref subclass) = self.subclass {
+                    let _ = write!(f, "+{subclass}");
+                }
+                write!(f, "+{tags}\t{form}")?;
             }
-            write!(f, "{}\t{form}", self.forms.tags)?;
         }
         Ok(())
     }
+}
+
+
+#[derive(Serialize)]
+pub struct OtherForm {
+    pub lemma: String,
+    pub pos: Pos,
+    pub subclass: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -65,7 +69,7 @@ pub struct ParadigmOutput {
     pub paradigm_forms: Vec<ParadigmForm>,
     /// A list of other analyses for which the input lemma was a conjugated form
     /// of another word.
-    pub other_forms: Vec<AnalysisParts>,
+    pub other_forms: Vec<OtherForm>,
 }
 
 impl std::fmt::Display for ParadigmOutput {
@@ -84,7 +88,7 @@ impl std::fmt::Display for ParadigmOutput {
         } else {
             writeln!(f, "also a conjugated form of:")?;
             for form in self.other_forms.iter() {
-                writeln!(f, "- {form}")?;
+                //writeln!(f, "- {form}")?;
             }
         };
         Ok(())
@@ -135,31 +139,37 @@ pub async fn paradigm_libhfst(
     size: ParadigmSize,
 ) -> Result<ParadigmOutput, PipelineError> {
     let mut seen = HashSet::new();
-    let mut generated_forms: Vec<GenerateResult> = vec![];
+    let mut paradigm_forms: HashMap<(String, Pos, Option<String>), Vec<Form>> = HashMap::new();
+
     let mut other_forms = vec![];
 
-    let analyses = analyze_libhfst(lang, input).await?;
-
-    for AnalysisResult { wordform, analyses } in analyses {
+    for AnalysisResult { wordform, analyses } in analyze_libhfst(lang, input).await? {
         for analysis in analyses {
             let analysis = without_ats::without_ats(&analysis);
-            let Some(analysed) = parse_analysis_parts(&analysis, "+") else {
+
+            let Some(analysed) = parse_analysis_parts(&analysis) else {
                 tracing::trace!(analysis, "raw analysis line failed to parse");
                 continue;
             };
-            let analysis_pos = analysed
-                .pos
-                .expect("every analysis string we get back from analysis has a pos");
 
-            // Filter so that we only show the pos that was wanted. If wanted_pos is
-            // None, then we don't filter out anything, because user wants all.
+            let Some(analysis_pos) = analysed.pos else {
+                tracing::error!("analysis that came back from analysis had no pos");
+                continue;
+            };
+
             if let Some(wanted_pos) = wanted_pos
                 && wanted_pos != analysis_pos
             {
                 continue;
             }
 
-            let anl_lemma = analysed.lemma().expect("all analyses have a lemma");
+            let Some(anl_lemma) = analysed.lemma() else {
+                tracing::error!("analysis has no lemma ??");
+                continue;
+            };
+
+            tracing::trace!(anl_lemma, "analysis lemma");
+
             let key = (anl_lemma.to_owned(), analysed.pos);
             if seen.contains(&key) {
                 continue;
@@ -167,22 +177,73 @@ pub async fn paradigm_libhfst(
             seen.insert(key);
 
             if anl_lemma != input {
-                other_forms.push(analysed);
+                let mut subclass = None;
+                for part in analysed.parts.iter() {
+                    if let Some(tag) = part.tag() && tag.is_subclass() {
+                        subclass = Some(tag.to_string());
+                    }
+                }
+
+                other_forms.push(OtherForm {
+                    lemma: anl_lemma,
+                    pos: analysed.pos.unwrap(),
+                    subclass,
+                });
+
                 continue;
             }
 
-            // Find all paradigms of this (lemma, pos)
-            // this is what `all_paradigm_forms` also does
             let paradigm_file = get_paradigmfile(lang, size)
                 .await
                 .map_err(|e| PipelineError::ParadigmFile(e))?;
-            let all_potential_forms = get_potential_forms(input, wanted_pos, &paradigm_file);
 
-            generated_forms = generate_libhfst(lang, &all_potential_forms).await?;
+            let prefix = analysed.generation_string_prefix();
+            let all_potential_forms = get_potential_forms(&prefix, wanted_pos, &paradigm_file);
+            tracing::trace!("{:?}", all_potential_forms.split("\n").take(3).collect::<Vec<_>>());
+
+            let generated_forms = generate_libhfst(lang, &all_potential_forms).await?;
+            for GenerateResult { analysis, wordforms } in generated_forms {
+                let analysis = parse_analysis_parts(&analysis)
+                    .expect("analysis from generator is not empty");
+                let lemma = analysis.lemma().expect("has a lemma");
+                let pos = analysis.pos.expect("has a pos");
+                let mut subclass = None;
+                for part in analysis.parts.iter() {
+                    if let Some(tag) = part.tag() && tag.is_subclass() {
+                        subclass = Some(tag.to_string());
+                    }
+                }
+
+                let entry = paradigm_forms.entry((lemma, pos, subclass)).or_default();
+
+                let tags = analysis.parts
+                    .iter()
+                    .filter(|&part| {
+                        match part.tag() {
+                            Some(tag) => !tag.is_subclass() && !tag.is_pos(),
+                            None => false,
+                        }
+                    })
+                    .map(|part| format!("{part}"))
+                    .intersperse(String::from("+"))
+                    .collect::<String>();
+
+                entry.push(Form { tags, forms: wordforms });
+            }
         }
     }
 
     let input = (input.to_owned(), wanted_pos);
+
+    let paradigm_forms: Vec<ParadigmForm> = paradigm_forms.into_iter()
+        .map(|((lemma, pos, subclass), forms)| ParadigmForm {
+            lemma,
+            pos,
+            subclass,
+            forms,
+        })
+        .collect();
+
     Ok(ParadigmOutput {
         input,
         paradigm_forms,
@@ -191,73 +252,74 @@ pub async fn paradigm_libhfst(
 }
 
 pub async fn paradigm_subprocess(
-    lang: &str,
-    input: &str,
-    wanted_pos: Option<Pos>,
-    size: ParadigmSize,
+    _lang: &str,
+    _input: &str,
+    _wanted_pos: Option<Pos>,
+    _size: ParadigmSize,
 ) -> Result<ParadigmOutput, PipelineError> {
-    let analyses = analyze_subprocess(lang, input, true).await?;
-    let analyses = parse_analyse_subprocess_results(&analyses);
+    todo!("subprocess hasn't been implemented yet")
+    //let analyses = analyze_subprocess(lang, input, true).await?;
+    //let analyses = parse_analyse_subprocess_results(&analyses);
 
-    let mut seen = HashSet::new();
-    let mut generated_forms: Vec<GenerateResult> = vec![];
-    let mut other_forms = vec![];
-    for AnalysisResult { wordform, analyses } in analyses {
-        for analysis in analyses {
-            let analysis =
-                parse_analysis_parts(&analysis, "+").expect("analysis from analysis is not empty");
-            let pos = analysis.pos.expect("analysis from analysis has a pos");
+    //let mut seen = HashSet::new();
+    //let mut generated_forms: Vec<GenerateResult> = vec![];
+    //let mut other_forms = vec![];
+    //for AnalysisResult { wordform, analyses } in analyses {
+    //    for analysis in analyses {
+    //        let analysis =
+    //            parse_analysis_parts(&analysis, "+").expect("analysis from analysis is not empty");
+    //        let pos = analysis.pos.expect("analysis from analysis has a pos");
 
-            // if wanted_pos is None, that means any, so will never hit. If a specific
-            // pos is wanted, continue if the analysis doesn't have that pos
-            if let Some(wanted_pos) = wanted_pos
-                && wanted_pos != pos
-            {
-                continue;
-            }
+    //        // if wanted_pos is None, that means any, so will never hit. If a specific
+    //        // pos is wanted, continue if the analysis doesn't have that pos
+    //        if let Some(wanted_pos) = wanted_pos
+    //            && wanted_pos != pos
+    //        {
+    //            continue;
+    //        }
 
-            let lemma = analysis.lemma().expect("all analyses have lemmas");
+    //        let lemma = analysis.lemma().expect("all analyses have lemmas");
 
-            if seen.contains(&(lemma.clone(), pos)) {
-                // this (lemma, pos) has already been covered
-                continue;
-            } else {
-                seen.insert((lemma.clone(), pos));
-            }
+    //        if seen.contains(&(lemma.clone(), pos)) {
+    //            // this (lemma, pos) has already been covered
+    //            continue;
+    //        } else {
+    //            seen.insert((lemma.clone(), pos));
+    //        }
 
-            if lemma != input {
-                other_forms.push(analysis);
-                continue;
-            }
+    //        if lemma != input {
+    //            other_forms.push(analysis);
+    //            continue;
+    //        }
 
-            let paradigm_file = get_paradigmfile(lang, size)
-                .await
-                .map_err(|e| PipelineError::ParadigmFile(e))?;
-            let all_potential_forms = get_potential_forms(input, Some(pos), &paradigm_file);
-            let generated = generate_subprocess(lang, &all_potential_forms).await?;
-            let vec = parse_generate_subprocess_results(&generated);
-            generated_forms.extend(vec);
-        }
-    }
+    //        let paradigm_file = get_paradigmfile(lang, size)
+    //            .await
+    //            .map_err(|e| PipelineError::ParadigmFile(e))?;
+    //        let all_potential_forms = get_potential_forms(input, Some(pos), &paradigm_file);
+    //        let generated = generate_subprocess(lang, &all_potential_forms).await?;
+    //        let vec = parse_generate_subprocess_results(&generated);
+    //        generated_forms.extend(vec);
+    //    }
+    //}
 
-    let input = (input.to_owned(), wanted_pos);
-    Ok(ParadigmOutput {
-        input,
-        generated_forms,
-        other_forms,
-    })
+    //let input = (input.to_owned(), wanted_pos);
+    //Ok(ParadigmOutput {
+    //    input,
+    //    generated_forms,
+    //    other_forms,
+    //})
 }
 
 /// Generate a newline delimited `String` of the `input_lemma+tags`, where `tags`
 /// are all the potential forms that can have a generated form, for the given language,
 /// and paradigm size. Used as input to the generator when finding all paradigms.
-fn get_potential_forms(lemma: &str, pos: Option<Pos>, paradigm_file: &str) -> String {
+fn get_potential_forms(prefix: &str, pos: Option<Pos>, paradigm_file: &str) -> String {
     use std::fmt::Write;
     let mut out = String::new();
     paradigm_file
         .lines()
         .map(|line| {
-            parse_analysis_parts(line, "+").expect("line in paradigm file parses as an analysis")
+            parse_analysis_parts(line).expect("line in paradigm file parses as an analysis")
         })
         .filter(|para| {
             match (pos, para.pos) {
@@ -268,7 +330,7 @@ fn get_potential_forms(lemma: &str, pos: Option<Pos>, paradigm_file: &str) -> St
             }
         })
         .for_each(|analysis_parts| {
-            writeln!(out, "{lemma}+{analysis_parts}").expect("write! to String is ok");
+            let _ = writeln!(out, "{prefix}+{analysis_parts}");
         });
     out
 }
