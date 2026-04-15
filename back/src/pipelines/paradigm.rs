@@ -213,17 +213,26 @@ pub async fn paradigm_libhfst(
 
                 let entry = paradigm_forms.entry((lemma, pos, subclass)).or_default();
 
-                let tags = analysis.parts
+                use std::fmt::Write;
+                use analysis_string_parser::OwnedTag;
+                let mut tags = String::new();
+                analysis.parts
                     .iter()
                     .filter(|&part| {
                         match part.tag() {
-                            Some(tag) => !tag.is_subclass() && !tag.is_pos(),
+                            Some(OwnedTag::Pos(_)) => false,
+                            Some(tag) if tag.is_subclass() => false,
+                            Some(OwnedTag::Cmp) => false,
+                            Some(OwnedTag::CmpX(_)) => false,
+                            Some(_other_tag) => true,
                             None => false,
                         }
                     })
-                    .map(|part| format!("{part}"))
-                    .intersperse(String::from("+"))
-                    .collect::<String>();
+                    .for_each(|part| {
+                        let _ = write!(tags, "{part}+");
+                    });
+                assert!(tags.ends_with("+"));
+                tags.pop();
 
                 entry.push(Form { tags, forms: wordforms });
             }
