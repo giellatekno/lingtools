@@ -3,6 +3,7 @@ import { tools_for } from "$lib/langs";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 import { generate_parser } from "$lib/parsers";
+import { GenerateResponse } from "$lib/types";
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
     if (!tools_for[params.lang].includes("generate")) {
@@ -30,7 +31,10 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
     if (response.status !== 200) {
         return { error: `non-200 from API: ${text}` };
     }
-    const parsed = generate_parser(text);
-
-    return { q: q, results: parsed };
+    try {
+        const parsed = GenerateResponse.parse(JSON.parse(text));
+        return { q, parsed };
+    } catch (e) {
+        return { error: `Parsing JSON failed: ${e}` };
+    }
 };

@@ -22,7 +22,8 @@
 
     let value = $derived(data.q || "");
 
-    function color_tags(tags: string[]) {
+    function color_tags(analysis: string) {
+        const tags = analysis.split("+");
         const results: string[] = [];
         for (const [i, tag] of tags.entries()) {
             if (POS_TAGS.includes(tag)) {
@@ -33,7 +34,7 @@
                 results.push(tag);
             }
         }
-        return results;
+        return results.join("<span class='text-gray-500'>+</span>");
     }
 
     function combine_tags(lemma: string, pos: string, tags: string[]) {
@@ -64,7 +65,7 @@
     <div class="mt-6 flex flex-col gap-2">
         {#if data.error}
             <ErrorBox error={data.error} />
-        {:else if data.results}
+        {:else if data.parsed}
             <div class="flex max-w-dvw flex-col p-2">
                 <Table>
                     <thead>
@@ -73,17 +74,13 @@
                             <th>{m.analysis()}</th>
                         </tr>
                     </thead>
-                    {#each data.results as word_analyses, i}
-                        {@const plus = "<span class='text-gray-500'>+</span>"}
+                    {#each data.parsed.results as { wordform, analyses }, i}
                         <tbody>
-                            {#each word_analyses.items as { wordform, lemma, pos, tags }, j}
-                                {@const html_tags = color_tags(
-                                    combine_tags(lemma, pos, tags),
-                                ).join(plus)}
+                            {#each analyses as analysis, j}
+                                {@const html_tags = color_tags(analysis)}
                                 <tr
-                                    class:separator={j ===
-                                        word_analyses.items.length - 1 &&
-                                        i !== data.results.length - 1}
+                                    class:separator={j === analyses.length - 1 &&
+                                        i !== data.parsed.results.length - 1}
                                 >
                                     <td>
                                         <span class="text-green-700">
@@ -94,12 +91,7 @@
                                         <button
                                             type="button"
                                             class="text-nowrap"
-                                            onclick={() =>
-                                                onTextClick(
-                                                    combine_tags(lemma, pos, tags).join(
-                                                        "+",
-                                                    ),
-                                                )}
+                                            onclick={() => onTextClick(analysis)}
                                         >
                                             {@html html_tags}
                                         </button>

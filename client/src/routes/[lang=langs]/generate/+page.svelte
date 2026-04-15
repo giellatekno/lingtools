@@ -7,6 +7,7 @@
     import { getLocale } from "$lib/paraglide/runtime";
     import { langname } from "$lib/langnames";
     import { page } from "$app/state";
+    import Table from "$components/Table.svelte";
 
     interface Props {
         data: PageData;
@@ -34,20 +35,25 @@
             <ErrorBox error={data.error} />
         {/if}
 
-        {#if data.results}
-            <div class="card border-primary-500 border-2 p-4 shadow-md lg:text-lg">
-                <div class="flex flex-col gap-2">
-                    <p class="font-bold text-red-800">Result:</p>
-
-                    <ul class="list-inside list-disc">
-                        {#each data.results as result}
-                            <li>{result}</li>
-                        {/each}
-                    </ul>
-                </div>
-            </div>
+        {#if data.parsed && data.parsed.results.length > 0}
+            <Table>
+                <thead>
+                    <tr>
+                        <th>{m.analysis()}</th>
+                        <th>{m.wordform()}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each data.parsed.results as { analysis, wordforms }}
+                        <tr>
+                            <td>{analysis}</td>
+                            <td>{wordforms.join(", ")}</td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </Table>
         {:else}
-            [l6e] No analyses
+            {m.noresults()}
         {/if}
     </div>
 </div>

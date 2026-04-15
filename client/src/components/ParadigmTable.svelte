@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { LanguageSchema, Table, Section } from "$lib/paradigms/types";
+    import type { LanguageSchema, Table, Section } from "$lib/paradigms/paradigm_types";
     import type { ParsedParadigm } from "$lib/parsers";
     import { get_entry } from "$lib/paradigms/paradigm_utils";
     import TableComponent from "./Table.svelte";

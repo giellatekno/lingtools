@@ -3,6 +3,7 @@ import { tools_for } from "$lib/langs";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 import { analyze_parser } from "$lib/parsers";
+import { AnalyzeResponse } from "$lib/types";
 
 export const load: PageLoad = async ({ params, url, fetch }) => {
     if (!tools_for[params.lang].includes("analyze")) {
@@ -26,7 +27,7 @@ export const load: PageLoad = async ({ params, url, fetch }) => {
         }
         try {
             const json_data = JSON.parse(text);
-            return { q: q, results: analyze_parser(json_data) };
+            return { q: q, parsed: AnalyzeResponse.parse(json_data) };
         } catch (e) {
             return { error: `Parsing JSON failed: ${e}` };
         }

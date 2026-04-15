@@ -14,7 +14,8 @@
         data: PageData;
     }
     let { data }: Props = $props();
-    let { word, pos } = $derived(data);
+    let word = $derived(data.word || "");
+    let pos = $derived(data.pos || "");
 
     let lang = $derived(page.params.lang || "");
 
@@ -33,8 +34,8 @@
 
     <hr class="hr my-2 lg:my-8" />
 
-    {#if data.results}
-        <ParadigmWrapper data={data.results} {format} search={word} />
+    {#if data.parsed}
+        <ParadigmWrapper data={data.parsed} {format} search={word} />
     {:else if data.error}
         <ErrorBox error={data.error} />
     {/if}

@@ -1,3 +1,5 @@
+import type { ParadigmResponseType } from "./types";
+
 interface AnalyzeJSON {
     parsed: AnalyzeItem[];
     raw: string;
@@ -218,82 +220,26 @@ interface ParsedResult {
     other_hits: {
         lemma: string;
         pos: string;
-        tags: string[];
+        subclass: string;
     }[];
 }
 
-export function paradigm_parser(objs: ParadigmApiResult) {
-    // console.log(objs);
-    const subclasses = [
-        "Neg",
-        "Prop",
-        "G3",
-        "G7",
-        "NomAg",
-        "Ord",
-        "Pers",
-        "Rel",
-        "Interr",
-        "Dem",
-        "Indef",
-        "Refl",
-        "Recipr",
-        "Qu",
-    ];
+export function paradigm_parser(data: ParadigmResponseType): ParsedResult {
+    console.log(data);
+    const paradigms: ParsedParadigm[] = data.paradigm_forms.map((entry) => ({
+        lemma: entry.lemma,
+        pos: entry.pos,
+        subclass: entry.subclass ?? "",
+        wordforms: new Map(entry.forms.map(({ tags, forms }) => [tags, new Set(forms)])),
+    }));
 
-    const result: ParsedResult = { paradigms: [], other_hits: [] };
+    const other_hits = data.other_forms.map((entry) => ({
+        lemma: entry.lemma,
+        pos: entry.pos,
+        subclass: entry.subclass ?? "",
+    }));
 
-    const paradigms: { [key: string]: ParsedParadigm } = {};
-    for (const entry of objs.results) {
-        for (const obj of entry) {
-            const lemma = obj.lemma;
-            const wordform = obj.wordform;
-            const pos = obj.pos;
-            let subclass = "";
-            let tags;
-            if (subclasses.includes(obj.tags[0])) {
-                subclass = obj.tags[0];
-                tags = obj.tags.slice(1).join("+");
-            } else {
-                tags = obj.tags.join("+");
-            }
-
-            const identifier = subclass
-                ? `${lemma}+${pos}+${subclass}`
-                : `${lemma}+${pos}`;
-            if (!paradigms[identifier]) {
-                paradigms[identifier] = {
-                    lemma: lemma,
-                    pos: pos,
-                    subclass: subclass,
-                    wordforms: new Map([[tags, new Set()]]),
-                };
-            }
-
-            if (paradigms[identifier].wordforms.has(tags)) {
-                const cur_set = paradigms[identifier].wordforms.get(tags);
-                // NOTE: What happens if there is an error? Can it even happen?
-                if (cur_set) {
-                    cur_set.add(wordform);
-                }
-            } else {
-                paradigms[identifier].wordforms.set(tags, new Set([wordform]));
-            }
-        }
-    }
-    result.paradigms = Object.values(paradigms);
-
-    if (objs.other_forms) {
-        for (const other_hit of objs.other_forms) {
-            const hit = {
-                lemma: other_hit.lemma,
-                pos: other_hit.pos,
-                tags: other_hit.tags,
-            };
-            result.other_hits.push(hit);
-        }
-    }
-    return result;
+    return { paradigms, other_hits };
 }
 
 export function transcribe_parser(data: string) {

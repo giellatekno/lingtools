@@ -7,7 +7,7 @@
     import { getParadigmSchema } from "$lib/paradigms/registry";
     import { page } from "$app/state";
     import { resolve } from "$app/paths";
-    import type { LanguageSchema } from "$lib/paradigms/types";
+    import type { LanguageSchema } from "$lib/paradigms/paradigm_types";
     import { ChevronDown, ChevronUp } from "@lucide/svelte";
 
     interface Props {
