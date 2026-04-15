@@ -46,7 +46,7 @@ impl std::fmt::Display for ParadigmForm {
                 if let Some(ref subclass) = self.subclass {
                     let _ = write!(f, "+{subclass}");
                 }
-                write!(f, "+{tags}\t{form}")?;
+                write!(f, "+{tags}\t{form}\n")?;
             }
         }
         Ok(())
