@@ -95,7 +95,7 @@ export default {
     "paradigm.homonyms": "Fant {num} homonymer:",
     "paradigm.noresults": "Ingen resultater...",
     "paradigm.tags": "Tagger",
-    "paradigm.wordforms": "Ordform",
+    "paradigm.wordform": "Ordform",
     "paradigm.person": "Person",
     "paradigm.table": "Tabell",
     "paradigm.list": "Liste",
