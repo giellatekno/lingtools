@@ -168,8 +168,6 @@ pub async fn paradigm_libhfst(
                 continue;
             };
 
-            tracing::trace!(anl_lemma, "analysis lemma");
-
             let key = (anl_lemma.to_owned(), analysed.pos);
             if seen.contains(&key) {
                 continue;
@@ -199,7 +197,6 @@ pub async fn paradigm_libhfst(
 
             let prefix = analysed.generation_string_prefix();
             let all_potential_forms = get_potential_forms(&prefix, wanted_pos, &paradigm_file);
-            tracing::trace!("{:?}", all_potential_forms.split("\n").take(3).collect::<Vec<_>>());
 
             let generated_forms = generate_libhfst(lang, &all_potential_forms).await?;
             for GenerateResult { analysis, wordforms } in generated_forms {
@@ -252,62 +249,114 @@ pub async fn paradigm_libhfst(
 }
 
 pub async fn paradigm_subprocess(
-    _lang: &str,
-    _input: &str,
-    _wanted_pos: Option<Pos>,
-    _size: ParadigmSize,
+    lang: &str,
+    input: &str,
+    wanted_pos: Option<Pos>,
+    size: ParadigmSize,
 ) -> Result<ParadigmOutput, PipelineError> {
-    todo!("subprocess hasn't been implemented yet")
-    //let analyses = analyze_subprocess(lang, input, true).await?;
-    //let analyses = parse_analyse_subprocess_results(&analyses);
+    let analyses = analyze_subprocess(lang, input, true).await?;
+    let analyses = parse_analyse_subprocess_results(&analyses);
+    println!("{analyses:?}");
 
-    //let mut seen = HashSet::new();
-    //let mut generated_forms: Vec<GenerateResult> = vec![];
-    //let mut other_forms = vec![];
-    //for AnalysisResult { wordform, analyses } in analyses {
-    //    for analysis in analyses {
-    //        let analysis =
-    //            parse_analysis_parts(&analysis, "+").expect("analysis from analysis is not empty");
-    //        let pos = analysis.pos.expect("analysis from analysis has a pos");
+    let mut seen = HashSet::new();
+    let mut paradigm_forms: HashMap<(String, Pos, Option<String>), Vec<Form>> = HashMap::new();
+    let mut other_forms = vec![];
+    for AnalysisResult { wordform, analyses } in analyses {
+        for analysis in analyses {
+            let Some(analysed) = parse_analysis_parts(&analysis) else {
+                tracing::trace!(analysis, "raw analysis failed to parse");
+                continue;
+            };
 
-    //        // if wanted_pos is None, that means any, so will never hit. If a specific
-    //        // pos is wanted, continue if the analysis doesn't have that pos
-    //        if let Some(wanted_pos) = wanted_pos
-    //            && wanted_pos != pos
-    //        {
-    //            continue;
-    //        }
+            let Some(analysis_pos) = analysed.pos else {
+                tracing::error!("analysis that came back from analysis had no pos");
+                continue;
+            };
 
-    //        let lemma = analysis.lemma().expect("all analyses have lemmas");
+            if let Some(wanted_pos) = wanted_pos
+                && wanted_pos != analysis_pos
+            {
+                continue;
+            }
 
-    //        if seen.contains(&(lemma.clone(), pos)) {
-    //            // this (lemma, pos) has already been covered
-    //            continue;
-    //        } else {
-    //            seen.insert((lemma.clone(), pos));
-    //        }
+            let Some(anl_lemma) = analysed.lemma() else {
+                tracing::error!("analysis has no lemma ??");
+                continue;
+            };
 
-    //        if lemma != input {
-    //            other_forms.push(analysis);
-    //            continue;
-    //        }
+            let key = (anl_lemma.to_owned(), analysed.pos);
+            if seen.contains(&key) {
+                continue;
+            }
+            seen.insert(key);
 
-    //        let paradigm_file = get_paradigmfile(lang, size)
-    //            .await
-    //            .map_err(|e| PipelineError::ParadigmFile(e))?;
-    //        let all_potential_forms = get_potential_forms(input, Some(pos), &paradigm_file);
-    //        let generated = generate_subprocess(lang, &all_potential_forms).await?;
-    //        let vec = parse_generate_subprocess_results(&generated);
-    //        generated_forms.extend(vec);
-    //    }
-    //}
+            if anl_lemma != input {
+                let mut subclass = None;
+                for part in analysed.parts.iter() {
+                    if let Some(tag) = part.tag() && tag.is_subclass() {
+                        subclass = Some(tag.to_string());
+                    }
+                }
 
-    //let input = (input.to_owned(), wanted_pos);
-    //Ok(ParadigmOutput {
-    //    input,
-    //    generated_forms,
-    //    other_forms,
-    //})
+                other_forms.push(OtherForm {
+                    lemma: anl_lemma,
+                    pos: analysed.pos.unwrap(),
+                    subclass,
+                });
+
+                continue;
+            }
+
+            let paradigm_file = get_paradigmfile(lang, size)
+                .await
+                .map_err(|e| PipelineError::ParadigmFile(e))?;
+            let prefix = analysed.generation_string_prefix();
+            let all_potential_forms = get_potential_forms(&prefix, wanted_pos, &paradigm_file);
+            let generated_forms = generate_subprocess(lang, &all_potential_forms).await?;
+            let generated_forms = parse_generate_subprocess_results(&generated_forms);
+
+            for GenerateResult { analysis, wordforms } in generated_forms {
+                let analysis = parse_analysis_parts(&analysis)
+                    .expect("analysis from generator is not empty");
+                let lemma = analysis.lemma().expect("has a lemma");
+                let pos = analysis.pos.expect("has a pos");
+                let mut subclass = None;
+                for part in analysis.parts.iter() {
+                    if let Some(tag) = part.tag() && tag.is_subclass() {
+                        subclass = Some(tag.to_string());
+                    }
+                }
+
+                let entry = paradigm_forms.entry((lemma, pos, subclass)).or_default();
+
+                let tags = analysis.parts
+                    .iter()
+                    .filter(|&part| {
+                        match part.tag() {
+                            Some(tag) => !tag.is_subclass() && !tag.is_pos(),
+                            None => false,
+                        }
+                    })
+                    .map(|part| format!("{part}"))
+                    .intersperse(String::from("+"))
+                    .collect::<String>();
+
+                entry.push(Form { tags, forms: wordforms });
+            }
+        }
+    }
+
+    let input = (input.to_owned(), wanted_pos);
+
+    let paradigm_forms: Vec<ParadigmForm> = paradigm_forms.into_iter().map(|((lemma, pos, subclass), forms)| ParadigmForm {
+        lemma, pos, subclass, forms
+    })
+    .collect();
+    Ok(ParadigmOutput {
+        input,
+        paradigm_forms,
+        other_forms,
+    })
 }
 
 /// Generate a newline delimited `String` of the `input_lemma+tags`, where `tags`
