@@ -1,13 +1,15 @@
 import { convertJsonSchema } from "./json_converter";
-import type { LanguageSchema } from "./types";
+import type { LanguageSchema } from "./paradigm_types";
 import { parse } from "jsonc-parser";
 
 type LangMapping = Record<string, Record<string, string>>;
 
 const REGISTRY: Record<string, () => Promise<LangMapping>> = {
     // Once a new language folder is implemented, it can be added here
-    sme: () => import("./sme").then((m) => m.mapping),
     sma: () => import("./sma").then((m) => m.mapping),
+    sme: () => import("./sme").then((m) => m.mapping),
+    // smj: () => import("./smj").then((m) => m.mapping),
+    // smn: () => import("./smn").then((m) => m.mapping),
     fkv: () => import("./fkv").then((m) => m.mapping),
 };
 
