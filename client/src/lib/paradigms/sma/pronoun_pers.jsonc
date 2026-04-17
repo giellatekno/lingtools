@@ -13,8 +13,8 @@
                         { "label": "illative", "tags": ["Sg1+Ill"] },
                         { "label": "inessive", "tags": ["Sg1+Ine"] },
                         { "label": "elative", "tags": ["Sg1+Ela"] },
-                        { "label": "comitative", "tags": ["Sg1+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Sg1+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Sg2"],
@@ -26,8 +26,8 @@
                         { "label": "illative", "tags": ["Sg2+Ill"] },
                         { "label": "inessive", "tags": ["Sg2+Ine"] },
                         { "label": "elative", "tags": ["Sg2+Ela"] },
-                        { "label": "comitative", "tags": ["Sg2+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Sg2+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Sg3"],
@@ -39,8 +39,8 @@
                         { "label": "illative", "tags": ["Sg3+Ill"] },
                         { "label": "inessive", "tags": ["Sg3+Ine"] },
                         { "label": "elative", "tags": ["Sg3+Ela"] },
-                        { "label": "comitative", "tags": ["Sg3+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Sg3+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Du1"],
@@ -52,8 +52,8 @@
                         { "label": "illative", "tags": ["Du1+Ill"] },
                         { "label": "inessive", "tags": ["Du1+Ine"] },
                         { "label": "elative", "tags": ["Du1+Ela"] },
-                        { "label": "comitative", "tags": ["Du1+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Du1+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Du2"],
@@ -65,8 +65,8 @@
                         { "label": "illative", "tags": ["Du2+Ill"] },
                         { "label": "inessive", "tags": ["Du2+Ine"] },
                         { "label": "elative", "tags": ["Du2+Ela"] },
-                        { "label": "comitative", "tags": ["Du2+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Du2+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Du3"],
@@ -78,8 +78,8 @@
                         { "label": "illative", "tags": ["Du3+Ill"] },
                         { "label": "inessive", "tags": ["Du3+Ine"] },
                         { "label": "elative", "tags": ["Du3+Ela"] },
-                        { "label": "comitative", "tags": ["Du3+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Du3+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Pl1"],
@@ -91,8 +91,8 @@
                         { "label": "illative", "tags": ["Pl1+Ill"] },
                         { "label": "inessive", "tags": ["Pl1+Ine"] },
                         { "label": "elative", "tags": ["Pl1+Ela"] },
-                        { "label": "comitative", "tags": ["Pl1+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Pl1+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Pl2"],
@@ -104,8 +104,8 @@
                         { "label": "illative", "tags": ["Pl2+Ill"] },
                         { "label": "inessive", "tags": ["Pl2+Ine"] },
                         { "label": "elative", "tags": ["Pl2+Ela"] },
-                        { "label": "comitative", "tags": ["Pl2+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Pl2+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Pl3"],
@@ -117,10 +117,10 @@
                         { "label": "illative", "tags": ["Pl3+Ill"] },
                         { "label": "inessive", "tags": ["Pl3+Ine"] },
                         { "label": "elative", "tags": ["Pl3+Ela"] },
-                        { "label": "comitative", "tags": ["Pl3+Com"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "comitative", "tags": ["Pl3+Com"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }

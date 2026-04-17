@@ -10,11 +10,10 @@
                         { "label": "genitive", "tags": ["Sg+Gen", ""] },
                         { "label": "illative", "tags": ["Sg+Ill", ""] },
                         { "label": "elative", "tags": ["Sg+Ela", ""] },
-                        { "label": "comitative", "tags": ["Sg+Com", ""] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "comitative", "tags": ["Sg+Com", ""] },
+                    ],
+                },
+            ],
+        },
+    ],
 }
-

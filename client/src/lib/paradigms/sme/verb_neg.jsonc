@@ -15,10 +15,10 @@
                         { "label": "soai", "tags": ["Ind+Du3"], "separator": true },
                         { "label": "mii", "tags": ["Ind+Pl1"] },
                         { "label": "dii", "tags": ["Ind+Pl2"] },
-                        { "label": "sii/dat", "tags": ["Ind+Pl3"] }
-                    ]
-                }
-            ]
+                        { "label": "sii/dat", "tags": ["Ind+Pl3"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "imperative",
@@ -34,10 +34,10 @@
                         { "label": "soai", "tags": ["Imprt+Du3"], "separator": true },
                         { "label": "mii", "tags": ["Imprt+Pl1"] },
                         { "label": "dii", "tags": ["Imprt+Pl2"] },
-                        { "label": "sii/dat", "tags": ["Imprt+Pl3"] }
-                    ]
-                }
-            ]
+                        { "label": "sii/dat", "tags": ["Imprt+Pl3"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "supine",
@@ -53,10 +53,10 @@
                         { "label": "soai", "tags": ["Sup+Du3"], "separator": true },
                         { "label": "mii", "tags": ["Sup+Pl1"] },
                         { "label": "dii", "tags": ["Sup+Pl2"] },
-                        { "label": "sii/dat", "tags": ["Sup+Pl3"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "sii/dat", "tags": ["Sup+Pl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }

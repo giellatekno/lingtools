@@ -13,17 +13,16 @@
                         { "label": "inessive", "tags": ["Sg+Ine", "Pl+Ine"] },
                         { "label": "elative", "tags": ["Sg+Ela", "Pl+Ela"] },
                         { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
-                        { "label": "essive", "tags": ["Ess"], "colspan": 2 }
+                        { "label": "essive", "tags": ["Ess"], "colspan": 2 },
                     ],
-                    "showIf": ["Nom"]
+                    "showIf": ["Nom"],
                 },
                 {
                     "headers": [],
                     "rows": [{ "label": "attribute", "tags": ["Attr"] }],
-                    "showIf": ["Attr"]
-                }
-            ]
-        }
-    ]
+                    "showIf": ["Attr"],
+                },
+            ],
+        },
+    ],
 }
-

@@ -9,8 +9,8 @@
                     "rows": [
                         { "label": "singular", "tags": ["Sg+Nom"] },
                         { "label": "dual", "tags": ["Du+Nom"] },
-                        { "label": "plural", "tags": ["Pl+Nom"] }
-                    ]
+                        { "label": "plural", "tags": ["Pl+Nom"] },
+                    ],
                 },
                 {
                     "title": "accusative",
@@ -24,8 +24,8 @@
                         { "label": "sudno", "tags": ["Acc+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Acc+PxPl1"] },
                         { "label": "din", "tags": ["Acc+PxPl2"] },
-                        { "label": "sin/daid", "tags": ["Acc+PxPl3"] }
-                    ]
+                        { "label": "sin/daid", "tags": ["Acc+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "genitive",
@@ -39,8 +39,8 @@
                         { "label": "sudno", "tags": ["Gen+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Gen+PxPl1"] },
                         { "label": "din", "tags": ["Gen+PxPl2"] },
-                        { "label": "sin/daid", "tags": ["Gen+PxPl3"] }
-                    ]
+                        { "label": "sin/daid", "tags": ["Gen+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "illative",
@@ -54,8 +54,8 @@
                         { "label": "sudnuide", "tags": ["Ill+PxDu3"], "separator": true },
                         { "label": "midjiide", "tags": ["Ill+PxPl1"] },
                         { "label": "didjiide", "tags": ["Ill+PxPl2"] },
-                        { "label": "sidjiide/daidda", "tags": ["Ill+PxPl3"] }
-                    ]
+                        { "label": "sidjiide/daidda", "tags": ["Ill+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "locative",
@@ -69,8 +69,8 @@
                         { "label": "sudnos", "tags": ["Loc+PxDu3"], "separator": true },
                         { "label": "mis", "tags": ["Loc+PxPl1"] },
                         { "label": "dis", "tags": ["Loc+PxPl2"] },
-                        { "label": "sis/dain", "tags": ["Loc+PxPl3"] }
-                    ]
+                        { "label": "sis/dain", "tags": ["Loc+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "comitative",
@@ -84,8 +84,8 @@
                         { "label": "sudnuin", "tags": ["Com+PxDu3"], "separator": true },
                         { "label": "minguin", "tags": ["Com+PxPl1"] },
                         { "label": "dinguin", "tags": ["Com+PxPl2"] },
-                        { "label": "singuin/daiguin", "tags": ["Com+PxPl3"] }
-                    ]
+                        { "label": "singuin/daiguin", "tags": ["Com+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "essive",
@@ -100,10 +100,10 @@
                         { "label": "sudnon", "tags": ["Ess+PxDu3"], "separator": true },
                         { "label": "minin", "tags": ["Ess+PxPl1"] },
                         { "label": "dinin", "tags": ["Ess+PxPl2"] },
-                        { "label": "sinin/danin", "tags": ["Ess+PxPl3"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "sinin/danin", "tags": ["Ess+PxPl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }

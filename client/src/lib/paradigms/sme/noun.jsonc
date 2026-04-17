@@ -12,10 +12,10 @@
                         { "label": "illative", "tags": ["Sg+Ill", "Pl+Ill"] },
                         { "label": "locative", "tags": ["Sg+Loc", "Pl+Loc"] },
                         { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
-                        { "label": "essive", "tags": ["Ess"], "colspan": 2 }
-                    ]
-                }
-            ]
+                        { "label": "essive", "tags": ["Ess"], "colspan": 2 },
+                    ],
+                },
+            ],
         },
         {
             "title": "possessivesuffixes",
@@ -33,8 +33,8 @@
                         { "label": "sudno", "tags": ["Sg+Nom+PxDu3", "Pl+Nom+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Sg+Nom+PxPl1", "Pl+Nom+PxPl1"] },
                         { "label": "din", "tags": ["Sg+Nom+PxPl2", "Pl+Nom+PxPl2"] },
-                        { "label": "sin", "tags": ["Sg+Nom+PxPl3", "Pl+Nom+PxPl3"] }
-                    ]
+                        { "label": "sin", "tags": ["Sg+Nom+PxPl3", "Pl+Nom+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "accusative",
@@ -48,8 +48,8 @@
                         { "label": "sudno", "tags": ["Sg+Acc+PxDu3", "Pl+Acc+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Sg+Acc+PxPl1", "Pl+Acc+PxPl1"] },
                         { "label": "din", "tags": ["Sg+Acc+PxPl2", "Pl+Acc+PxPl2"] },
-                        { "label": "sin", "tags": ["Sg+Acc+PxPl3", "Pl+Acc+PxPl3"] }
-                    ]
+                        { "label": "sin", "tags": ["Sg+Acc+PxPl3", "Pl+Acc+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "genitive",
@@ -63,8 +63,8 @@
                         { "label": "sudno", "tags": ["Sg+Gen+PxDu3", "Pl+Gen+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Sg+Gen+PxPl1", "Pl+Gen+PxPl1"] },
                         { "label": "din", "tags": ["Sg+Gen+PxPl2", "Pl+Gen+PxPl2"] },
-                        { "label": "sin", "tags": ["Sg+Gen+PxPl3", "Pl+Gen+PxPl3"] }
-                    ]
+                        { "label": "sin", "tags": ["Sg+Gen+PxPl3", "Pl+Gen+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "illative",
@@ -78,8 +78,8 @@
                         { "label": "sudno", "tags": ["Sg+Ill+PxDu3", "Pl+Ill+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Sg+Ill+PxPl1", "Pl+Ill+PxPl1"] },
                         { "label": "din", "tags": ["Sg+Ill+PxPl2", "Pl+Ill+PxPl2"] },
-                        { "label": "sin", "tags": ["Sg+Ill+PxPl3", "Pl+Ill+PxPl3"] }
-                    ]
+                        { "label": "sin", "tags": ["Sg+Ill+PxPl3", "Pl+Ill+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "locative",
@@ -93,8 +93,8 @@
                         { "label": "sudno", "tags": ["Sg+Loc+PxDu3", "Pl+Loc+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Sg+Loc+PxPl1", "Pl+Loc+PxPl1"] },
                         { "label": "din", "tags": ["Sg+Loc+PxPl2", "Pl+Loc+PxPl2"] },
-                        { "label": "sin", "tags": ["Sg+Loc+PxPl3", "Pl+Loc+PxPl3"] }
-                    ]
+                        { "label": "sin", "tags": ["Sg+Loc+PxPl3", "Pl+Loc+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "comitative",
@@ -108,8 +108,8 @@
                         { "label": "sudno", "tags": ["Sg+Com+PxDu3", "Pl+Com+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Sg+Com+PxPl1", "Pl+Com+PxPl1"] },
                         { "label": "din", "tags": ["Sg+Com+PxPl2", "Pl+Com+PxPl2"] },
-                        { "label": "sin", "tags": ["Sg+Com+PxPl3", "Pl+Com+PxPl3"] }
-                    ]
+                        { "label": "sin", "tags": ["Sg+Com+PxPl3", "Pl+Com+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "essive",
@@ -123,10 +123,10 @@
                         { "label": "sudno", "tags": ["Ess+PxDu3"], "separator": true },
                         { "label": "min", "tags": ["Ess+PxPl1"] },
                         { "label": "din", "tags": ["Ess+PxPl2"] },
-                        { "label": "sin", "tags": ["Ess+PxPl3"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "sin", "tags": ["Ess+PxPl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }

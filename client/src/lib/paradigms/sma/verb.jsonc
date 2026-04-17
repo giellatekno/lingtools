@@ -17,8 +17,8 @@
                         { "label": "dah guaktah", "tags": ["Ind+Prs+Du3", "ConNeg"], "prefixes": ["", "eakan"], "separator": true },
                         { "label": "mijjieh", "tags": ["Ind+Prs+Pl1", "ConNeg"], "prefixes": ["", "ibie"] },
                         { "label": "dijjieh", "tags": ["Ind+Prs+Pl2", "ConNeg"], "prefixes": ["", "idie"] },
-                        { "label": "dah", "tags": ["Ind+Prs+Pl3", "ConNeg"], "prefixes": ["", "eah"] }
-                    ]
+                        { "label": "dah", "tags": ["Ind+Prs+Pl3", "ConNeg"], "prefixes": ["", "eah"] },
+                    ],
                 },
                 {
                     "title": "perfect",
@@ -32,8 +32,8 @@
                         { "label": "dah guaktah", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lægan", "eakan leah"], "separator": true },
                         { "label": "mijjieh", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["libie", "ibie leah"] },
                         { "label": "dijjieh", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lidie", "idie leah"] },
-                        { "label": "dah", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leah", "eah leah"] }
-                    ]
+                        { "label": "dah", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leah", "eah leah"] },
+                    ],
                 },
                 {
                     "title": "preterite",
@@ -47,8 +47,8 @@
                         { "label": "dah guaktah", "tags": ["Ind+Prt+Du3", "ConNeg"], "prefixes": ["", "idtjigan"], "separator": true },
                         { "label": "mijjieh", "tags": ["Ind+Prt+Pl1", "ConNeg"], "prefixes": ["", "idtjimh"] },
                         { "label": "dijjieh", "tags": ["Ind+Prt+Pl2", "ConNeg"], "prefixes": ["", "idtjidh"] },
-                        { "label": "dah", "tags": ["Ind+Prt+Pl3", "ConNeg"], "prefixes": ["", "idtjin"] }
-                    ]
+                        { "label": "dah", "tags": ["Ind+Prt+Pl3", "ConNeg"], "prefixes": ["", "idtjin"] },
+                    ],
                 },
                 {
                     "title": "pluperfect",
@@ -62,10 +62,10 @@
                         { "label": "dah guaktah", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["ligan", "eakan ligan"], "separator": true },
                         { "label": "mijjieh", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["limh", "ibie limh"] },
                         { "label": "dijjieh", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lidh", "idie lidh"] },
-                        { "label": "dah", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lin", "eah lin"] }
-                    ]
-                }
-            ]
+                        { "label": "dah", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lin", "eah lin"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "imperative",
@@ -82,10 +82,10 @@
                         { "label": "dah guaktah", "tags": ["Imprt+Du3", "ConNeg", "ConNeg"], "prefixes": ["", "aellies", "olles"], "separator": true },
                         { "label": "mijjieh", "tags": ["Imprt+Pl1", "ConNeg", "ConNeg"], "prefixes": ["", "aellebe", "ollebe"] },
                         { "label": "dijjieh", "tags": ["Imprt+Pl2", "ConNeg", "ConNeg"], "prefixes": ["", "aellede", "ollede"] },
-                        { "label": "dah", "tags": ["Imprt+Pl3", "ConNeg", "ConNeg"], "prefixes": ["", "aellies", "olles"] }
-                    ]
-                }
-            ]
+                        { "label": "dah", "tags": ["Imprt+Pl3", "ConNeg", "ConNeg"], "prefixes": ["", "aellies", "olles"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "nonfinite",
@@ -96,11 +96,10 @@
                         { "label": "infinite", "tags": ["Inf"] },
                         { "label": "perfectparticiple", "tags": ["PrfPrc"] },
                         { "label": "verbgenitive", "tags": ["VGen"] },
-                        { "label": "gerund", "tags": ["Ger"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "gerund", "tags": ["Ger"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }
-

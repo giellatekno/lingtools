@@ -13,15 +13,15 @@
                         { "label": "illative", "tags": ["Sg+Ill", "Pl+Ill"] },
                         { "label": "locative", "tags": ["Sg+Loc", "Pl+Loc"] },
                         { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
-                        { "label": "essive", "tags": ["Ess"], "colspan": 2 }
-                    ]
+                        { "label": "essive", "tags": ["Ess"], "colspan": 2 },
+                    ],
                 },
                 {
                     "headers": [],
                     "rows": [{ "label": "attribute", "tags": ["Attr"] }],
-                    "showIf": ["Attr"]
-                }
-            ]
-        }
-    ]
+                    "showIf": ["Attr"],
+                },
+            ],
+        },
+    ],
 }

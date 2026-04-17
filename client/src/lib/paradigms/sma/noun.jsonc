@@ -13,10 +13,10 @@
                         { "label": "inessive", "tags": ["Sg+Ine", "Pl+Ine"] },
                         { "label": "elative", "tags": ["Sg+Ela", "Pl+Ela"] },
                         { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
-                        { "label": "essive", "tags": ["Ess"], "colspan": 2 }
-                    ]
-                }
-            ]
+                        { "label": "essive", "tags": ["Ess"], "colspan": 2 },
+                    ],
+                },
+            ],
         },
         {
             "title": "possessivesuffixes",
@@ -34,8 +34,8 @@
                         { "label": "daj", "tags": ["Sg+Nom+PxDu3", "Pl+Nom+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Sg+Nom+PxPl1", "Pl+Nom+PxPl1"] },
                         { "label": "dijjen", "tags": ["Sg+Nom+PxPl2", "Pl+Nom+PxPl2"] },
-                        { "label": "daj", "tags": ["Sg+Nom+PxPl3", "Pl+Nom+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Sg+Nom+PxPl3", "Pl+Nom+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "accusative",
@@ -49,8 +49,8 @@
                         { "label": "daj", "tags": ["Sg+Acc+PxDu3", "Pl+Acc+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Sg+Acc+PxPl1", "Pl+Acc+PxPl1"] },
                         { "label": "dijjen", "tags": ["Sg+Acc+PxPl2", "Pl+Acc+PxPl2"] },
-                        { "label": "daj", "tags": ["Sg+Acc+PxPl3", "Pl+Acc+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Sg+Acc+PxPl3", "Pl+Acc+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "genitive",
@@ -64,8 +64,8 @@
                         { "label": "daj", "tags": ["Sg+Gen+PxDu3", "Pl+Gen+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Sg+Gen+PxPl1", "Pl+Gen+PxPl1"] },
                         { "label": "dijjen", "tags": ["Sg+Gen+PxPl2", "Pl+Gen+PxPl2"] },
-                        { "label": "daj", "tags": ["Sg+Gen+PxPl3", "Pl+Gen+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Sg+Gen+PxPl3", "Pl+Gen+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "illative",
@@ -79,8 +79,8 @@
                         { "label": "daj", "tags": ["Sg+Ill+PxDu3", "Pl+Ill+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Sg+Ill+PxPl1", "Pl+Ill+PxPl1"] },
                         { "label": "dijjen", "tags": ["Sg+Ill+PxPl2", "Pl+Ill+PxPl2"] },
-                        { "label": "daj", "tags": ["Sg+Ill+PxPl3", "Pl+Ill+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Sg+Ill+PxPl3", "Pl+Ill+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "inessive",
@@ -94,8 +94,8 @@
                         { "label": "daj", "tags": ["Sg+Ine+PxDu3", "Pl+Ine+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Sg+Ine+PxPl1", "Pl+Ine+PxPl1"] },
                         { "label": "dijjen", "tags": ["Sg+Ine+PxPl2", "Pl+Ine+PxPl2"] },
-                        { "label": "daj", "tags": ["Sg+Ine+PxPl3", "Pl+Ine+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Sg+Ine+PxPl3", "Pl+Ine+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "elative",
@@ -109,8 +109,8 @@
                         { "label": "daj", "tags": ["Sg+Ela+PxDu3", "Pl+Ela+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Sg+Ela+PxPl1", "Pl+Ela+PxPl1"] },
                         { "label": "dijjen", "tags": ["Sg+Ela+PxPl2", "Pl+Ela+PxPl2"] },
-                        { "label": "daj", "tags": ["Sg+Ela+PxPl3", "Pl+Ela+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Sg+Ela+PxPl3", "Pl+Ela+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "comitative",
@@ -124,8 +124,8 @@
                         { "label": "daj", "tags": ["Sg+Com+PxDu3", "Pl+Com+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Sg+Com+PxPl1", "Pl+Com+PxPl1"] },
                         { "label": "dijjen", "tags": ["Sg+Com+PxPl2", "Pl+Com+PxPl2"] },
-                        { "label": "daj", "tags": ["Sg+Com+PxPl3", "Pl+Com+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Sg+Com+PxPl3", "Pl+Com+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "essive",
@@ -139,10 +139,10 @@
                         { "label": "daj", "tags": ["Ess+PxDu3"], "separator": true },
                         { "label": "mijjen", "tags": ["Ess+PxPl1"] },
                         { "label": "dijjen", "tags": ["Ess+PxPl2"] },
-                        { "label": "daj", "tags": ["Ess+PxPl3"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "daj", "tags": ["Ess+PxPl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }

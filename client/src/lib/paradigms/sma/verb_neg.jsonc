@@ -16,8 +16,8 @@
                         { "label": "soai", "tags": ["Ind+Prs+Du3"] },
                         { "label": "mii", "tags": ["Ind+Prs+Pl1"] },
                         { "label": "dii", "tags": ["Ind+Prs+Pl2"] },
-                        { "label": "sii/dat", "tags": ["Ind+Prs+Pl3"] }
-                    ]
+                        { "label": "sii/dat", "tags": ["Ind+Prs+Pl3"] },
+                    ],
                 },
                 {
                     "title": "preterite",
@@ -31,10 +31,10 @@
                         { "label": "soai", "tags": ["Ind+Prt+Du3"] },
                         { "label": "mii", "tags": ["Ind+Prt+Pl1"] },
                         { "label": "dii", "tags": ["Ind+Prt+Pl2"] },
-                        { "label": "sii/dat", "tags": ["Ind+Prt+Pl3"] }
-                    ]
-                }
-            ]
+                        { "label": "sii/dat", "tags": ["Ind+Prt+Pl3"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "imperative",
@@ -51,8 +51,8 @@
                         { "label": "soai", "tags": ["Imprt+Du3"] },
                         { "label": "mii", "tags": ["Imprt+Pl1"] },
                         { "label": "dii", "tags": ["Imprt+Pl2"] },
-                        { "label": "sii/dat", "tags": ["Imprt+Pl3"] }
-                    ]
+                        { "label": "sii/dat", "tags": ["Imprt+Pl3"] },
+                    ],
                 },
                 {
                     "title": "imperative_ii",
@@ -66,11 +66,10 @@
                         { "label": "soai", "tags": ["ImprtII+Du3"] },
                         { "label": "mii", "tags": ["ImprtII+Pl1"] },
                         { "label": "dii", "tags": ["ImprtII+Pl2"] },
-                        { "label": "sii/dat", "tags": ["ImprtII+Pl3"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "sii/dat", "tags": ["ImprtII+Pl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }
-

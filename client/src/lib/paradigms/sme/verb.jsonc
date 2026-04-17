@@ -17,8 +17,8 @@
                         { "label": "soai", "tags": ["Ind+Prs+Du3", "Ind+Prs+ConNeg"], "prefixes": ["", "eaba"], "separator": true },
                         { "label": "mii", "tags": ["Ind+Prs+Pl1", "Ind+Prs+ConNeg"], "prefixes": ["", "eat"] },
                         { "label": "dii", "tags": ["Ind+Prs+Pl2", "Ind+Prs+ConNeg"], "prefixes": ["", "ehpet"] },
-                        { "label": "sii/dat", "tags": ["Ind+Prs+Pl3", "Ind+Prs+ConNeg"], "prefixes": ["", "eai"] }
-                    ]
+                        { "label": "sii/dat", "tags": ["Ind+Prs+Pl3", "Ind+Prs+ConNeg"], "prefixes": ["", "eai"] },
+                    ],
                 },
                 {
                     "title": "perfect",
@@ -32,8 +32,8 @@
                         { "label": "soai", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leaba", "eaba leat"], "separator": true },
                         { "label": "mii", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leat", "eat leat"] },
                         { "label": "dii", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lehpet", "ehpet leat"] },
-                        { "label": "sii/dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leat", "eai leat"] }
-                    ]
+                        { "label": "sii/dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leat", "eai leat"] },
+                    ],
                 },
                 {
                     "title": "preterite",
@@ -47,8 +47,8 @@
                         { "label": "soai", "tags": ["Ind+Prt+Du3", "Ind+Prt+ConNeg"], "prefixes": ["", "eaba"], "separator": true },
                         { "label": "mii", "tags": ["Ind+Prt+Pl1", "Ind+Prt+ConNeg"], "prefixes": ["", "eat"] },
                         { "label": "dii", "tags": ["Ind+Prt+Pl2", "Ind+Prt+ConNeg"], "prefixes": ["", "ehpet"] },
-                        { "label": "sii/dat", "tags": ["Ind+Prt+Pl3", "Ind+Prt+ConNeg"], "prefixes": ["", "eai"] }
-                    ]
+                        { "label": "sii/dat", "tags": ["Ind+Prt+Pl3", "Ind+Prt+ConNeg"], "prefixes": ["", "eai"] },
+                    ],
                 },
                 {
                     "title": "pluperfect",
@@ -62,10 +62,10 @@
                         { "label": "soai", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leigga", "eaba lean"], "separator": true },
                         { "label": "mii", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leimmet", "eat lean"] },
                         { "label": "dii", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leiddet", "ehpet lean"] },
-                        { "label": "sii/dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["ledje", "eai lean"] }
-                    ]
-                }
-            ]
+                        { "label": "sii/dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["ledje", "eai lean"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "conditional",
@@ -83,8 +83,8 @@
                         { "label": "soai", "tags": ["Cond+Prs+Du3", "Cond+Prs+ConNeg"], "prefixes": ["", "eaba"], "separator": true },
                         { "label": "mii", "tags": ["Cond+Prs+Pl1", "Cond+Prs+ConNeg"], "prefixes": ["", "eat"] },
                         { "label": "dii", "tags": ["Cond+Prs+Pl2", "Cond+Prs+ConNeg"], "prefixes": ["", "ehpet"] },
-                        { "label": "sii/dat", "tags": ["Cond+Prs+Pl3", "Cond+Prs+ConNeg"], "prefixes": ["", "eai"] }
-                    ]
+                        { "label": "sii/dat", "tags": ["Cond+Prs+Pl3", "Cond+Prs+ConNeg"], "prefixes": ["", "eai"] },
+                    ],
                 },
                 {
                     "title": "perfect",
@@ -98,10 +98,10 @@
                         { "label": "soai", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["livččiiga", "eaba livčče"], "separator": true },
                         { "label": "mii", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["livččiimet", "eat livčče"] },
                         { "label": "dii", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["livččiidet", "ehpet livčče"] },
-                        { "label": "sii/dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["livčče", "eai livčče"] }
-                    ]
-                }
-            ]
+                        { "label": "sii/dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["livčče", "eai livčče"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "imperative",
@@ -118,10 +118,10 @@
                         { "label": "soai", "tags": ["Imprt+Du3", "Imprt+ConNeg"], "prefixes": ["", "alloska"], "separator": true },
                         { "label": "mii", "tags": ["Imprt+Pl1", "Imprt+ConNeg"], "prefixes": ["", "allot"] },
                         { "label": "dii", "tags": ["Imprt+Pl2", "Imprt+ConNeg"], "prefixes": ["", "allet"] },
-                        { "label": "sii/dat", "tags": ["Imprt+Pl3", "Imprt+ConNeg"], "prefixes": ["", "alloset"] }
-                    ]
-                }
-            ]
+                        { "label": "sii/dat", "tags": ["Imprt+Pl3", "Imprt+ConNeg"], "prefixes": ["", "alloset"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "potential",
@@ -139,8 +139,8 @@
                         { "label": "soai", "tags": ["Pot+Prs+Du3", "Pot+Prs+ConNeg"], "prefixes": ["", "eaba"], "separator": true },
                         { "label": "mii", "tags": ["Pot+Prs+Pl1", "Pot+Prs+ConNeg"], "prefixes": ["", "eat"] },
                         { "label": "dii", "tags": ["Pot+Prs+Pl2", "Pot+Prs+ConNeg"], "prefixes": ["", "ehpet"] },
-                        { "label": "sii/dat", "tags": ["Pot+Prs+Pl3", "Pot+Prs+ConNeg"], "prefixes": ["", "eai"] }
-                    ]
+                        { "label": "sii/dat", "tags": ["Pot+Prs+Pl3", "Pot+Prs+ConNeg"], "prefixes": ["", "eai"] },
+                    ],
                 },
                 {
                     "showIf": ["Pot", "Prt"],
@@ -155,10 +155,10 @@
                         { "label": "soai", "tags": ["Pot+Prt+Du3"], "separator": true },
                         { "label": "mii", "tags": ["Pot+Prt+Pl1"] },
                         { "label": "dii", "tags": ["Pot+Prt+Pl2"] },
-                        { "label": "sii/dat", "tags": ["Pot+Prt+Pl3"] }
-                    ]
-                }
-            ]
+                        { "label": "sii/dat", "tags": ["Pot+Prt+Pl3"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "nonfinite",
@@ -171,8 +171,8 @@
                         { "label": "presentparticiple", "tags": ["PrsPrc"] },
                         { "label": "verbgenitive", "tags": ["VGen"] },
                         { "label": "verbabessive", "tags": ["VAbess"] },
-                        { "label": "supine", "tags": ["Sup"] }
-                    ]
+                        { "label": "supine", "tags": ["Sup"] },
+                    ],
                 },
                 {
                     "title": "actioforms",
@@ -182,8 +182,8 @@
                         { "label": "actiogenitive", "tags": ["Actio+Gen"] },
                         { "label": "actiolocative", "tags": ["Actio+Loc"] },
                         { "label": "actiocomitative", "tags": ["Actio+Com"] },
-                        { "label": "actioessive", "tags": ["Actio+Ess"] }
-                    ]
+                        { "label": "actioessive", "tags": ["Actio+Ess"] },
+                    ],
                 },
                 {
                     "title": "gerund",
@@ -192,10 +192,10 @@
                         { "label": "Vaikko gii", "tags": ["Ger"], "separator": true, "colspan": 3 },
                         { "label": "1. Pers.", "tags": ["Ger+PxSg1", "Ger+PxDu1", "Ger+PxPl1"] },
                         { "label": "2. Pers.", "tags": ["Ger+PxSg2", "Ger+PxDu2", "Ger+PxPl2"] },
-                        { "label": "3. Pers.", "tags": ["Ger+PxSg3", "Ger+PxDu3", "Ger+PxPl3"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "3. Pers.", "tags": ["Ger+PxSg3", "Ger+PxDu3", "Ger+PxPl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }

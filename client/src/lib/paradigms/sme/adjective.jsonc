@@ -13,14 +13,14 @@
                         { "label": "illative", "tags": ["Sg+Ill", "Pl+Ill"] },
                         { "label": "locative", "tags": ["Sg+Loc", "Pl+Loc"] },
                         { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
-                        { "label": "essive", "tags": ["Ess"], "colspan": 2 }
-                    ]
+                        { "label": "essive", "tags": ["Ess"], "colspan": 2 },
+                    ],
                 },
                 {
                     "headers": [],
-                    "rows": [{ "label": "attribute", "tags": ["Attr"] }]
-                }
-            ]
+                    "rows": [{ "label": "attribute", "tags": ["Attr"] }],
+                },
+            ],
         },
         {
             "title": "comparative",
@@ -35,14 +35,14 @@
                         { "label": "illative", "tags": ["Der/Comp+A+Sg+Ill", "Der/Comp+A+Pl+Ill"] },
                         { "label": "locative", "tags": ["Der/Comp+A+Sg+Loc", "Der/Comp+A+Pl+Loc"] },
                         { "label": "comitative", "tags": ["Der/Comp+A+Sg+Com", "Der/Comp+A+Pl+Com"] },
-                        { "label": "essive", "tags": ["Der/Comp+A+Ess"], "colspan": 2 }
-                    ]
+                        { "label": "essive", "tags": ["Der/Comp+A+Ess"], "colspan": 2 },
+                    ],
                 },
                 {
                     "headers": [],
-                    "rows": [{ "label": "attribute", "tags": ["Der/Comp+A+Attr"] }]
-                }
-            ]
+                    "rows": [{ "label": "attribute", "tags": ["Der/Comp+A+Attr"] }],
+                },
+            ],
         },
         {
             "title": "superlative",
@@ -57,14 +57,14 @@
                         { "label": "illative", "tags": ["Der/Superl+A+Sg+Ill", "Der/Superl+A+Pl+Ill"] },
                         { "label": "locative", "tags": ["Der/Superl+A+Sg+Loc", "Der/Superl+A+Pl+Loc"] },
                         { "label": "comitative", "tags": ["Der/Superl+A+Sg+Com", "Der/Superl+A+Pl+Com"] },
-                        { "label": "essive", "tags": ["Der/Superl+A+Ess"], "colspan": 2 }
-                    ]
+                        { "label": "essive", "tags": ["Der/Superl+A+Ess"], "colspan": 2 },
+                    ],
                 },
                 {
                     "headers": [],
-                    "rows": [{ "label": "attribute", "tags": ["Der/Superl+A+Attr"] }]
-                }
-            ]
-        }
-    ]
+                    "rows": [{ "label": "attribute", "tags": ["Der/Superl+A+Attr"] }],
+                },
+            ],
+        },
+    ],
 }

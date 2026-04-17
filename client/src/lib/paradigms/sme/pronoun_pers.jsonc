@@ -13,8 +13,8 @@
                         { "label": "illative", "tags": ["Sg1+Ill", "Du1+Ill", "Pl1+Ill"] },
                         { "label": "locative", "tags": ["Sg1+Loc", "Du1+Loc", "Pl1+Loc"] },
                         { "label": "comitative", "tags": ["Sg1+Com", "Du1+Com", "Pl1+Com"] },
-                        { "label": "essive", "tags": ["Sg1+Ess", "Du1+Ess", "Pl1+Ess"] }
-                    ]
+                        { "label": "essive", "tags": ["Sg1+Ess", "Du1+Ess", "Pl1+Ess"] },
+                    ],
                 },
                 {
                     "showIf": ["2"],
@@ -26,8 +26,8 @@
                         { "label": "illative", "tags": ["Sg2+Ill", "Du2+Ill", "Pl2+Ill"] },
                         { "label": "locative", "tags": ["Sg2+Loc", "Du2+Loc", "Pl2+Loc"] },
                         { "label": "comitative", "tags": ["Sg2+Com", "Du2+Com", "Pl2+Com"] },
-                        { "label": "essive", "tags": ["Sg2+Ess", "Du2+Ess", "Pl2+Ess"] }
-                    ]
+                        { "label": "essive", "tags": ["Sg2+Ess", "Du2+Ess", "Pl2+Ess"] },
+                    ],
                 },
                 {
                     "showIf": ["3"],
@@ -39,10 +39,10 @@
                         { "label": "illative", "tags": ["Sg3+Ill", "Du3+Ill", "Pl3+Ill"] },
                         { "label": "locative", "tags": ["Sg3+Loc", "Du3+Loc", "Pl3+Loc"] },
                         { "label": "comitative", "tags": ["Sg3+Com", "Du3+Com", "Pl3+Com"] },
-                        { "label": "essive", "tags": ["Sg3+Ess", "Du3+Ess", "Pl3+Ess"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "essive", "tags": ["Sg3+Ess", "Du3+Ess", "Pl3+Ess"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }

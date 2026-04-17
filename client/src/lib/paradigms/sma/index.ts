@@ -27,4 +27,3 @@ export const mapping: Record<string, Record<string, string>> = {
         Rel: pronRel,
     },
 };
-

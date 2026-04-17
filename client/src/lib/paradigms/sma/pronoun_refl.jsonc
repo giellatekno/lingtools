@@ -9,8 +9,8 @@
                     "rows": [
                         { "label": "singular", "tags": ["Sg+Nom"] },
                         { "label": "dual", "tags": ["Du+Nom"] },
-                        { "label": "plural", "tags": ["Pl+Nom"] }
-                    ]
+                        { "label": "plural", "tags": ["Pl+Nom"] },
+                    ],
                 },
                 {
                     "title": "accusative",
@@ -24,8 +24,8 @@
                         { "label": "dejtie", "tags": ["Acc+PxDu3"] },
                         { "label": "mijjem", "tags": ["Acc+PxPl1"] },
                         { "label": "dijjem", "tags": ["Acc+PxPl2"] },
-                        { "label": "dejtie", "tags": ["Acc+PxPl3"] }
-                    ]
+                        { "label": "dejtie", "tags": ["Acc+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "genitive",
@@ -39,8 +39,8 @@
                         { "label": "daj", "tags": ["Gen+PxDu3"] },
                         { "label": "mijjen", "tags": ["Gen+PxPl1"] },
                         { "label": "dijjen", "tags": ["Gen+PxPl2"] },
-                        { "label": "daj", "tags": ["Gen+PxPl3"] }
-                    ]
+                        { "label": "daj", "tags": ["Gen+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "illative",
@@ -54,8 +54,8 @@
                         { "label": "dejtie", "tags": ["Ill+PxDu3"] },
                         { "label": "mijjese", "tags": ["Ill+PxPl1"] },
                         { "label": "dijjese", "tags": ["Ill+PxPl2"] },
-                        { "label": "dejtie", "tags": ["Ill+PxPl3"] }
-                    ]
+                        { "label": "dejtie", "tags": ["Ill+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "inessive",
@@ -69,8 +69,8 @@
                         { "label": "dejnie", "tags": ["Ine+PxDu3"] },
                         { "label": "mijjesne", "tags": ["Ine+PxPl1"] },
                         { "label": "dijjesne", "tags": ["Ine+PxPl2"] },
-                        { "label": "dejnie", "tags": ["Ine+PxPl3"] }
-                    ]
+                        { "label": "dejnie", "tags": ["Ine+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "elative",
@@ -84,8 +84,8 @@
                         { "label": "dejstie", "tags": ["Ela+PxDu3"] },
                         { "label": "mijjeste", "tags": ["Ela+PxPl1"] },
                         { "label": "dijjeste", "tags": ["Ela+PxPl2"] },
-                        { "label": "dejstie", "tags": ["Ela+PxPl3"] }
-                    ]
+                        { "label": "dejstie", "tags": ["Ela+PxPl3"] },
+                    ],
                 },
                 {
                     "title": "comitative",
@@ -99,10 +99,10 @@
                         { "label": "dajgujmie", "tags": ["Com+PxDu3"] },
                         { "label": "mijjine", "tags": ["Com+PxPl1"] },
                         { "label": "dijjine", "tags": ["Com+PxPl2"] },
-                        { "label": "dajgujmie", "tags": ["Com+PxPl3"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "dajgujmie", "tags": ["Com+PxPl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }
