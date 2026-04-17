@@ -1,0 +1,73 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "positive",
+            "tables": [
+                {
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg+Nom", "Pl+Nom"] },
+                        { "label": "accusative", "tags": ["Sg+Acc", "Pl+Acc"] },
+                        { "label": "genitive", "tags": ["Sg+Gen", "Pl+Gen"] },
+                        { "label": "illative", "tags": ["Sg+Ill", "Pl+Ill"] },
+                        { "label": "inessive", "tags": ["Sg+Ine", "Pl+Ine"] },
+                        { "label": "elative", "tags": ["Sg+Ela", "Pl+Ela"] },
+                        { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
+                        { "label": "essive", "tags": ["Ess"], "colspan": 2 },
+                    ],
+                },
+                {
+                    "headers": [],
+                    "rows": [{ "label": "attribute", "tags": ["Attr"] }],
+                },
+            ],
+        },
+        {
+            "title": "comparative",
+            "showIf": ["Der/Comp"],
+            "tables": [
+                {
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Der/Comp+A+Sg+Nom", "Der/Comp+A+Pl+Nom"] },
+                        { "label": "accusative", "tags": ["Der/Comp+A+Sg+Acc", "Der/Comp+A+Pl+Acc"] },
+                        { "label": "genitive", "tags": ["Der/Comp+A+Sg+Gen", "Der/Comp+A+Pl+Gen"] },
+                        { "label": "illative", "tags": ["Der/Comp+A+Sg+Ill", "Der/Comp+A+Pl+Ill"] },
+                        { "label": "inessive", "tags": ["Der/Comp+A+Sg+Ine", "Der/Comp+A+Pl+Ine"] },
+                        { "label": "elative", "tags": ["Der/Comp+A+Sg+Ela", "Der/Comp+A+Pl+Ela"] },
+                        { "label": "comitative", "tags": ["Der/Comp+A+Sg+Com", "Der/Comp+A+Pl+Com"] },
+                        { "label": "essive", "tags": ["Der/Comp+A+Ess"], "colspan": 2 },
+                    ],
+                },
+                {
+                    "headers": [],
+                    "rows": [{ "label": "attribute", "tags": ["Der/Comp+A+Attr"] }],
+                },
+            ],
+        },
+        {
+            "title": "superlative",
+            "showIf": ["Der/Superl"],
+            "tables": [
+                {
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Der/Superl+A+Sg+Nom", "Der/Superl+A+Pl+Nom"] },
+                        { "label": "accusative", "tags": ["Der/Superl+A+Sg+Acc", "Der/Superl+A+Pl+Acc"] },
+                        { "label": "genitive", "tags": ["Der/Superl+A+Sg+Gen", "Der/Superl+A+Pl+Gen"] },
+                        { "label": "illative", "tags": ["Der/Superl+A+Sg+Ill", "Der/Superl+A+Pl+Ill"] },
+                        { "label": "inessive", "tags": ["Der/Superl+A+Sg+Ine", "Der/Superl+A+Pl+Ine"] },
+                        { "label": "elative", "tags": ["Der/Superl+A+Sg+Ela", "Der/Superl+A+Pl+Ela"] },
+                        { "label": "comitative", "tags": ["Der/Superl+A+Sg+Com", "Der/Superl+A+Pl+Com"] },
+                        { "label": "essive", "tags": ["Der/Superl+A+Ess"], "colspan": 2 },
+                    ],
+                },
+                {
+                    "headers": [],
+                    "rows": [{ "label": "attribute", "tags": ["Der/Superl+A+Attr"] }],
+                },
+            ],
+        },
+    ],
+}

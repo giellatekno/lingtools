@@ -1,60 +1,27 @@
-import type { LanguageSchema } from "../types";
+import verbNeg from "./verb_neg.jsonc?raw";
+import verb from "./verb.jsonc?raw";
+import noun from "./noun.jsonc?raw";
+import adjOrd from "./adjective_ord.jsonc?raw";
+import adj from "./adjective.jsonc?raw";
+import numeral from "./numeral.jsonc?raw";
+import pronDem from "./pronoun_dem.jsonc?raw";
+import pronIndef from "./pronoun_indef.jsonc?raw";
+import pronInterr from "./pronoun_interr.jsonc?raw";
+import pronPers from "./pronoun_pers.jsonc?raw";
+import pronRefl from "./pronoun_refl.jsonc?raw";
+import pronRel from "./pronoun_rel.jsonc?raw";
 
-/**
- * Switcher for Lule Sámi (smj).
- * Matches the API result to the specific layout file.
- */
-export async function getSmeSchema(pos: string, subclass: string): Promise<LanguageSchema | null> {
-    switch (pos) {
-        case "V":
-            if (subclass === "Neg") {
-                const mod = await import("./verb_neg");
-                return mod.default;
-            }
-            const verbMod = await import("./verb");
-            return verbMod.default;
-
-        case "N":
-            const nounMod = await import("./noun");
-            return nounMod.default;
-
-        case "A":
-            if (subclass === "Ord") {
-                const mod = await import("./adjective_ord");
-                return mod.default;
-            }
-            const adjMod = await import("./adjective");
-            return adjMod.default;
-
-        case "Num":
-            const numMod = await import("./numeral");
-            return numMod.default;
-
-        case "Pron":
-            switch (subclass) {
-                case "Dem":
-                    const demMod = await import("./pronoun_dem");
-                    return demMod.default;
-                case "Indef":
-                    const indefMod = await import("./pronoun_indef");
-                    return indefMod.default;
-                case "Interr":
-                    const interrMod = await import("./pronoun_interr");
-                    return interrMod.default;
-                case "Pers":
-                    const persMod = await import("./pronoun_pers");
-                    return persMod.default;
-                case "Refl":
-                    const reflMod = await import("./pronoun_refl");
-                    return reflMod.default;
-                case "Rel":
-                    const relMod = await import("./pronoun_rel");
-                    return relMod.default;
-                default:
-                    return null;
-            }
-
-        default:
-            return null;
-    }
-}
+export const mapping: Record<string, Record<string, string>> = {
+    V: { default: verb, Neg: verbNeg },
+    N: { default: noun },
+    A: { default: adj, Ord: adjOrd },
+    Num: { default: numeral },
+    Pron: {
+        Dem: pronDem,
+        Indef: pronIndef,
+        Interr: pronInterr,
+        Pers: pronPers,
+        Refl: pronRefl,
+        Rel: pronRel,
+    },
+};

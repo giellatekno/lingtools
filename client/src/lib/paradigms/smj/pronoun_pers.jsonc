@@ -1,0 +1,57 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "tables": [
+                {
+                    "showIf": ["1"],
+                    "headers": ["case", "singular", "dual", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg1+Nom", "Du1+Nom", "Pl1+Nom"] },
+                        { "label": "accusative", "tags": ["Sg1+Acc", "Du1+Acc", "Pl1+Acc"] },
+                        { "label": "genitive", "tags": ["Sg1+Gen", "Du1+Gen", "Pl1+Gen"] },
+                        { "label": "partitive", "tags": ["Sg1+Par", "Du1+Par", "Pl1+Par"] },
+                        { "label": "illative", "tags": ["Sg1+Ill", "Du1+Ill", "Pl1+Ill"] },
+                        { "label": "inessive", "tags": ["Sg1+Ine", "Du1+Ine", "Pl1+Ine"] },
+                        { "label": "elative", "tags": ["Sg1+Ela", "Du1+Ela", "Pl1+Ela"] },
+                        { "label": "comitative", "tags": ["Sg1+Com", "Du1+Com", "Pl1+Com"] },
+                        { "label": "abessive", "tags": ["Sg1+Abe", "Du1+Abe", "Pl1+Abe"] },
+                        { "label": "essive", "tags": ["Sg1+Ess", "Du1+Ess", "Pl1+Ess"] },
+                    ],
+                },
+                {
+                    "showIf": ["2"],
+                    "headers": ["case", "singular", "dual", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg2+Nom", "Du2+Nom", "Pl2+Nom"] },
+                        { "label": "accusative", "tags": ["Sg2+Acc", "Du2+Acc", "Pl2+Acc"] },
+                        { "label": "genitive", "tags": ["Sg2+Gen", "Du2+Gen", "Pl2+Gen"] },
+                        { "label": "partitive", "tags": ["Sg2+Par", "Du2+Par", "Pl2+Par"] },
+                        { "label": "illative", "tags": ["Sg2+Ill", "Du2+Ill", "Pl2+Ill"] },
+                        { "label": "inessive", "tags": ["Sg2+Ine", "Du2+Ine", "Pl2+Ine"] },
+                        { "label": "elative", "tags": ["Sg2+Ela", "Du2+Ela", "Pl2+Ela"] },
+                        { "label": "comitative", "tags": ["Sg2+Com", "Du2+Com", "Pl2+Com"] },
+                        { "label": "abessive", "tags": ["Sg2+Abe", "Du2+Abe", "Pl2+Abe"] },
+                        { "label": "essive", "tags": ["Sg2+Ess", "Du2+Ess", "Pl2+Ess"] },
+                    ],
+                },
+                {
+                    "showIf": ["3"],
+                    "headers": ["case", "singular", "dual", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg3+Nom", "Du3+Nom", "Pl3+Nom"] },
+                        { "label": "accusative", "tags": ["Sg3+Acc", "Du3+Acc", "Pl3+Acc"] },
+                        { "label": "genitive", "tags": ["Sg3+Gen", "Du3+Gen", "Pl3+Gen"] },
+                        { "label": "partitive", "tags": ["Sg3+Par", "Du3+Par", "Pl3+Par"] },
+                        { "label": "illative", "tags": ["Sg3+Ill", "Du3+Ill", "Pl3+Ill"] },
+                        { "label": "inessive", "tags": ["Sg3+Ine", "Du3+Ine", "Pl3+Ine"] },
+                        { "label": "elative", "tags": ["Sg3+Ela", "Du3+Ela", "Pl3+Ela"] },
+                        { "label": "comitative", "tags": ["Sg3+Com", "Du3+Com", "Pl3+Com"] },
+                        { "label": "abessive", "tags": ["Sg3+Abe", "Du3+Abe", "Pl3+Abe"] },
+                        { "label": "essive", "tags": ["Sg3+Ess", "Du3+Ess", "Pl3+Ess"] },
+                    ],
+                },
+            ],
+        },
+    ],
+}
