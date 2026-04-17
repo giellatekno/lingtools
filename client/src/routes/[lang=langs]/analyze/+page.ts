@@ -2,7 +2,6 @@ import { env } from "$env/dynamic/public";
 import { tools_for } from "$lib/langs";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
-import { analyze_parser } from "$lib/parsers";
 import { AnalyzeResponse } from "$lib/types";
 
 export const load: PageLoad = async ({ params, url, fetch }) => {

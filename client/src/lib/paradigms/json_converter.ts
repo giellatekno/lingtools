@@ -7,7 +7,7 @@ import type {
     Table,
     JsonRow,
     Row,
-} from "./types";
+} from "./paradigm_types";
 import { resolveLocaleKey } from "./locale_map";
 import { has_tags } from "./paradigm_utils";
 

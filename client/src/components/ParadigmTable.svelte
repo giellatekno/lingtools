@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { LanguageSchema, Table, Section } from "$lib/paradigms/paradigm_types";
     import type { ParsedParadigm } from "$lib/parsers";
-    import { get_entry } from "$lib/paradigms/paradigm_utils";
+    import { get_entry, uncovered_tags } from "$lib/paradigms/paradigm_utils";
     import TableComponent from "./Table.svelte";
 
     let { schema, elem }: { schema: LanguageSchema; elem: ParsedParadigm } = $props();
@@ -14,6 +14,20 @@
               })
             : null;
     }
+
+    const uncoveredTags = $derived.by(() => {
+        const covered = new Set<string>();
+        for (const section of schema.sections) {
+            for (const table of section.tables) {
+                for (const row of table.rows) {
+                    for (const tag of row.tags) {
+                        covered.add(tag);
+                    }
+                }
+            }
+        }
+        return Array.from(elem.wordforms.keys()).filter((tag) => !covered.has(tag));
+    });
 </script>
 
 <div class="mb-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-[1fr_auto]">
@@ -48,6 +62,47 @@
                 </div>
             </section>
         {/each}
+
+        {#if uncoveredTags.length > 0}
+            <details class="group">
+                <summary
+                    class="text-warning-600-400 flex cursor-pointer items-center gap-2 text-sm font-semibold select-none"
+                >
+                    <span>
+                        {uncoveredTags.length} tag{uncoveredTags.length === 1 ? "" : "s"} not
+                        shown in tables
+                    </span>
+                </summary>
+                <div class="mt-2">
+                    <TableComponent>
+                        <thead>
+                            <tr>
+                                <th>Tags</th>
+                                <th>Wordform(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each uncoveredTags as tag}
+                                <tr>
+                                    <td class="label header">{tag}</td>
+                                    <td>
+                                        <div class="flex flex-col gap-1">
+                                            {#each elem.wordforms.get(tag) ?? [] as wf}
+                                                <p
+                                                    class="text-surface-900-100 text-sm text-nowrap lg:text-base"
+                                                >
+                                                    {wf}
+                                                </p>
+                                            {/each}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {/each}
+                        </tbody>
+                    </TableComponent>
+                </div>
+            </details>
+        {/if}
     </div>
 </div>
 

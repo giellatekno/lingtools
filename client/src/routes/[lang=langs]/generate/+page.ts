@@ -2,7 +2,6 @@ import { env } from "$env/dynamic/public";
 import { tools_for } from "$lib/langs";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
-import { generate_parser } from "$lib/parsers";
 import { GenerateResponse } from "$lib/types";
 
 export const load: PageLoad = async ({ url, params, fetch }) => {

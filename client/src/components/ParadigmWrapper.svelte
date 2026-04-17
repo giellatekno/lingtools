@@ -34,7 +34,7 @@
 
     // Filter out hidden sections and add Ids for navigation
     function filterSchema(
-        schema: LanguageSchema,
+        schema: LanguageSchema | null,
         elem: ParsedParadigm,
     ): LanguageSchema | undefined {
         if (!schema || !elem) return undefined;

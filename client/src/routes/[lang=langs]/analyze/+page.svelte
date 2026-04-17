@@ -37,13 +37,6 @@
         return results.join("<span class='text-gray-500'>+</span>");
     }
 
-    function combine_tags(lemma: string, pos: string, tags: string[]) {
-        if (tags.length === 1 && tags[0] === "") {
-            return [lemma, pos];
-        }
-        return [lemma, pos, ...tags];
-    }
-
     const toaster = createToaster({ duration: 2000, overlap: true });
 
     function onTextClick(text: string) {

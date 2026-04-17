@@ -14,8 +14,7 @@
         data: PageData;
     }
     let { data }: Props = $props();
-    let word = $derived(data.word || "");
-    let pos = $derived(data.pos || "");
+    let { word, pos } = $derived(data);
 
     let lang = $derived(page.params.lang || "");
 
