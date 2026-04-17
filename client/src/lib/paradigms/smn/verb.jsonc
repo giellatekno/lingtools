@@ -1,0 +1,183 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "indicative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["Ind+Prs+Sg1", "Ind+Prs+ConNeg"], "prefixes": ["", "jiem"] },
+                        { "label": "tun", "tags": ["Ind+Prs+Sg2", "Ind+Prs+ConNeg"], "prefixes": ["", "jieh"] },
+                        { "label": "sun", "tags": ["Ind+Prs+Sg3", "Ind+Prs+ConNeg"], "prefixes": ["", "ij"], "separator": true },
+                        { "label": "muoi", "tags": ["Ind+Prs+Du1", "Ind+Prs+ConNeg"], "prefixes": ["", "iän"] },
+                        { "label": "tuoi", "tags": ["Ind+Prs+Du2", "Ind+Prs+ConNeg"], "prefixes": ["", "eppee"] },
+                        { "label": "suoi", "tags": ["Ind+Prs+Du3", "Ind+Prs+ConNeg"], "prefixes": ["", "iävá"], "separator": true },
+                        { "label": "mij", "tags": ["Ind+Prs+Pl1", "Ind+Prs+ConNeg"], "prefixes": ["", "ep"] },
+                        { "label": "tij", "tags": ["Ind+Prs+Pl2", "Ind+Prs+ConNeg"], "prefixes": ["", "eppeđ"] },
+                        { "label": "sij", "tags": ["Ind+Prs+Pl3", "Ind+Prs+ConNeg"], "prefixes": ["", "iä"] },
+                    ],
+                },
+                {
+                    "title": "perfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lam", "jiem lah"] },
+                        { "label": "tun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lah", "jieh lah"] },
+                        { "label": "sun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lii", "ij lah"], "separator": true },
+                        { "label": "muoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["láán", "iän lah"] },
+                        { "label": "tuoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leppee", "eppee lah"] },
+                        { "label": "suoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lává", "iävá lah"], "separator": true },
+                        { "label": "mij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lep", "ep lah"] },
+                        { "label": "tij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leppeđ", "eppeđ lah"] },
+                        { "label": "sij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["láá", "iä lah"] },
+                    ],
+                },
+                {
+                    "title": "preterite",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["Ind+Prt+Sg1", "Ind+Prt+ConNeg"], "prefixes": ["", "jiem"] },
+                        { "label": "tun", "tags": ["Ind+Prt+Sg2", "Ind+Prt+ConNeg"], "prefixes": ["", "jieh"] },
+                        { "label": "sun", "tags": ["Ind+Prt+Sg3", "Ind+Prt+ConNeg"], "prefixes": ["", "ij"], "separator": true },
+                        { "label": "muoi", "tags": ["Ind+Prt+Du1", "Ind+Prt+ConNeg"], "prefixes": ["", "iän"] },
+                        { "label": "tuoi", "tags": ["Ind+Prt+Du2", "Ind+Prt+ConNeg"], "prefixes": ["", "eppee"] },
+                        { "label": "suoi", "tags": ["Ind+Prt+Du3", "Ind+Prt+ConNeg"], "prefixes": ["", "iävá"], "separator": true },
+                        { "label": "mij", "tags": ["Ind+Prt+Pl1", "Ind+Prt+ConNeg"], "prefixes": ["", "ep"] },
+                        { "label": "tij", "tags": ["Ind+Prt+Pl2", "Ind+Prt+ConNeg"], "prefixes": ["", "eppeđ"] },
+                        { "label": "sij", "tags": ["Ind+Prt+Pl3", "Ind+Prt+ConNeg"], "prefixes": ["", "iä"] },
+                    ],
+                },
+                {
+                    "title": "pluperfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijjim", "jiem lean"] },
+                        { "label": "tun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijjih", "jieh lean"] },
+                        { "label": "sun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lâi", "ij lean"], "separator": true },
+                        { "label": "muoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["láim", "iän lean"] },
+                        { "label": "tuoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["láid", "eppee lean"] },
+                        { "label": "suoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["láin", "iävá lean"], "separator": true },
+                        { "label": "mij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lâim", "ep lean"] },
+                        { "label": "tij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lâid", "eppeđ lean"] },
+                        { "label": "sij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijjii", "iä lean"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "conditional",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["Cond+Prs+Sg1", "Cond+Prs+ConNeg"], "prefixes": ["", "jiem"] },
+                        { "label": "tun", "tags": ["Cond+Prs+Sg2", "Cond+Prs+ConNeg"], "prefixes": ["", "jieh"] },
+                        { "label": "sun", "tags": ["Cond+Prs+Sg3", "Cond+Prs+ConNeg"], "prefixes": ["", "ij"], "separator": true },
+                        { "label": "muoi", "tags": ["Cond+Prs+Du1", "Cond+Prs+ConNeg"], "prefixes": ["", "iän"] },
+                        { "label": "tuoi", "tags": ["Cond+Prs+Du2", "Cond+Prs+ConNeg"], "prefixes": ["", "eppee"] },
+                        { "label": "suoi", "tags": ["Cond+Prs+Du3", "Cond+Prs+ConNeg"], "prefixes": ["", "iävá"], "separator": true },
+                        { "label": "mij", "tags": ["Cond+Prs+Pl1", "Cond+Prs+ConNeg"], "prefixes": ["", "ep"] },
+                        { "label": "tij", "tags": ["Cond+Prs+Pl2", "Cond+Prs+ConNeg"], "prefixes": ["", "eppeđ"] },
+                        { "label": "sij", "tags": ["Cond+Prs+Pl3", "Cond+Prs+ConNeg"], "prefixes": ["", "iä"] },
+                    ],
+                },
+                {
+                    "title": "perfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččim", "jiem liččii"] },
+                        { "label": "tun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččih", "jieh liččii"] },
+                        { "label": "sun", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččij", "ij liččii"], "separator": true },
+                        { "label": "muoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččijm", "iän liččii"] },
+                        { "label": "tuoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččijd", "eppee liččii"] },
+                        { "label": "suoi", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččijn", "iävá liččii"], "separator": true },
+                        { "label": "mij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččijm", "ep liččii"] },
+                        { "label": "tij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččijd", "eppeđ liččii"] },
+                        { "label": "sij", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liččii", "iä liččii"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "imperative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["Imprt+Sg1", "Imprt+ConNeg"], "prefixes": ["", "iällum"] },
+                        { "label": "tun", "tags": ["Imprt+Sg2", "Imprt+ConNeg"], "prefixes": ["", "ele"] },
+                        { "label": "sun", "tags": ["Imprt+Sg3", "Imprt+ConNeg"], "prefixes": ["", "iällus"], "separator": true },
+                        { "label": "muoi", "tags": ["Imprt+Du1", "Imprt+ConNeg"], "prefixes": ["", "iälloon"] },
+                        { "label": "tuoi", "tags": ["Imprt+Du2", "Imprt+ConNeg"], "prefixes": ["", "ellee"] },
+                        { "label": "suoi", "tags": ["Imprt+Du3", "Imprt+ConNeg"], "prefixes": ["", "iällus"], "separator": true },
+                        { "label": "mij", "tags": ["Imprt+Pl1", "Imprt+ConNeg"], "prefixes": ["", "iällup"] },
+                        { "label": "tij", "tags": ["Imprt+Pl2", "Imprt+ConNeg"], "prefixes": ["", "elleđ"] },
+                        { "label": "sij", "tags": ["Imprt+Pl3", "Imprt+ConNeg"], "prefixes": ["", "iällus"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "potential",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mun", "tags": ["Pot+Prs+Sg1", "Pot+Prs+ConNeg"], "prefixes": ["", "jiem"] },
+                        { "label": "tun", "tags": ["Pot+Prs+Sg2", "Pot+Prs+ConNeg"], "prefixes": ["", "jieh"] },
+                        { "label": "sun", "tags": ["Pot+Prs+Sg3", "Pot+Prs+ConNeg"], "prefixes": ["", "ij"], "separator": true },
+                        { "label": "muoi", "tags": ["Pot+Prs+Du1", "Pot+Prs+ConNeg"], "prefixes": ["", "iän"] },
+                        { "label": "tuoi", "tags": ["Pot+Prs+Du2", "Pot+Prs+ConNeg"], "prefixes": ["", "eppee"] },
+                        { "label": "suoi", "tags": ["Pot+Prs+Du3", "Pot+Prs+ConNeg"], "prefixes": ["", "iävá"], "separator": true },
+                        { "label": "mij", "tags": ["Pot+Prs+Pl1", "Pot+Prs+ConNeg"], "prefixes": ["", "ep"] },
+                        { "label": "tij", "tags": ["Pot+Prs+Pl2", "Pot+Prs+ConNeg"], "prefixes": ["", "eppeđ"] },
+                        { "label": "sij", "tags": ["Pot+Prs+Pl3", "Pot+Prs+ConNeg"], "prefixes": ["", "iä"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "nonfinite",
+            "tables": [
+                {
+                    "headers": [],
+                    "rows": [
+                        { "label": "infinite", "tags": ["Inf"] },
+                        { "label": "perfectparticiple", "tags": ["PrfPrc"] },
+                        { "label": "presentparticiple", "tags": ["PrsPrc"] },
+                        { "label": "verbabessive", "tags": ["VAbess"] },
+                    ],
+                },
+                {
+                    "title": "actioforms",
+                    "headers": [],
+                    "rows": [
+                        { "label": "actionominative", "tags": ["Actio+Nom"] },
+                        { "label": "actioillative", "tags": ["Actio+Ill"] },
+                        { "label": "actiolocative", "tags": ["Actio+Loc"] },
+                        { "label": "actiocomitative", "tags": ["Actio+Com"] },
+                        { "label": "actioessive", "tags": ["Actio+Ess"] },
+                    ],
+                },
+                {
+                    "title": "gerund",
+                    "headers": ["person", "singular", "dual", "plural"],
+                    "rows": [
+                        { "label": "Veikkâ kii", "tags": ["Ger"], "separator": true, "colspan": 3 },
+                        { "label": "1. Pers.", "tags": ["Ger+PxSg1", "Ger+PxDu1", "Ger+PxPl1"] },
+                        { "label": "2. Pers.", "tags": ["Ger+PxSg2", "Ger+PxDu2", "Ger+PxPl2"] },
+                        { "label": "3. Pers.", "tags": ["Ger+PxSg3", "Ger+PxDu3", "Ger+PxPl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
+}
