@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { LanguageSchema, Table, Section } from "$lib/paradigms/paradigm_types";
     import type { ParsedParadigm } from "$lib/parsers";
-    import { get_entry, uncovered_tags } from "$lib/paradigms/paradigm_utils";
+    import { get_entry } from "$lib/paradigms/paradigm_utils";
     import TableComponent from "./Table.svelte";
 
     let { schema, elem }: { schema: LanguageSchema; elem: ParsedParadigm } = $props();
