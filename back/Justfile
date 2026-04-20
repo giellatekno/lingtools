@@ -18,6 +18,9 @@ errors:
     CARGO_BUILD_WARNINGS=allow cargo +nightly check -Zwarnings
 
 # push the container image to gtlabcontainerregistry.azurecr.io
-push:
+push-labacr:
     podman tag lingtools-api gtlabcontainerregistry.azurecr.io/lingtools-api
     podman push gtlabcontainerregistry.azurecr.io/lingtools-api
+
+# Build And Push -- Runs the commands 'build', 'image' and 'push-labacr' in sequence
+bap: build image push-labacr

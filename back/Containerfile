@@ -4,7 +4,7 @@ RUN curl https://apertium.projectjj.com/apt/install-nightly.sh | bash
 RUN apt-get install -y antiword cg3 hfst
 RUN rm -rf /var/lib/apt/lists/*
 COPY lookup /usr/local/bin/lookup
-COPY target/release/lingtoolapi /usr/local/bin/lingtoolapi
+COPY target/release/lingtools-api /usr/local/bin/lingtools-api
 COPY assets /var/assets
 WORKDIR /var
-CMD ["lingtoolapi"]
+CMD ["lingtools-api"]
