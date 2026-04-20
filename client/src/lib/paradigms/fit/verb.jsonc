@@ -1,0 +1,157 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "indicative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mie", "tags": ["Act+Ind+Prs+Sg1", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "en"] },
+                        { "label": "sie", "tags": ["Act+Ind+Prs+Sg2", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "et"] },
+                        { "label": "hän/se", "tags": ["Act+Ind+Prs+Sg3", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "ei"], "separator": true },
+                        { "label": "met", "tags": ["Act+Ind+Prs+Pl1", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "emmä"] },
+                        { "label": "tet", "tags": ["Act+Ind+Prs+Pl2", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "että"] },
+                        { "label": "het/net", "tags": ["Act+Ind+Prs+Pl3", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "ei"], "separator": true },
+                        { "label": "passive", "tags": ["Pass+Ind+Prs", "Pass+Ind+Prs+ConNeg"], "prefixes": ["", "ei"] },
+                    ],
+                },
+                {
+                    "title": "perfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mie", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["olen", "en ole"] },
+                        { "label": "sie", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["olet", "et ole"] },
+                        { "label": "hän/se", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["oon", "ei ole"], "separator": true },
+                        { "label": "met", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["olema", "emmä ole"] },
+                        { "label": "tet", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["oletta", "että ole"] },
+                        { "label": "het/net", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["oon", "ei ole"], "separator": true },
+                        { "label": "passive", "tags": ["Pass+PrfPrc+Sg+Nom", "Pass+PrfPrc+Sg+Nom"], "prefixes": ["oon", "ei ole"] },
+                    ],
+                },
+                {
+                    "title": "preterite",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mie", "tags": ["Act+Ind+Prt+Sg1", "Act+Ind+Prt+ConNeg+Sg"], "prefixes": ["", "en"] },
+                        { "label": "sie", "tags": ["Act+Ind+Prt+Sg2", "Act+Ind+Prt+ConNeg+Sg"], "prefixes": ["", "et"] },
+                        { "label": "hän/se", "tags": ["Act+Ind+Prt+Sg3", "Act+Ind+Prt+ConNeg+Sg"], "prefixes": ["", "ei"], "separator": true },
+                        { "label": "met", "tags": ["Act+Ind+Prt+Pl1", "Act+PrfPrc+Pl+Nom"], "prefixes": ["", "emmä"] },
+                        { "label": "tet", "tags": ["Act+Ind+Prt+Pl2", "Act+PrfPrc+Pl+Nom"], "prefixes": ["", "että"] },
+                        { "label": "het/net", "tags": ["Act+Ind+Prt+Pl3", "Act+PrfPrc+Pl+Nom"], "prefixes": ["", "ei"], "separator": true },
+                        { "label": "passive", "tags": ["Pass+Ind+Prt", "Pass+Ind+Prt+ConNeg"], "prefixes": ["", "ei"] },
+                    ],
+                },
+                {
+                    "title": "pluperfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mie", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["olin", "en ollu"] },
+                        { "label": "sie", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["olit", "et ollu"] },
+                        { "label": "hän/se", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["oli", "ei ollu"], "separator": true },
+                        { "label": "met", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["olima", "emmä olheet"] },
+                        { "label": "tet", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["olitta", "että olheet"] },
+                        { "label": "het/net", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["olit/olthiin", "ei olheet"], "separator": true },
+                        { "label": "passive", "tags": ["Pass+PrfPrc+Sg+Nom", "Pass+PrfPrc+Sg+Nom"], "prefixes": ["oli", "ei ollu"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "conditional",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mie", "tags": ["Act+Cond+Sg1", "Act+Cond+ConNeg"], "prefixes": ["", "en"] },
+                        { "label": "sie", "tags": ["Act+Cond+Sg2", "Act+Cond+ConNeg"], "prefixes": ["", "et"] },
+                        { "label": "hän/se", "tags": ["Act+Cond+Sg3", "Act+Cond+ConNeg"], "prefixes": ["", "ei"], "separator": true },
+                        { "label": "met", "tags": ["Act+Cond+Pl1", "Act+Cond+ConNeg"], "prefixes": ["", "emmä"] },
+                        { "label": "tet", "tags": ["Act+Cond+Pl2", "Act+Cond+ConNeg"], "prefixes": ["", "että"] },
+                        { "label": "het/net", "tags": ["Act+Cond+Pl3", "Act+Cond+ConNeg"], "prefixes": ["", "ei"], "separator": true },
+                        { "label": "passive", "tags": ["Pass+Cond", "Pass+Cond"], "prefixes": ["", "ei"] },
+                    ],
+                },
+                {
+                    "title": "perfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mie", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["olisin", "en olis"] },
+                        { "label": "sie", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["olisit", "et olis"] },
+                        { "label": "hän/se", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Sg+Nom"], "prefixes": ["olis", "ei olis"], "separator": true },
+                        { "label": "met", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["olisimma", "emmä olis"] },
+                        { "label": "tet", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["olisitta", "että olis"] },
+                        { "label": "het/net", "tags": ["Act+PrfPrc+Pl+Nom", "Act+PrfPrc+Pl+Nom"], "prefixes": ["oltais", "ei olis"], "separator": true },
+                        { "label": "passive", "tags": ["Pass+PrfPrc+Sg+Nom", "Pass+PrfPrc+Sg+Nom"], "prefixes": ["olis", "ei olis"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "imperative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mie", "tags": ["", ""], "prefixes": ["", ""] },
+                        { "label": "sie", "tags": ["Act+Imprt+Sg2", "Act+Imprt+Sg2"], "prefixes": ["", "älä"] },
+                        { "label": "hän/se", "tags": ["Act+Imprt+Sg3", ""], "prefixes": ["", ""], "separator": true },
+                        { "label": "met", "tags": ["", ""], "prefixes": ["", ""] },
+                        { "label": "tet", "tags": ["Act+Imprt+Pl2", "Act+Imprt+Pl2"], "prefixes": ["", "älkkää"] },
+                        { "label": "het/net", "tags": ["", ""], "prefixes": ["", ""] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "nonfinite",
+            "tables": [
+                {
+                    "title": "firstinfinite",
+                    "headers": [],
+                    "rows": [{ "label": "infinite", "tags": ["Inf"] }],
+                },
+                {
+                    "title": "thirdinfinite",
+                    "headers": ["case", ""],
+                    "rows": [
+                        { "label": "adessive", "tags": ["Act+Inf3+Ade"] },
+                        { "label": "illative", "tags": ["Act+Inf3+Ill"] },
+                        { "label": "inessive", "tags": ["Act+Inf3+Ine"] },
+                        { "label": "elative", "tags": ["Act+Inf3+Ela"] },
+                        { "label": "abessive", "tags": ["Act+Inf3+Abe"] },
+                    ],
+                },
+                {
+                    "title": "perfectparticiple",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Act+PrfPrc+Sg+Nom", "Act+PrfPrc+Pl+Nom"] },
+                        { "label": "genitive", "tags": ["Act+PrfPrc+Sg+Gen", "Act+PrfPrc+Pl+Gen"] },
+                        { "label": "partitive", "tags": ["Act+PrfPrc+Sg+Par", "Act+PrfPrc+Pl+Par"] },
+                        { "label": "inessive", "tags": ["Act+PrfPrc+Sg+Ine", "Act+PrfPrc+Pl+Ine"] },
+                        { "label": "illative", "tags": ["Act+PrfPrc+Sg+Ill", "Act+PrfPrc+Pl+Ill"] },
+                        { "label": "elative", "tags": ["Act+PrfPrc+Sg+Ela", "Act+PrfPrc+Pl+Ela"] },
+                        { "label": "adessive", "tags": ["Act+PrfPrc+Sg+Ade", "Act+PrfPrc+Pl+Ade"] },
+                        { "label": "allative", "tags": ["Act+PrfPrc+Sg+All", "Act+PrfPrc+Pl+All"] },
+                        { "label": "ablative", "tags": ["Act+PrfPrc+Sg+Abl", "Act+PrfPrc+Pl+Abl"] },
+                        { "label": "abessive", "tags": ["Act+PrfPrc+Sg+Abe", "Act+PrfPrc+Pl+Abe"] },
+                        { "label": "essive", "tags": ["Act+PrfPrc+Sg+Ess", "Act+PrfPrc+Pl+Ess"] },
+                        { "label": "translative", "tags": ["Act+PrfPrc+Sg+Tra", "Act+PrfPrc+Pl+Tra"] },
+                        { "label": "comitative", "tags": ["Act+PrfPrc+Sg+Com", "Act+PrfPrc+Pl+Com"] },
+                    ],
+                },
+                {
+                    "title": "presentparticiple",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [{ "label": "nominative", "tags": ["Act+PrsPrc+Sg+Nom", "Act+PrsPrc+Pl+Nom"] }],
+                },
+            ],
+        },
+    ],
+}

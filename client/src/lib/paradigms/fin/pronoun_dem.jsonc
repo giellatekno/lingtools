@@ -1,0 +1,28 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "tables": [
+                {
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg+Nom", "Pl+Nom"] },
+                        { "label": "genitive", "tags": ["Sg+Gen", "Pl+Gen"] },
+                        { "label": "partitive", "tags": ["Sg+Par", "Pl+Par"] },
+                        { "label": "inessive", "tags": ["Sg+Ine", "Pl+Ine"] },
+                        { "label": "illative", "tags": ["Sg+Ill", "Pl+Ill"] },
+                        { "label": "elative", "tags": ["Sg+Ela", "Pl+Ela"] },
+                        { "label": "adessive", "tags": ["Sg+Ade", "Pl+Ade"] },
+                        { "label": "allative", "tags": ["Sg+All", "Pl+All"] },
+                        { "label": "ablative", "tags": ["Sg+Abl", "Pl+Abl"] },
+                        { "label": "abessive", "tags": ["Sg+Abe", "Pl+Abe"] },
+                        { "label": "essive", "tags": ["Sg+Ess", "Pl+Ess"] },
+                        { "label": "translative", "tags": ["Sg+Tra", "Pl+Tra"] },
+                        { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+

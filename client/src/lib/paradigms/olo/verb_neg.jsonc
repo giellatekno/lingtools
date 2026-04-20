@@ -1,0 +1,37 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "indicative",
+            "tables": [
+                {
+                    "headers": ["person", ""],
+                    "rows": [
+                        { "label": "minä", "tags": ["Act+Sg1"] },
+                        { "label": "sinä", "tags": ["Act+Sg2"] },
+                        { "label": "hän", "tags": ["Act+Sg3"] },
+                        { "label": "myö", "tags": ["Act+Pl1"] },
+                        { "label": "työ", "tags": ["Act+Pl2"] },
+                        { "label": "hyö", "tags": ["Act+Pl3"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "imperative",
+            "tables": [
+                {
+                    "headers": ["person", ""],
+                    "rows": [
+                        { "label": "minä", "tags": ["Act+Imprt+Sg1"] },
+                        { "label": "sinä", "tags": ["Act+Imprt+Sg2"] },
+                        { "label": "hän", "tags": ["Act+Imprt+Sg3"] },
+                        { "label": "myö", "tags": ["Act+Imprt+Pl1"] },
+                        { "label": "työ", "tags": ["Act+Imprt+Pl2"] },
+                        { "label": "hyö", "tags": ["Act+Imprt+Pl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
+}

@@ -1,0 +1,125 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "personal",
+            "tables": [
+                {
+                    "showIf": ["Sg1"],
+                    "headers": ["case", "singular"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg1+Nom"] },
+                        { "label": "genitive", "tags": ["Sg1+Gen"] },
+                        { "label": "partitive", "tags": ["Sg1+Par"] },
+                        { "label": "inessive", "tags": ["Sg1+Ine"] },
+                        { "label": "illative", "tags": ["Sg1+Ill"] },
+                        { "label": "elative", "tags": ["Sg1+Ela"] },
+                        { "label": "adessive", "tags": ["Sg1+Ade"] },
+                        { "label": "allative", "tags": ["Sg1+All"] },
+                        { "label": "ablative", "tags": ["Sg1+Abl"] },
+                        { "label": "abessive", "tags": ["Sg1+Abe"] },
+                        { "label": "essive", "tags": ["Sg1+Ess"] },
+                        { "label": "translative", "tags": ["Sg1+Tra"] },
+                        { "label": "comitative", "tags": ["Sg1+Com"] }
+                    ]
+                },
+                {
+                    "showIf": ["Sg2"],
+                    "headers": ["case", "singular"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg2+Nom"] },
+                        { "label": "genitive", "tags": ["Sg2+Gen"] },
+                        { "label": "partitive", "tags": ["Sg2+Par"] },
+                        { "label": "inessive", "tags": ["Sg2+Ine"] },
+                        { "label": "illative", "tags": ["Sg2+Ill"] },
+                        { "label": "elative", "tags": ["Sg2+Ela"] },
+                        { "label": "adessive", "tags": ["Sg2+Ade"] },
+                        { "label": "allative", "tags": ["Sg2+All"] },
+                        { "label": "ablative", "tags": ["Sg2+Abl"] },
+                        { "label": "abessive", "tags": ["Sg2+Abe"] },
+                        { "label": "essive", "tags": ["Sg2+Ess"] },
+                        { "label": "translative", "tags": ["Sg2+Tra"] },
+                        { "label": "comitative", "tags": ["Sg2+Com"] }
+                    ]
+                },
+                {
+                    "showIf": ["Sg3"],
+                    "headers": ["case", "singular"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Sg3+Nom"] },
+                        { "label": "genitive", "tags": ["Sg3+Gen"] },
+                        { "label": "partitive", "tags": ["Sg3+Par"] },
+                        { "label": "inessive", "tags": ["Sg3+Ine"] },
+                        { "label": "illative", "tags": ["Sg3+Ill"] },
+                        { "label": "elative", "tags": ["Sg3+Ela"] },
+                        { "label": "adessive", "tags": ["Sg3+Ade"] },
+                        { "label": "allative", "tags": ["Sg3+All"] },
+                        { "label": "ablative", "tags": ["Sg3+Abl"] },
+                        { "label": "abessive", "tags": ["Sg3+Abe"] },
+                        { "label": "essive", "tags": ["Sg3+Ess"] },
+                        { "label": "translative", "tags": ["Sg3+Tra"] },
+                        { "label": "comitative", "tags": ["Sg3+Com"] }
+                    ]
+                },
+                {
+                    "showIf": ["Pl1"],
+                    "headers": ["case", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Pl1+Nom"] },
+                        { "label": "genitive", "tags": ["Pl1+Gen"] },
+                        { "label": "partitive", "tags": ["Pl1+Par"] },
+                        { "label": "inessive", "tags": ["Pl1+Ine"] },
+                        { "label": "illative", "tags": ["Pl1+Ill"] },
+                        { "label": "elative", "tags": ["Pl1+Ela"] },
+                        { "label": "adessive", "tags": ["Pl1+Ade"] },
+                        { "label": "allative", "tags": ["Pl1+All"] },
+                        { "label": "ablative", "tags": ["Pl1+Abl"] },
+                        { "label": "abessive", "tags": ["Pl1+Abe"] },
+                        { "label": "essive", "tags": ["Pl1+Ess"] },
+                        { "label": "translative", "tags": ["Pl1+Tra"] },
+                        { "label": "comitative", "tags": ["Pl1+Com"] }
+                    ]
+                },
+                {
+                    "showIf": ["Pl2"],
+                    "headers": ["case", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Pl2+Nom"] },
+                        { "label": "genitive", "tags": ["Pl2+Gen"] },
+                        { "label": "partitive", "tags": ["Pl2+Par"] },
+                        { "label": "inessive", "tags": ["Pl2+Ine"] },
+                        { "label": "illative", "tags": ["Pl2+Ill"] },
+                        { "label": "elative", "tags": ["Pl2+Ela"] },
+                        { "label": "adessive", "tags": ["Pl2+Ade"] },
+                        { "label": "allative", "tags": ["Pl2+All"] },
+                        { "label": "ablative", "tags": ["Pl2+Abl"] },
+                        { "label": "abessive", "tags": ["Pl2+Abe"] },
+                        { "label": "essive", "tags": ["Pl2+Ess"] },
+                        { "label": "translative", "tags": ["Pl2+Tra"] },
+                        { "label": "comitative", "tags": ["Pl2+Com"] }
+                    ]
+                },
+                {
+                    "showIf": ["Pl3"],
+                    "headers": ["case", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Pl3+Nom"] },
+                        { "label": "genitive", "tags": ["Pl3+Gen"] },
+                        { "label": "partitive", "tags": ["Pl3+Par"] },
+                        { "label": "inessive", "tags": ["Pl3+Ine"] },
+                        { "label": "illative", "tags": ["Pl3+Ill"] },
+                        { "label": "elative", "tags": ["Pl3+Ela"] },
+                        { "label": "adessive", "tags": ["Pl3+Ade"] },
+                        { "label": "allative", "tags": ["Pl3+All"] },
+                        { "label": "ablative", "tags": ["Pl3+Abl"] },
+                        { "label": "abessive", "tags": ["Pl3+Abe"] },
+                        { "label": "essive", "tags": ["Pl3+Ess"] },
+                        { "label": "translative", "tags": ["Pl3+Tra"] },
+                        { "label": "comitative", "tags": ["Pl3+Com"] }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
