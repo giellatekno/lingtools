@@ -231,8 +231,11 @@ pub async fn paradigm_libhfst(
                     .for_each(|part| {
                         let _ = write!(tags, "{part}+");
                     });
-                assert!(tags.ends_with("+"));
-                tags.pop();
+
+                // Some words have only Pos, no tags!
+                if tags.ends_with("+") {
+                    tags.pop();
+                }
 
                 entry.push(Form { tags, forms: wordforms });
             }
