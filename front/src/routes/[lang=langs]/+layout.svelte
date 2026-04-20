@@ -11,7 +11,7 @@
     let locale = $derived(getLocale());
 
     let maturity_url = $derived(
-        `https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgiellalt%2Flang-${lang}%2Fgh-pages%2Fbadgedata%2Ffst-maturity.json`,
+        `https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgiellalt%2Flang-${lang}%2Fmain%2Fdocs%2Fbadgedata%2Ffst-maturity.json`,
     );
 </script>
 
