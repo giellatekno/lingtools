@@ -4,7 +4,7 @@ A standalone browser tool for testing paradigm API responses against the JSONC t
 
 For each search result it shows:
 - **In API, not in schema** (yellow) — tags returned by the API that no schema table row covers. These are the critical gaps.
-- **Schema tables** — the paradigm rendered using the table structure defined in `client/src/lib/paradigms/`.
+- **Schema tables** — the paradigm rendered using the table structure defined in `front/src/lib/paradigms/`.
 - **In schema, no API match** (collapsed) — schema tags with no returned form. Less critical, as many words simply lack certain forms.
 
 ## Running
@@ -37,6 +37,6 @@ See `../back/Readme.md` for more details.
 
 ## Schema files
 
-The JSONC table schemas live in `../client/src/lib/paradigms/{lang}/`.
+The JSONC table schemas live in `../front/src/lib/paradigms/{lang}/`.
 The tester fetches them at runtime — no build step needed.
 Adding a new language only requires adding JSONC files there; the tester discovers them automatically.
