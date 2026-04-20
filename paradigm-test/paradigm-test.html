@@ -204,7 +204,11 @@
 
     <div id="config">
       <label for="api-root-input">API:</label>
-      <input id="api-root-input" type="text" value="http://localhost:3000" />
+      <input
+        id="api-root-input"
+        type="text"
+        value="http://gtweb.uit.no/lingtools-api/"
+      />
       <label for="schema-base-input">Schema path:</label>
       <input
         id="schema-base-input"
@@ -282,7 +286,7 @@
     <script>
       // Derive JSONC filename from pos + subclass.
       // Pattern: {posname}.jsonc or {posname}_{subclass_lower}.jsonc
-      // e.g. N/null→noun.jsonc, V/Neg→verb_neg.jsonc, Pron/Dem→pronoun_dem.jsonc
+      // e.g. N+null→noun.jsonc, V+Neg→verb_neg.jsonc, Pron+Dem→pronoun_dem.jsonc
       const POS_NAMES = {
         V: "verb",
         N: "noun",
@@ -524,7 +528,7 @@
           if (!schema) {
             const p = document.createElement("p");
             p.className = "no-schema";
-            p.textContent = `No schema for ${lang}/${entry.pos}${entry.subclass ? "+" + entry.subclass : ""}.`;
+            p.textContent = `No schema for ${lang}: ${entry.pos}${entry.subclass ? "+" + entry.subclass : ""}.`;
             block.appendChild(p);
 
             // Fall back to raw table

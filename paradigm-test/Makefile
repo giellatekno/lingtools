@@ -1,6 +1,6 @@
 PORT         ?= 8080
 LOCAL_API    = http://localhost:3000
-EXTERNAL_API = https://gtweb.uit.no/lingtools
+EXTERNAL_API = https://gtweb.uit.no/lingtools-api
 
 URL_LOCAL    = http://localhost:$(PORT)/paradigm-test/paradigm-test.html?api=$(LOCAL_API)
 URL_EXTERNAL = http://localhost:$(PORT)/paradigm-test/paradigm-test.html?api=$(EXTERNAL_API)
