@@ -18,11 +18,10 @@
                         { "label": "abessive", "tags": ["Sg+Abe", "Pl+Abe"] },
                         { "label": "essive", "tags": ["Sg+Ess", "Pl+Ess"] },
                         { "label": "translative", "tags": ["Sg+Tra", "Pl+Tra"] },
-                        { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }
-

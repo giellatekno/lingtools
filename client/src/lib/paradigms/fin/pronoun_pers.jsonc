@@ -20,8 +20,8 @@
                         { "label": "abessive", "tags": ["Sg1+Abe"] },
                         { "label": "essive", "tags": ["Sg1+Ess"] },
                         { "label": "translative", "tags": ["Sg1+Tra"] },
-                        { "label": "comitative", "tags": ["Sg1+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Sg1+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Sg2"],
@@ -39,8 +39,8 @@
                         { "label": "abessive", "tags": ["Sg2+Abe"] },
                         { "label": "essive", "tags": ["Sg2+Ess"] },
                         { "label": "translative", "tags": ["Sg2+Tra"] },
-                        { "label": "comitative", "tags": ["Sg2+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Sg2+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Sg3"],
@@ -58,8 +58,8 @@
                         { "label": "abessive", "tags": ["Sg3+Abe"] },
                         { "label": "essive", "tags": ["Sg3+Ess"] },
                         { "label": "translative", "tags": ["Sg3+Tra"] },
-                        { "label": "comitative", "tags": ["Sg3+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Sg3+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Pl1"],
@@ -77,8 +77,8 @@
                         { "label": "abessive", "tags": ["Pl1+Abe"] },
                         { "label": "essive", "tags": ["Pl1+Ess"] },
                         { "label": "translative", "tags": ["Pl1+Tra"] },
-                        { "label": "comitative", "tags": ["Pl1+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Pl1+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Pl2"],
@@ -96,8 +96,8 @@
                         { "label": "abessive", "tags": ["Pl2+Abe"] },
                         { "label": "essive", "tags": ["Pl2+Ess"] },
                         { "label": "translative", "tags": ["Pl2+Tra"] },
-                        { "label": "comitative", "tags": ["Pl2+Com"] }
-                    ]
+                        { "label": "comitative", "tags": ["Pl2+Com"] },
+                    ],
                 },
                 {
                     "showIf": ["Pl3"],
@@ -115,11 +115,10 @@
                         { "label": "abessive", "tags": ["Pl3+Abe"] },
                         { "label": "essive", "tags": ["Pl3+Ess"] },
                         { "label": "translative", "tags": ["Pl3+Tra"] },
-                        { "label": "comitative", "tags": ["Pl3+Com"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "comitative", "tags": ["Pl3+Com"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }
-

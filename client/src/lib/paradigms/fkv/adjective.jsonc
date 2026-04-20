@@ -19,10 +19,10 @@
                         { "label": "abessive", "tags": ["Sg+Abe", "Pl+Abe"] },
                         { "label": "essive", "tags": ["Sg+Ess", "Pl+Ess"] },
                         { "label": "translative", "tags": ["Sg+Tra", "Pl+Tra"] },
-                        { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] }
-                    ]
-                }
-            ]
+                        { "label": "comitative", "tags": ["Sg+Com", "Pl+Com"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "comparative",
@@ -43,10 +43,10 @@
                         { "label": "abessive", "tags": ["Sg+Compar+Abe", "Pl+Compar+Abe"] },
                         { "label": "essive", "tags": ["Sg+Compar+Ess", "Pl+Compar+Ess"] },
                         { "label": "translative", "tags": ["Sg+Compar+Tra", "Pl+Compar+Tra"] },
-                        { "label": "comitative", "tags": ["Sg+Compar+Com", "Pl+Compar+Com"] }
-                    ]
-                }
-            ]
+                        { "label": "comitative", "tags": ["Sg+Compar+Com", "Pl+Compar+Com"] },
+                    ],
+                },
+            ],
         },
         {
             "title": "superlative",
@@ -67,10 +67,10 @@
                         { "label": "abessive", "tags": ["Sg+Superl+Abe", "Pl+Superl+Abe"] },
                         { "label": "essive", "tags": ["Sg+Superl+Ess", "Pl+Superl+Ess"] },
                         { "label": "translative", "tags": ["Sg+Superl+Tra", "Pl+Superl+Tra"] },
-                        { "label": "comitative", "tags": ["Sg+Superl+Com", "Pl+Superl+Com"] }
-                    ]
-                }
-            ]
-        }
-    ]
+                        { "label": "comitative", "tags": ["Sg+Superl+Com", "Pl+Superl+Com"] },
+                    ],
+                },
+            ],
+        },
+    ],
 }
