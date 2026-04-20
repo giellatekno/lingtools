@@ -17,7 +17,7 @@ build-local:
 # Run the built image, using local settings
 run-local:
     podman run \
-        --name lingtools-client \
+        --name lingtools-front \
         --detach \
         --init \
         --stop-signal=SIGINT \
@@ -25,20 +25,20 @@ run-local:
         -p 5173:3000 \
         --env PUBLIC_API_ROOT=http://localhost:3000 \
         --env ORIGIN=http://localhost:5173 \
-        lingtools-client
+        lingtools-front
 
 # Stop the locally running container
 stop-local:
-    podman stop lingtools-client
+    podman stop lingtools-front
 
 # Build the container image using podman (NOTE: Make sure to "build" first)
 image:
-    podman build -t lingtools-client -f Dockerfile .
+    podman build -t lingtools-front -f Dockerfile .
 
 # Push the built image to the gtlab container registry
 push-labacr:
-    podman tag lingtools-client gtlabcontainerregistry.azurecr.io/lingtools-client
-    podman push gtlabcontainerregistry.azurecr.io/lingtools-client
+    podman tag lingtools-front gtlabcontainerregistry.azurecr.io/lingtools-front
+    podman push gtlabcontainerregistry.azurecr.io/lingtools-front
 
 # Build And Push -- Runs the commands 'build', 'image' and 'push-labacr' in sequence
 bap: build image push-labacr
