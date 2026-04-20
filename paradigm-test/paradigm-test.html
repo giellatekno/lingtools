@@ -1,0 +1,632 @@
+<!-- Coded with Claude (claude.ai/code) -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paradigm Tester</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+      form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      input,
+      select {
+        padding: 0.4rem 0.6rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      input[type="text"] {
+        min-width: 200px;
+      }
+      button {
+        padding: 0.4rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 4px;
+        border: none;
+        background: #2563eb;
+        color: white;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      #config {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+        font-size: 0.85rem;
+        color: #555;
+        border: 1px solid #e5e7eb;
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        background: #f9fafb;
+      }
+      #config label {
+        white-space: nowrap;
+      }
+      #config input[type="text"] {
+        font-size: 0.85rem;
+        flex: 1;
+        min-width: 250px;
+      }
+      #error {
+        color: #b91c1c;
+        margin-bottom: 1rem;
+      }
+      .paradigm-block {
+        margin-bottom: 3rem;
+        border-top: 2px solid #e5e7eb;
+        padding-top: 1.25rem;
+      }
+      .paradigm-block h2 {
+        font-size: 1.15rem;
+        margin-bottom: 1rem;
+      }
+      table {
+        border-collapse: collapse;
+        font-size: 0.88rem;
+      }
+      th,
+      td {
+        border: 1px solid #d1d5db;
+        padding: 0.3rem 0.55rem;
+        text-align: left;
+      }
+      th {
+        background: #f3f4f6;
+        font-weight: 600;
+      }
+      td.row-label {
+        background: #f3f4f6;
+        font-size: 0.82rem;
+        color: #374151;
+        white-space: nowrap;
+      }
+      td.cell-empty {
+        color: #9ca3af;
+      }
+      .prefix {
+        color: #7c3aed;
+        font-style: italic;
+      }
+      tr.separator td {
+        border-top: 2px solid #9ca3af;
+      }
+      .section-heading {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1d4ed8;
+        margin: 1.5rem 0 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .table-title {
+        font-size: 0.85rem;
+        font-style: italic;
+        color: #555;
+        margin: 0 0 0.35rem;
+      }
+      .tables-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .table-wrapper {
+        flex: 0 0 auto;
+      }
+      .uncovered-box {
+        background: #fefce8;
+        border: 1px solid #fbbf24;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.25rem;
+      }
+      .uncovered-box h3 {
+        font-size: 0.95rem;
+        margin: 0 0 0.5rem;
+        color: #92400e;
+      }
+      .uncovered-box table {
+        background: white;
+      }
+      .all-covered {
+        color: #166534;
+        font-size: 0.88rem;
+        margin-bottom: 1rem;
+      }
+      .no-schema {
+        color: #6b7280;
+        font-style: italic;
+        margin-bottom: 0.5rem;
+      }
+      .gap-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.35rem 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .gap-list li {
+        padding: 0.1rem 0.4rem;
+        border-radius: 3px;
+        font-family: monospace;
+        font-size: 0.8rem;
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .other-forms {
+        font-size: 0.85rem;
+        color: #555;
+        margin-top: 0.5rem;
+      }
+      #status {
+        font-size: 0.9rem;
+        color: #555;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin-bottom: 0.4rem;
+      }
+      details {
+        margin-top: 1rem;
+      }
+      details[open] summary {
+        margin-bottom: 0.5rem;
+      }
+      .raw-table-wrap {
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Paradigm Tester</h1>
+
+    <div id="config">
+      <label for="api-root-input">API:</label>
+      <input id="api-root-input" type="text" value="http://localhost:3000" />
+      <label for="schema-base-input">Schema path:</label>
+      <input
+        id="schema-base-input"
+        type="text"
+        value="/client/src/lib/paradigms/"
+        title="Absolute path from server root to paradigm JSONC files"
+      />
+    </div>
+
+    <form id="search-form">
+      <select id="lang-select">
+        <option value="sme">sme</option>
+        <option value="sma">sma</option>
+        <option value="fkv">fkv</option>
+        <option value="fin">fin</option>
+        <option value="fit">fit</option>
+        <option value="olo">olo</option>
+        <option value="smj">smj</option>
+        <option value="smn">smn</option>
+        <option value="bxr">bxr</option>
+        <option value="ciw">ciw</option>
+        <option value="cor">cor</option>
+        <option value="evn">evn</option>
+        <option value="fao">fao</option>
+        <option value="gle">gle</option>
+        <option value="ipk">ipk</option>
+        <option value="izh">izh</option>
+        <option value="kal">kal</option>
+        <option value="kca">kca</option>
+        <option value="koi">koi</option>
+        <option value="kpv">kpv</option>
+        <option value="liv">liv</option>
+        <option value="mdf">mdf</option>
+        <option value="mhr">mhr</option>
+        <option value="mns">mns</option>
+        <option value="mrj">mrj</option>
+        <option value="myv">myv</option>
+        <option value="nio">nio</option>
+        <option value="nob">nob</option>
+        <option value="rus">rus</option>
+        <option value="sje">sje</option>
+        <option value="sms">sms</option>
+        <option value="som">som</option>
+        <option value="udm">udm</option>
+        <option value="vep">vep</option>
+        <option value="vot">vot</option>
+        <option value="vro">vro</option>
+        <option value="yrk">yrk</option>
+      </select>
+
+      <input
+        id="word-input"
+        type="text"
+        placeholder="word..."
+        autocapitalize="off"
+        spellcheck="false"
+      />
+
+      <select id="pos-select">
+        <option value="any">any POS</option>
+        <option value="N">N</option>
+        <option value="V">V</option>
+        <option value="A">A</option>
+        <option value="Pron">Pron</option>
+        <option value="Num">Num</option>
+      </select>
+
+      <button type="submit">Search</button>
+      <span id="status"></span>
+    </form>
+
+    <div id="error"></div>
+    <div id="results"></div>
+
+    <script>
+      // Derive JSONC filename from pos + subclass.
+      // Pattern: {posname}.jsonc or {posname}_{subclass_lower}.jsonc
+      // e.g. N/null→noun.jsonc, V/Neg→verb_neg.jsonc, Pron/Dem→pronoun_dem.jsonc
+      const POS_NAMES = {
+        V: "verb",
+        N: "noun",
+        A: "adjective",
+        Num: "numeral",
+        Pron: "pronoun",
+      };
+
+      function schemaFilename(pos, subclass) {
+        const base = POS_NAMES[pos];
+        if (!base) return null;
+        if (!subclass) return `${base}.jsonc`;
+        return `${base}_${subclass.toLowerCase()}.jsonc`;
+      }
+
+      // --- UI elements ---
+      const form = document.getElementById("search-form");
+      const wordInput = document.getElementById("word-input");
+      const langSelect = document.getElementById("lang-select");
+      const posSelect = document.getElementById("pos-select");
+      const apiRootInput = document.getElementById("api-root-input");
+      const schemaBaseInput = document.getElementById("schema-base-input");
+      const resultsDiv = document.getElementById("results");
+      const errorDiv = document.getElementById("error");
+      const statusEl = document.getElementById("status");
+
+      // Restore from URL params
+      const params = new URLSearchParams(location.search);
+      if (params.get("lang")) langSelect.value = params.get("lang");
+      if (params.get("word")) wordInput.value = params.get("word");
+      if (params.get("pos")) posSelect.value = params.get("pos");
+      if (params.get("api")) apiRootInput.value = params.get("api");
+      if (params.get("word")) doSearch();
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const word = wordInput.value.trim();
+        if (!word) return;
+        const url = new URL(location.href);
+        url.searchParams.set("lang", langSelect.value);
+        url.searchParams.set("word", word);
+        url.searchParams.set("pos", posSelect.value);
+        history.pushState({}, "", url);
+        doSearch();
+      });
+
+      // --- Simple JSONC parser: strip // comments and trailing commas ---
+      function parseJsonc(text) {
+        const stripped = text
+          .replace(/\/\/[^\n]*/g, "")
+          .replace(/,(\s*[}\]])/g, "$1");
+        return JSON.parse(stripped);
+      }
+
+      // --- Collect all tag strings from a schema (exact) ---
+      function collectSchemaTags(schema) {
+        const tags = new Set();
+        for (const section of schema.sections || []) {
+          for (const table of section.tables || []) {
+            for (const row of table.rows || []) {
+              for (const tag of row.tags || []) tags.add(tag);
+            }
+          }
+        }
+        return tags;
+      }
+
+      // --- showIf check: visible if any apiTag contains ALL needed substrings ---
+      function showIfVisible(showIf, apiTagMap) {
+        if (!showIf || showIf.length === 0) return true;
+        const keys = [...apiTagMap.keys()];
+        return keys.some((k) => showIf.every((s) => k.includes(s)));
+      }
+
+      // --- Fetch JSONC schema ---
+      const schemaCache = {};
+      async function fetchSchema(lang, pos, subclass) {
+        const filename = schemaFilename(pos, subclass);
+        if (!filename) return null;
+
+        const base = schemaBaseInput.value.replace(/\/$/, "");
+        const url = `${base}/${lang}/${filename}`;
+        if (schemaCache[url]) return schemaCache[url];
+
+        try {
+          const resp = await fetch(url);
+          if (!resp.ok) return null;
+          const schema = parseJsonc(await resp.text());
+          schemaCache[url] = schema;
+          return schema;
+        } catch (e) {
+          console.warn("Schema fetch failed:", url, e);
+          return null;
+        }
+      }
+
+      // --- Render schema tables for one paradigm entry ---
+      function renderSchemaTables(schema, apiTagMap) {
+        const wrap = document.createElement("div");
+
+        for (const section of schema.sections || []) {
+          if (!showIfVisible(section.showIf, apiTagMap)) continue;
+
+          if (section.title) {
+            const h = document.createElement("div");
+            h.className = "section-heading";
+            h.textContent = section.title;
+            wrap.appendChild(h);
+          }
+
+          const tablesRow = document.createElement("div");
+          tablesRow.className = "tables-row";
+
+          for (const table of section.tables || []) {
+            if (!showIfVisible(table.showIf, apiTagMap)) continue;
+
+            const tw = document.createElement("div");
+            tw.className = "table-wrapper";
+
+            if (table.title) {
+              const h = document.createElement("p");
+              h.className = "table-title";
+              h.textContent = table.title;
+              tw.appendChild(h);
+            }
+
+            const tbl = document.createElement("table");
+
+            if (table.headers && table.headers.length > 0) {
+              const thead = document.createElement("thead");
+              const tr = document.createElement("tr");
+              for (const h of table.headers) {
+                const th = document.createElement("th");
+                th.textContent = h;
+                tr.appendChild(th);
+              }
+              thead.appendChild(tr);
+              tbl.appendChild(thead);
+            }
+
+            const tbody = document.createElement("tbody");
+            for (const row of table.rows || []) {
+              const tr = document.createElement("tr");
+              if (row.separator) tr.className = "separator";
+
+              const labelTd = document.createElement("td");
+              labelTd.className = "row-label";
+              labelTd.textContent = row.label;
+              tr.appendChild(labelTd);
+
+              for (let i = 0; i < row.tags.length; i++) {
+                const tag = row.tags[i];
+                const forms = apiTagMap.get(tag) || [];
+                const td = document.createElement("td");
+                if (row.colspan > 1) td.colSpan = row.colspan;
+                if (forms.length > 0) {
+                  const prefix = row.prefixes?.[i];
+                  if (prefix) {
+                    const sp = document.createElement("span");
+                    sp.className = "prefix";
+                    sp.textContent = prefix + " ";
+                    td.appendChild(sp);
+                  }
+                  td.appendChild(document.createTextNode(forms.join(", ")));
+                } else {
+                  td.textContent = "—";
+                  td.className = "cell-empty";
+                }
+                tr.appendChild(td);
+                if (row.colspan > 1) break;
+              }
+              tbody.appendChild(tr);
+            }
+            tbl.appendChild(tbody);
+            tw.appendChild(tbl);
+            tablesRow.appendChild(tw);
+          }
+          wrap.appendChild(tablesRow);
+        }
+        return wrap;
+      }
+
+      // --- Main search ---
+      async function doSearch() {
+        const word = wordInput.value.trim();
+        const lang = langSelect.value;
+        const pos = posSelect.value;
+        const apiRoot = apiRootInput.value.replace(/\/$/, "");
+
+        errorDiv.textContent = "";
+        resultsDiv.innerHTML = "";
+        statusEl.textContent = "Loading…";
+
+        const url = `${apiRoot}/paradigm/${lang}/${encodeURIComponent(word)}?size=full&pos=${pos}&format=json`;
+
+        let data;
+        try {
+          const resp = await fetch(url);
+          if (!resp.ok) {
+            errorDiv.textContent = `HTTP ${resp.status} from API`;
+            statusEl.textContent = "";
+            return;
+          }
+          data = await resp.json();
+        } catch (e) {
+          errorDiv.textContent = `Fetch failed: ${e}`;
+          statusEl.textContent = "";
+          return;
+        }
+
+        statusEl.textContent = "";
+
+        if (!data.paradigm_forms || data.paradigm_forms.length === 0) {
+          resultsDiv.textContent = "No results.";
+          return;
+        }
+
+        const frag = document.createDocumentFragment();
+
+        for (const entry of data.paradigm_forms) {
+          const block = document.createElement("div");
+          block.className = "paradigm-block";
+
+          const heading = document.createElement("h2");
+          heading.textContent = `${entry.lemma} (${entry.pos}${entry.subclass ? "+" + entry.subclass : ""})`;
+          block.appendChild(heading);
+
+          // Build exact tag→forms map
+          const apiTagMap = new Map();
+          for (const f of entry.forms || [])
+            apiTagMap.set(f.tags, f.forms || []);
+
+          const schema = await fetchSchema(
+            lang,
+            entry.pos,
+            entry.subclass || null,
+          );
+
+          if (!schema) {
+            const p = document.createElement("p");
+            p.className = "no-schema";
+            p.textContent = `No schema for ${lang}/${entry.pos}${entry.subclass ? "+" + entry.subclass : ""}.`;
+            block.appendChild(p);
+
+            // Fall back to raw table
+            const raw = document.createElement("div");
+            raw.className = "raw-table-wrap";
+            const tbl = document.createElement("table");
+            tbl.innerHTML =
+              "<thead><tr><th>Tags</th><th>Forms</th></tr></thead>";
+            const tbody = document.createElement("tbody");
+            for (const [tag, forms] of apiTagMap) {
+              const tr = document.createElement("tr");
+              const td1 = document.createElement("td");
+              td1.textContent = tag;
+              const td2 = document.createElement("td");
+              td2.textContent = forms.join(", ");
+              tr.append(td1, td2);
+              tbody.appendChild(tr);
+            }
+            tbl.appendChild(tbody);
+            raw.appendChild(tbl);
+            block.appendChild(raw);
+          } else {
+            const schemaTags = collectSchemaTags(schema); // exact strings
+
+            // In API, not in schema (exact)
+            const uncovered = [...apiTagMap.keys()].filter(
+              (t) => !schemaTags.has(t),
+            );
+
+            // In schema, not in API (exact)
+            const missing = [...schemaTags].filter((t) => !apiTagMap.has(t));
+
+            // 1. PROMINENT: uncovered API tags
+            if (uncovered.length > 0) {
+              const box = document.createElement("div");
+              box.className = "uncovered-box";
+              const h3 = document.createElement("h3");
+              h3.textContent = `In API, not in schema (${uncovered.length})`;
+              box.appendChild(h3);
+              const tbl = document.createElement("table");
+              tbl.innerHTML =
+                "<thead><tr><th>Tag</th><th>Forms</th></tr></thead>";
+              const tbody = document.createElement("tbody");
+              for (const t of uncovered.sort()) {
+                const tr = document.createElement("tr");
+                const td1 = document.createElement("td");
+                td1.className = "row-label";
+                td1.textContent = t;
+                const td2 = document.createElement("td");
+                td2.textContent = (apiTagMap.get(t) || []).join(", ");
+                tr.append(td1, td2);
+                tbody.appendChild(tr);
+              }
+              tbl.appendChild(tbody);
+              box.appendChild(tbl);
+              block.appendChild(box);
+            } else {
+              const p = document.createElement("p");
+              p.className = "all-covered";
+              p.textContent = "All API tags covered by schema ✓";
+              block.appendChild(p);
+            }
+
+            // 2. Schema tables
+            block.appendChild(renderSchemaTables(schema, apiTagMap));
+
+            // 3. Collapsible: in schema, no API match
+            const det = document.createElement("details");
+            const sum = document.createElement("summary");
+            sum.textContent = `In schema, no API match (${missing.length})`;
+            det.appendChild(sum);
+            if (missing.length === 0) {
+              const p = document.createElement("p");
+              p.textContent = "All schema tags matched ✓";
+              det.appendChild(p);
+            } else {
+              const ul = document.createElement("ul");
+              ul.className = "gap-list";
+              for (const t of missing.sort()) {
+                const li = document.createElement("li");
+                li.textContent = t;
+                ul.appendChild(li);
+              }
+              det.appendChild(ul);
+            }
+            block.appendChild(det);
+          }
+
+          frag.appendChild(block);
+        }
+
+        if (data.other_forms && data.other_forms.length > 0) {
+          const p = document.createElement("p");
+          p.className = "other-forms";
+          p.textContent =
+            "Other forms: " +
+            data.other_forms.map((f) => `${f.lemma} (${f.pos})`).join(", ");
+          frag.appendChild(p);
+        }
+
+        resultsDiv.appendChild(frag);
+      }
+    </script>
+  </body>
+</html>
