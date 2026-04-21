@@ -9,6 +9,7 @@
     import { getLocale } from "$lib/paraglide/runtime";
     import { langname } from "$lib/langnames";
     import { page } from "$app/state";
+    import { Progress } from "@skeletonlabs/skeleton-svelte";
 
     interface Props {
         data: PageData;
@@ -37,5 +38,14 @@
         <ParadigmWrapper data={data.parsed} {format} search={word} />
     {:else if data.error}
         <ErrorBox error={data.error} />
+    {:else if word}
+        <div class="flex w-full justify-center">
+            <Progress value={null} class="w-fit items-center">
+                <Progress.Circle class="[--size:--spacing(12)]">
+                    <Progress.CircleTrack />
+                    <Progress.CircleRange />
+                </Progress.Circle>
+            </Progress>
+        </div>
     {/if}
 </div>

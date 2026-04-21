@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { env } from "$env/dynamic/public";
 import { tools_for } from "$lib/langs";
 import { error } from "@sveltejs/kit";
@@ -15,7 +16,7 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
     // const size = search_params.get("size") || "standard";
     const pos = search_params.get("pos") || "any";
 
-    if (word.length == 0) {
+    if (!browser || word.length == 0) {
         return { word, pos };
     }
 
