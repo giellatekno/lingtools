@@ -2,7 +2,10 @@ import { convertJsonSchema } from "./json_converter";
 import type { LanguageSchema } from "./paradigm_types";
 import { parse } from "jsonc-parser";
 
-const schemas = import.meta.glob<string>("./**/*.jsonc", { as: "raw" });
+const schemas = import.meta.glob<string>("./**/*.jsonc", {
+    query: "?raw",
+    import: "default",
+});
 
 // When .jsonc files are done for lang, add it here
 const PARADIGM_LANGS = ["sma", "sme", "fkv"];
