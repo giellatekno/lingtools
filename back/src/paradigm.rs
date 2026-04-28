@@ -7,7 +7,7 @@
 //!
 use serde::{Deserialize, Serialize};
 
-use analysis_string_parser::Pos;
+use analysis_string_parser::Tag;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Deserialize, Serialize)]
 pub enum ParadigmSize {
@@ -65,18 +65,17 @@ pub enum AcceptedPos {
 }
 
 impl AcceptedPos {
-    /// Turn this [`AcceptedPos`] into the corresponding standard [`Pos`], wrapped in
+    /// Turn this [`AcceptedPos`] into the corresponding standard [`Tag`], wrapped in
     /// [`Some`] if it is an actual pos, or [`None`] if it is [`AcceptedPos::Any`].
-    pub fn to_standard_pos(&self) -> Option<Pos> {
-        use analysis_string_parser::Pos::*;
+    pub fn to_standard_pos(&self) -> Option<Tag> {
         match self {
             AcceptedPos::Any => None,
-            AcceptedPos::A => Some(A),
-            AcceptedPos::N => Some(N),
-            AcceptedPos::V => Some(V),
-            AcceptedPos::Adv => Some(Adv),
-            AcceptedPos::Num => Some(Num),
-            AcceptedPos::Pron => Some(Pron),
+            AcceptedPos::A => Some(Tag::A),
+            AcceptedPos::N => Some(Tag::N),
+            AcceptedPos::V => Some(Tag::V),
+            AcceptedPos::Adv => Some(Tag::Adv),
+            AcceptedPos::Num => Some(Tag::Num),
+            AcceptedPos::Pron => Some(Tag::Pron),
         }
     }
 }

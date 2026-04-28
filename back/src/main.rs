@@ -4,7 +4,7 @@ mod common_url;
 mod endpoints;
 mod file_watcher;
 mod generate;
-mod grammarcheck;
+//mod grammarcheck;
 mod langmodel_files;
 mod memmem_split;
 mod multimap;

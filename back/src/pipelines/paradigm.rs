@@ -14,7 +14,7 @@ use crate::pipelines::analyze::analyze_subprocess;
 use crate::pipelines::analyze::{AnalysisResult, parse_analyse_subprocess_results};
 use crate::pipelines::generate::generate_libhfst;
 use crate::pipelines::generate::generate_subprocess;
-use analysis_string_parser::{AnalysisParts, Pos, parse_analysis_parts};
+use analysis_string_parser::{Tag, parse_analysis_parts};
 
 use crate::paradigm::ParadigmSize;
 
@@ -33,7 +33,7 @@ pub struct Form {
 #[derive(Serialize)]
 pub struct ParadigmForm {
     pub lemma: String,
-    pub pos: Pos,
+    pub pos: Tag,
     pub subclass: Option<String>,
     pub forms: Vec<Form>,
 }
@@ -42,11 +42,11 @@ impl std::fmt::Display for ParadigmForm {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for Form { tags, forms } in self.forms.iter() {
             for form in forms.iter() {
-                write!(f, "{}+{}", self.lemma, self.pos)?;
+                write!(f, "{}+{}", self.lemma, self.pos.as_str())?;
                 if let Some(ref subclass) = self.subclass {
                     let _ = write!(f, "+{subclass}");
                 }
-                write!(f, "+{tags}\t{form}\n")?;
+                writeln!(f, "+{tags}\t{form}")?;
             }
         }
         Ok(())
@@ -57,14 +57,14 @@ impl std::fmt::Display for ParadigmForm {
 #[derive(Serialize)]
 pub struct OtherForm {
     pub lemma: String,
-    pub pos: Pos,
+    pub pos: Tag,
     pub subclass: Option<String>,
 }
 
 #[derive(Serialize)]
 pub struct ParadigmOutput {
     /// The input.
-    pub input: (String, Option<Pos>),
+    pub input: (String, Option<Tag>),
     /// All the generated forms.
     pub paradigm_forms: Vec<ParadigmForm>,
     /// A list of other analyses for which the input lemma was a conjugated form
@@ -74,7 +74,7 @@ pub struct ParadigmOutput {
 
 impl std::fmt::Display for ParadigmOutput {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        if self.paradigm_forms.len() == 0 {
+        if self.paradigm_forms.is_empty() {
             writeln!(f, "[no results]")?;
         } else {
             for result in self.paradigm_forms.iter() {
@@ -83,11 +83,11 @@ impl std::fmt::Display for ParadigmOutput {
         };
         writeln!(f)?;
         write!(f, "'{}' is ", self.input.0)?;
-        if self.other_forms.len() == 0 {
+        if self.other_forms.is_empty() {
             writeln!(f, "not a conjugated form of any other lemmas")?;
         } else {
             writeln!(f, "also a conjugated form of:")?;
-            for form in self.other_forms.iter() {
+            for _form in self.other_forms.iter() {
                 //writeln!(f, "- {form}")?;
             }
         };
@@ -135,15 +135,15 @@ async fn all_paradigms_libhfst(
 pub async fn paradigm_libhfst(
     lang: &str,
     input: &str,
-    wanted_pos: Option<Pos>,
+    wanted_pos: Option<Tag>,
     size: ParadigmSize,
 ) -> Result<ParadigmOutput, PipelineError> {
     let mut seen = HashSet::new();
-    let mut paradigm_forms: HashMap<(String, Pos, Option<String>), Vec<Form>> = HashMap::new();
+    let mut paradigm_forms: HashMap<(String, Tag, Option<String>), Vec<Form>> = HashMap::new();
 
     let mut other_forms = vec![];
 
-    for AnalysisResult { wordform, analyses } in analyze_libhfst(lang, input).await? {
+    for AnalysisResult { wordform: _, analyses } in analyze_libhfst(lang, input).await? {
         for analysis in analyses {
             let analysis = without_ats::without_ats(&analysis);
 
@@ -178,7 +178,7 @@ pub async fn paradigm_libhfst(
                 let mut subclass = None;
                 for part in analysed.parts.iter() {
                     if let Some(tag) = part.tag() && tag.is_subclass() {
-                        subclass = Some(tag.to_string());
+                        subclass = Some(tag.as_str().to_string());
                     }
                 }
 
@@ -193,7 +193,7 @@ pub async fn paradigm_libhfst(
 
             let paradigm_file = get_paradigmfile(lang, size)
                 .await
-                .map_err(|e| PipelineError::ParadigmFile(e))?;
+                .map_err(PipelineError::ParadigmFile)?;
 
             let prefix = analysed.generation_string_prefix();
             let all_potential_forms = get_potential_forms(&prefix, wanted_pos, &paradigm_file);
@@ -203,27 +203,26 @@ pub async fn paradigm_libhfst(
                 let analysis = parse_analysis_parts(&analysis)
                     .expect("analysis from generator is not empty");
                 let lemma = analysis.lemma().expect("has a lemma");
-                let pos = analysis.pos.expect("has a pos");
+                // TODO: same as in the other function: 'pos' is a variant name of Tag.
+                let poss = analysis.pos.expect("has a pos");
                 let mut subclass = None;
                 for part in analysis.parts.iter() {
                     if let Some(tag) = part.tag() && tag.is_subclass() {
-                        subclass = Some(tag.to_string());
+                        subclass = Some(tag.as_str().to_string());
                     }
                 }
 
-                let entry = paradigm_forms.entry((lemma, pos, subclass)).or_default();
+                let entry = paradigm_forms.entry((lemma, poss, subclass)).or_default();
 
                 use std::fmt::Write;
-                use analysis_string_parser::OwnedTag;
                 let mut tags = String::new();
                 analysis.parts
                     .iter()
                     .filter(|&part| {
                         match part.tag() {
-                            Some(OwnedTag::Pos(_)) => false,
-                            Some(tag) if tag.is_subclass() => false,
-                            Some(OwnedTag::Cmp) => false,
-                            Some(OwnedTag::CmpX(_)) => false,
+                            Some(tag) if tag.is_pos() || tag.is_subclass() => false,
+                            Some(tag) if tag.as_str().starts_with("Cmp/") => false,
+                            Some(Tag::Cmp) => false,
                             Some(_other_tag) => true,
                             None => false,
                         }
@@ -244,10 +243,11 @@ pub async fn paradigm_libhfst(
 
     let input = (input.to_owned(), wanted_pos);
 
+    // Same thing here: "pos" is a variant name of Tag
     let paradigm_forms: Vec<ParadigmForm> = paradigm_forms.into_iter()
-        .map(|((lemma, pos, subclass), forms)| ParadigmForm {
+        .map(|((lemma, poss, subclass), forms)| ParadigmForm {
             lemma,
-            pos,
+            pos: poss,
             subclass,
             forms,
         })
@@ -263,7 +263,7 @@ pub async fn paradigm_libhfst(
 pub async fn paradigm_subprocess(
     lang: &str,
     input: &str,
-    wanted_pos: Option<Pos>,
+    wanted_pos: Option<Tag>,
     size: ParadigmSize,
 ) -> Result<ParadigmOutput, PipelineError> {
     let analyses = analyze_subprocess(lang, input, true).await?;
@@ -271,9 +271,9 @@ pub async fn paradigm_subprocess(
     println!("{analyses:?}");
 
     let mut seen = HashSet::new();
-    let mut paradigm_forms: HashMap<(String, Pos, Option<String>), Vec<Form>> = HashMap::new();
+    let mut paradigm_forms: HashMap<(String, Tag, Option<String>), Vec<Form>> = HashMap::new();
     let mut other_forms = vec![];
-    for AnalysisResult { wordform, analyses } in analyses {
+    for AnalysisResult { wordform: _, analyses } in analyses {
         for analysis in analyses {
             let Some(analysed) = parse_analysis_parts(&analysis) else {
                 tracing::trace!(analysis, "raw analysis failed to parse");
@@ -306,7 +306,7 @@ pub async fn paradigm_subprocess(
                 let mut subclass = None;
                 for part in analysed.parts.iter() {
                     if let Some(tag) = part.tag() && tag.is_subclass() {
-                        subclass = Some(tag.to_string());
+                        subclass = Some(tag.as_str().to_string());
                     }
                 }
 
@@ -321,7 +321,7 @@ pub async fn paradigm_subprocess(
 
             let paradigm_file = get_paradigmfile(lang, size)
                 .await
-                .map_err(|e| PipelineError::ParadigmFile(e))?;
+                .map_err(PipelineError::ParadigmFile)?;
             let prefix = analysed.generation_string_prefix();
             let all_potential_forms = get_potential_forms(&prefix, wanted_pos, &paradigm_file);
             let generated_forms = generate_subprocess(lang, &all_potential_forms).await?;
@@ -331,15 +331,19 @@ pub async fn paradigm_subprocess(
                 let analysis = parse_analysis_parts(&analysis)
                     .expect("analysis from generator is not empty");
                 let lemma = analysis.lemma().expect("has a lemma");
-                let pos = analysis.pos.expect("has a pos");
+
+                // TODO: "pattern binding `pos` is named the same as one of the variants
+                // of the type `analysis_string_parser::Tag`"
+                // BUT: I am not explicitly using the variant names, so....????
+                let poss = analysis.pos.expect("has a pos");
                 let mut subclass = None;
                 for part in analysis.parts.iter() {
                     if let Some(tag) = part.tag() && tag.is_subclass() {
-                        subclass = Some(tag.to_string());
+                        subclass = Some(tag.as_str().to_string());
                     }
                 }
 
-                let entry = paradigm_forms.entry((lemma, pos, subclass)).or_default();
+                let entry = paradigm_forms.entry((lemma, poss, subclass)).or_default();
 
                 let tags = analysis.parts
                     .iter()
@@ -349,9 +353,18 @@ pub async fn paradigm_subprocess(
                             None => false,
                         }
                     })
-                    .map(|part| format!("{part}"))
-                    .intersperse(String::from("+"))
-                    .collect::<String>();
+                    .map(|part| format!("{part}"));
+
+                // #[warn(future_incompatible)] is on, so can't chain to .intersperse()
+                // from Itertools, because the standard library may (at some unknown
+                // point in the future, stabilize .intersperse on iterators, which
+                // *could potentially* work different than the intersperse from Itertools.
+                // Hence the warning, and hence why we do it like this just to silence
+                // the warning.
+                // TODO: If iterator::intersperse is stabilized, change back to just being
+                // a long chain.
+                let tags = itertools::Itertools::intersperse(tags, String::from("+"));
+                let tags = tags.collect::<String>();
 
                 entry.push(Form { tags, forms: wordforms });
             }
@@ -360,8 +373,9 @@ pub async fn paradigm_subprocess(
 
     let input = (input.to_owned(), wanted_pos);
 
-    let paradigm_forms: Vec<ParadigmForm> = paradigm_forms.into_iter().map(|((lemma, pos, subclass), forms)| ParadigmForm {
-        lemma, pos, subclass, forms
+    // Same as above: "pos" is a variant
+    let paradigm_forms: Vec<ParadigmForm> = paradigm_forms.into_iter().map(|((lemma, poss, subclass), forms)| ParadigmForm {
+        lemma, pos: poss, subclass, forms
     })
     .collect();
     Ok(ParadigmOutput {
@@ -374,7 +388,7 @@ pub async fn paradigm_subprocess(
 /// Generate a newline delimited `String` of the `input_lemma+tags`, where `tags`
 /// are all the potential forms that can have a generated form, for the given language,
 /// and paradigm size. Used as input to the generator when finding all paradigms.
-fn get_potential_forms(prefix: &str, pos: Option<Pos>, paradigm_file: &str) -> String {
+fn get_potential_forms(prefix: &str, pos: Option<Tag>, paradigm_file: &str) -> String {
     use std::fmt::Write;
     let mut out = String::new();
     paradigm_file
@@ -433,10 +447,10 @@ async fn generate_paradigm_file(
 
     let paradigm_text_file = format!("paradigm_{size}.{lang}.txt");
     let korpustags_file = format!("korpustags.{lang}.txt");
-    let gramfile = get_langfile(&lang, &paradigm_text_file)
-        .ok_or_else(|| GenerateParadigmFileError::MissingDefinitionFile(paradigm_text_file))?;
-    let tagfile = get_langfile(&lang, &korpustags_file)
-        .ok_or_else(|| GenerateParadigmFileError::MissingDefinitionFile(korpustags_file))?;
+    let gramfile = get_langfile(lang, &paradigm_text_file)
+        .ok_or(GenerateParadigmFileError::MissingDefinitionFile(paradigm_text_file))?;
+    let tagfile = get_langfile(lang, &korpustags_file)
+        .ok_or(GenerateParadigmFileError::MissingDefinitionFile(korpustags_file))?;
 
     let gram_entries = read_gramfile(gramfile).await?;
     let tagmap = read_tagfile(tagfile).await?;
@@ -463,7 +477,7 @@ fn expand_gram_entries(
             }
 
             match tagmap.get(split) {
-                Some(s) => v.extend(s.iter().map(|s| s.clone())),
+                Some(s) => v.extend(s.iter().cloned()),
                 None => v.push(split.to_owned()),
             };
 
@@ -475,8 +489,7 @@ fn expand_gram_entries(
                 .into_iter()
                 .multi_cartesian_product()
                 .map(|tags_vec| {
-                    let tags_s = tags_vec.iter().filter(|s| s.len() > 0).join("+");
-                    format!("{tags_s}")
+                    tags_vec.iter().filter(|s| !s.is_empty()).join("+")
                 }),
         );
     }
@@ -492,8 +505,8 @@ async fn read_gramfile(gramfile: std::path::PathBuf) -> Result<Vec<String>, std:
     Ok(contents
         .lines()
         .map(|line| line.trim())
-        .filter(|line| line.len() > 0)
-        .filter(|line| !line.starts_with(&['#', '%', '$']))
+        .filter(|line| !line.is_empty())
+        .filter(|line| !line.starts_with(['#', '%', '$']))
         .map(|line| line.to_string())
         .collect::<Vec<String>>())
 }
@@ -519,11 +532,11 @@ async fn read_tagfile(
         .lines()
         .map(|line| line.trim())
         .filter(|line| !line.is_empty())
-        .filter(|line| !line.starts_with(&['%', '$']))
+        .filter(|line| !line.starts_with(['%', '$']))
         .filter(|line| !line.contains('='))
         .for_each(|line| {
-            if line.starts_with('#') {
-                m.insert(line[1..].to_owned(), current_vec.clone());
+            if let Some(stripped) = line.strip_prefix('#') {
+                m.insert(stripped.to_owned(), current_vec.clone());
                 current_vec.clear();
             } else {
                 // slice up to the first tab, or space, or if there is no

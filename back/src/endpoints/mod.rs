@@ -1,15 +1,14 @@
-use axum::Json;
 use axum::extract::Path;
 use axum::extract::Query;
 use axum::response::IntoResponse;
 use axum::response::Response;
+use axum::Json;
 
 use crate::common_url::Format;
 use crate::common_url::FormatQueryParam;
 use crate::common_url::LangAndInputParams;
 use crate::common_url::LibhfstQueryParam;
 
-use crate::pipelines::PipelineError;
 use crate::pipelines::analyze::analyze_libhfst;
 use crate::pipelines::analyze::analyze_subprocess;
 use crate::pipelines::dependency::dependency_libhfst;
@@ -27,6 +26,7 @@ use crate::pipelines::paradigm::paradigm_subprocess;
 use crate::pipelines::transcribe::transcribe_libhfst;
 use crate::pipelines::transcribe::transcribe_subprocess;
 use crate::pipelines::unknown_in_x_by_freq::unknown_in_x_by_freq_subprocess;
+use crate::pipelines::PipelineError;
 
 enum Responder {
     String(String),
@@ -77,10 +77,10 @@ pub struct StructuredOutput<T> {
     results: T,
 }
 
-#[derive(Debug, serde::Serialize)]
-pub struct MultiOutput<T> {
-    results: T,
-}
+// #[derive(Debug, serde::Serialize)]
+// pub struct MultiOutput<T> {
+//     results: T,
+// }
 
 impl<T> std::fmt::Display for StructuredOutput<Vec<T>>
 where
@@ -96,20 +96,20 @@ where
     }
 }
 
-impl<T> std::fmt::Display for MultiOutput<Vec<Vec<T>>>
-where
-    T: std::fmt::Display,
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        for outer in self.results.iter() {
-            for item in outer {
-                writeln!(f, "{item}")?;
-            }
-            writeln!(f)?;
-        }
-        Ok(())
-    }
-}
+// impl<T> std::fmt::Display for MultiOutput<Vec<Vec<T>>>
+// where
+//     T: std::fmt::Display,
+// {
+//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+//         for outer in self.results.iter() {
+//             for item in outer {
+//                 writeln!(f, "{item}")?;
+//             }
+//             writeln!(f)?;
+//         }
+//         Ok(())
+//     }
+// }
 
 // TODO: These pipelines are almost entirely the same, and many of them literally are.
 // However, it turned out to not be super trivially easy to just macro them, but it
@@ -317,7 +317,7 @@ pub async fn unknown_in_x_by_freq(
     Json(body): Json<UnknownInXByFreqInput>,
 ) -> Response {
     use crate::util::{gunzip, read_docx_text};
-    use base64::{Engine as _, engine::general_purpose};
+    use base64::{engine::general_purpose, Engine as _};
     use http::StatusCode;
 
     const UE: StatusCode = http::StatusCode::UNPROCESSABLE_ENTITY;

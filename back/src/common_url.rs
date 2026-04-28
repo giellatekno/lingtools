@@ -26,9 +26,9 @@ impl FormatQueryParam {
         self.format.unwrap_or(value)
     }
 
-    pub fn unwrap_or_json(&self) -> Format {
-        self.unwrap_or(Format::Json)
-    }
+    //pub fn unwrap_or_json(&self) -> Format {
+    //    self.unwrap_or(Format::Json)
+    //}
 }
 
 /// Common query param: `libhfst`. Accepts

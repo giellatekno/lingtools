@@ -2,15 +2,19 @@
 
 use axum::{
     extract::{Path, Query},
-    response::{IntoResponse, Response},
+    response::Response,
+    // response::{IntoResponse, Response},
 };
 
-use crate::common_url::{Format, FormatQueryParam, LangAndInputParams};
+use crate::common_url::{FormatQueryParam, LangAndInputParams};
+//use crate::common_url::{Format, FormatQueryParam, LangAndInputParams};
 
-pub async fn grammarcheck_endpoint(
-    Path(LangAndInputParams { lang, input }): Path<LangAndInputParams>,
-    format: Query<FormatQueryParam>,
+pub async fn _grammarcheck_endpoint(
+    Path(LangAndInputParams { lang: _, input: _ }): Path<LangAndInputParams>,
+    _format: Query<FormatQueryParam>,
 ) -> Response {
+    unimplemented!("maybe some day");
+    /*
     let format = format.unwrap_or(Format::Text);
 
     let result = match match tokio::task::spawn_blocking(move || {
@@ -34,4 +38,5 @@ pub async fn grammarcheck_endpoint(
             axum::Json(obj).into_response()
         }
     }
+    */
 }

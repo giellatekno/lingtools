@@ -4,11 +4,11 @@ use axum::{
     extract::Json,
     response::{IntoResponse, Response},
 };
-use base64::{Engine as _, engine::general_purpose};
+use base64::{engine::general_purpose, Engine as _};
 use cmd_lib::spawn_with_output;
 use http::StatusCode;
 use nix::{
-    sys::signal::{Signal, kill},
+    sys::signal::{kill, Signal},
     unistd::Pid,
 };
 use serde::Deserialize;
@@ -108,7 +108,7 @@ pub async fn lemma_count_endpoint(
         let done = rx.try_recv().unwrap_or(false);
         if !done {
             for pid in pids {
-                if kill(Pid::from_raw(pid as i32), Signal::SIGKILL).is_err() {
+                if kill(Pid::from_raw(pid), Signal::SIGKILL).is_err() {
                     info!("failed to kill (pid={pid})");
                 }
             }

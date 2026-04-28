@@ -44,9 +44,9 @@ fn unwanted_analyses((_word, analysis): &(&str, &str)) -> bool {
 }
 
 // unwanted words: words that do not contain any norwegian letters
-fn unwanted_words((word, _analysis): &(&str, &str)) -> bool {
-    word.contains(NOB_ALPHABET)
-}
+// fn unwanted_words((word, _analysis): &(&str, &str)) -> bool {
+//     word.contains(NOB_ALPHABET)
+// }
 
 pub async fn unknown_in_x_by_freq_subprocess(
     input: String,
@@ -99,7 +99,7 @@ pub async fn unknown_in_x_by_freq_subprocess(
     let recognized_words = results
         .lines()
         .map(|line| line.trim())
-        .filter(|line| line.len() > 0)
+        .filter(|line| !line.is_empty())
         .map(extract_word_and_analysis)
         .filter(unwanted_analyses)
         .filter(|(word, _analysis)| word.contains(NOB_ALPHABET))

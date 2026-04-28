@@ -1,5 +1,5 @@
 use std::collections::{HashMap, HashSet};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::sync::RwLock;
 
 use axum::extract::Query;
@@ -7,7 +7,7 @@ use axum::response::{IntoResponse, Json, Response};
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use tracing::{debug, error, info, span, Level};
+use tracing::{error, info, span, Level};
 
 use crate::common_url::{BoolQueryParam, Format, FormatQueryParam};
 
@@ -62,9 +62,8 @@ impl LangmodelFiles {
                 // "{lang}" - which for now is true, but may not always be
                 [Some(replaced), langmodel_file.alt_filename.clone()]
             })
-            .filter_map(|opt| opt)
-            .filter(|langmodel_filename| langmodel_filename == filename)
-            .next()
+            .flatten()
+            .find(|langmodel_filename| langmodel_filename == filename)
             .is_some()
     }
 }
@@ -116,7 +115,7 @@ impl LangmodelFile {
     /// and the filename it was found under, which just so happens to be
     /// the exact same type as the key of the LANGFILES hashmap.
     #[tracing::instrument(level = "trace", skip(self, base), fields(file = self.filename))]
-    pub fn find_on_system(&self, base: &PathBuf, repo: &str) -> Option<(PathBuf, String)> {
+    pub fn find_on_system(&self, base: &Path, repo: &str) -> Option<(PathBuf, String)> {
         // try WP_LANGFOLDER/REPO/FILENAME
         let filename = self.filename.replace("{lang}", repo);
         let path = base.join(repo).join(&filename);
@@ -147,9 +146,9 @@ impl LangmodelFile {
         }
 
         // if we have an alternate file..
-        if self.alt_filename.is_some() {
+        if let Some(ref alt_filename) = self.alt_filename {
             //try WP_LANGFOLDER/REPO/ALT_FILENAME
-            let alt_filename = self.alt_filename.as_ref().unwrap().replace("{lang}", repo);
+            let alt_filename = alt_filename.replace("{lang}", repo);
             let path = base.join(repo).join(&alt_filename);
             if path.is_file() {
                 //debug!(path = ?path, "found file");
@@ -200,12 +199,9 @@ pub fn load_langfiles() {
                 }
             }
 
-            match file.find_on_system(&langfolder, lang) {
-                Some((path, filename)) => {
-                    let key = (lang.to_string(), filename);
-                    langfiles.insert(key, path);
-                }
-                None => {}
+            if let Some((path, filename)) = file.find_on_system(&langfolder, lang) {
+                let key = (lang.to_string(), filename);
+                langfiles.insert(key, path);
             };
         })
     });
@@ -358,7 +354,7 @@ pub fn get_langfile(lang: &str, file: &str) -> Option<PathBuf> {
         .read()
         .unwrap()
         .get(&(lang.to_string(), file.to_string()))
-        .map(|path| path.clone())
+        .cloned()
 }
 
 // The environment variable WP_LANGFOLDER
@@ -467,5 +463,5 @@ fn path_component_as_normal_str(component: std::path::Component<'_>) -> Result<&
         error!("always expect path component to be normal component");
         return Err(());
     };
-    Ok(osstr.to_str().ok_or(())?)
+    osstr.to_str().ok_or(())
 }

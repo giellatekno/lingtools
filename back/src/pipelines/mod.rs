@@ -164,7 +164,7 @@ pub fn get_langfile_generator(lang: &str) -> Result<std::path::PathBuf, Pipeline
 
 pub fn get_langfile_korp(lang: &str) -> Result<std::path::PathBuf, PipelineError> {
     get_langfile(lang, "korp.cg3")
-        .or_else(|| get_langfile(&lang, "functions.bin"))
+        .or_else(|| get_langfile(lang, "functions.bin"))
         .ok_or_else(|| {
             let file = "(korp.cg3|functions.bin)".to_string();
             PipelineError::missing_files(lang, Some(vec![file]))
@@ -178,7 +178,7 @@ pub fn get_langfile_tokenizer(lang: &str) -> Result<std::path::PathBuf, Pipeline
 
 pub fn get_langfile_disambiguator(lang: &str) -> Result<std::path::PathBuf, PipelineError> {
     get_langfile(lang, "disambiguator.cg3")
-        .or_else(|| get_langfile(&lang, "disambiguator.bin"))
+        .or_else(|| get_langfile(lang, "disambiguator.bin"))
         .ok_or_else(|| {
             let file = "disambiguator.(cg3|bin)".to_string();
             PipelineError::missing_files(lang, Some(vec![file]))
@@ -187,7 +187,7 @@ pub fn get_langfile_disambiguator(lang: &str) -> Result<std::path::PathBuf, Pipe
 
 pub fn get_langfile_dependency(lang: &str) -> Result<std::path::PathBuf, PipelineError> {
     get_langfile(lang, "dependency.cg3")
-        .or_else(|| get_langfile(&lang, "dependency.bin"))
+        .or_else(|| get_langfile(lang, "dependency.bin"))
         .ok_or_else(|| {
             let file = "dependency.(cg3|bin)".to_string();
             PipelineError::missing_files(lang, Some(vec![file]))

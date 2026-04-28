@@ -3,7 +3,7 @@ use crate::pipelines::PipelineError;
 
 pub async fn transcribe_subprocess(lang: &str, input: &str) -> Result<String, PipelineError> {
     let file = "txt2ipa.lookup.hfstol";
-    let Some(txt2ipa) = get_langfile(&lang, file) else {
+    let Some(txt2ipa) = get_langfile(lang, file) else {
         return Err(PipelineError::missing_files(
             lang,
             Some(vec![file.to_string()]),
