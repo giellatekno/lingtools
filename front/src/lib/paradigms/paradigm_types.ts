@@ -29,7 +29,7 @@ export interface JsonLanguageSchema {
 }
 
 export interface Row {
-    label: string | (() => string);
+    label: () => string;
     tags: string[];
     colspan?: number;
     prefixes?: string[];

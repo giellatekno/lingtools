@@ -74,3 +74,12 @@ When `"validateRows": true` is set on a section, a row is only shown if its **fi
 ### showIf
 
 Both sections and tables accept `"showIf": ["Tag1", "Tag2"]`. The section/table is hidden unless all listed tags appear somewhere in the paradigm results.
+
+## Translations
+
+Every `title`, `label`, and `headers` string is automatically looked up in the translation system. The lookup adds the prefix `paradigm_`, so `"nominative"` looks for the key `paradigm_nominative`.
+
+- If the key exists, the text is shown in the user's language (Norwegian, North Sami, etc.)
+- If not, the string is shown literally. Correct for language-specific pronouns like `"mun"` or terms with no generic translation.
+
+Most grammatical terms (cases, moods, tenses, persons, numbers) are already translated. To check if a key exists, or to add a new one, look in `src/lib/paraglide/messages/`.
