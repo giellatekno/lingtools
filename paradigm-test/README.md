@@ -9,16 +9,11 @@ For each search result it shows:
 
 ## Running
 
-Serve from the `lingtools/` root so the schema JSONC files are reachable:
-
 ```sh
 make run
 ```
 
-Starts a Python HTTP server on port 8080 and prints the URL.
-Override the port with `PORT=9000 make run`.
-
-The API URL defaults to `https://gtweb.uit.no/lingtools-api` and can be changed in the config bar at the top of the page (e.g. to `http://localhost:3000` when running a local API instance).
+Open the printed URL. The API field at the top of the page defaults to the production API. Change it if needed (e.g. `http://localhost:3000` for a local instance).
 
 ## Running a local API instance
 
@@ -27,7 +22,7 @@ The API is a Rust server in `../back/`. Requires the Giella language models inst
 
 ```sh
 cd ../back
-cp .env.default .env   # first time only — set WP_LANGFOLDER in .env
+cp .env.default .env   # first time only. Set WP_LANGFOLDER in .env
 just dev               # starts on port 3000 with auto-reload
 ```
 
@@ -36,19 +31,19 @@ See `../back/Readme.md` for more details.
 ## Schema files
 
 The JSONC table schemas live in `../front/src/lib/paradigms/{lang}/`.
-The tester fetches them at runtime. No build step needed.
 Adding a new language only requires adding JSONC files there. The tester discovers them automatically.
+See the `README.md` in `../front/src/lib/paradigms/` for more details about the JSONC files.
 
 ## Why doesn't this wordform show up?
 
-If an expected wordform is missing from the tables, there are two likely causes:
+If an expected wordform is present in the JSONC files, but is not returned from the API, there are two likely causes:
 
 ### 1. The API does not generate the wordform
 
 The API uses two files to determine which wordforms to generate for a given lemma, both found in each `lang-xxx` repository:
 
-- `korpustags.xxx.txt`: groups related tags under keywords (e.g. all case tags under `Case`)
-- `paradigm_full.xxx.txt`: lists all tag combinations the API will attempt to generate
+- `devtools/testdata/korpustags.xxx.txt`: groups related tags under keywords (e.g. all case tags under `Case`)
+- `src/fst/morphology/test/paradigm_full.xxx.txt`: lists all tag combinations the API will attempt to generate
 
 The API only returns combinations that produce an actual word. For example, `giella+N+Sg+Nom` is returned, but `giella+V+Inf` is not, because that combination doesn't exist.
 

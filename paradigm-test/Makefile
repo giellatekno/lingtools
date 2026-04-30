@@ -4,5 +4,7 @@ URL   = http://localhost:$(PORT)/paradigm-test/paradigm-test.html
 .PHONY: run
 
 run:
-	@echo "Open: $(URL)"
+	@echo "Open page at:"
+	@echo "$(URL)"
+	@echo ""
 	python3 -m http.server $(PORT) --directory ..

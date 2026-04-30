@@ -111,9 +111,7 @@
       .section-heading {
         font-size: 1rem;
         font-weight: 700;
-        color: #1d4ed8;
         margin: 1.5rem 0 0.6rem;
-        text-transform: uppercase;
         letter-spacing: 0.03em;
       }
       .table-title {
@@ -207,7 +205,7 @@
       <input
         id="api-root-input"
         type="text"
-        value="http://gtweb.uit.no/lingtools-api/"
+        value="https://gtweb.uit.no/lingtools-api"
       />
       <label for="schema-base-input">Schema path:</label>
       <input
@@ -219,7 +217,7 @@
     </div>
 
     <form id="search-form">
-      <select id="lang-select" selected="sme">
+      <select id="lang-select">
         <option value="bxr">bxr</option>
         <option value="ciw">ciw</option>
         <option value="cor">cor</option>
@@ -247,7 +245,7 @@
         <option value="rus">rus</option>
         <option value="sje">sje</option>
         <option value="sma">sma</option>
-        <option value="sme">sme</option>
+        <option value="sme" selected>sme</option>
         <option value="smj">smj</option>
         <option value="smn">smn</option>
         <option value="sms">sms</option>
@@ -485,7 +483,8 @@
         try {
           const resp = await fetch(url);
           if (!resp.ok) {
-            errorDiv.textContent = `HTTP ${resp.status} from API`;
+            const body = await resp.json().catch(() => null);
+            errorDiv.textContent = `HTTP ${resp.status}: ${body?.error ?? "API error"}`;
             statusEl.textContent = "";
             return;
           }
@@ -497,6 +496,11 @@
         }
 
         statusEl.textContent = "";
+
+        if (data.error) {
+          errorDiv.textContent = `API error: ${data.error}`;
+          return;
+        }
 
         if (!data.paradigm_forms || data.paradigm_forms.length === 0) {
           resultsDiv.textContent = "No results.";
