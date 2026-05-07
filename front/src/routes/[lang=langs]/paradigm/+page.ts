@@ -26,17 +26,29 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         response = await fetch(api_url);
     } catch (e) {
         console.error(e);
-        return { word, pos, error: "fetch() from API failed" };
+        return { word, error: "fetch() from API failed" };
     }
 
     if (response.status !== 200) {
-        return { word, pos, error: `non-200 from API: ${response.status}` };
+        return { word, error: `non-200 from API: ${response.status}` };
     }
+    let json;
     try {
-        const json = await response.json();
+        json = await response.json();
+    } catch (e) {
+        console.error(e);
+        return { word, error: "API returned invalid JSON" };
+    }
+
+    if (json.error) {
+        return { word, error: json.error };
+    }
+
+    try {
         const parsed = ParadigmResponse.parse(json);
         return { word, parsed };
     } catch (e) {
-        return { word, pos, error: `Parsing JSON failed: ${e}` };
+        console.error(e);
+        return { word, error: "Unexpected response format from API" };
     }
 };

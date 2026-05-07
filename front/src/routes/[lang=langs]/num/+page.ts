@@ -8,11 +8,10 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         error(404, "Not Found");
     }
     const lang = params.lang;
-    const query_params = url.searchParams;
-    const q = query_params.get("q");
-    const method = query_params.get("method");
+    const q = url.searchParams.get("q");
+    const method = url.searchParams.get("method");
 
-    if (q === null || q === "") {
+    if (!q) {
         return {};
     }
 
@@ -25,12 +24,22 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return { error: "fetch() from API failed" };
     }
 
-    const text = await response.text();
-    if (response.status !== 200) {
-        return { error: `non-200 from API: ${text}` };
+    if (!response.ok) {
+        return { error: `Non-200 from API: ${response.status}` };
     }
-    // TODO: Parse
-    const parsed = text;
 
-    return { q: q, results: parsed };
+    let json;
+    try {
+        json = await response.json();
+    } catch (e) {
+        console.error(e);
+        return { error: "API returned invalid JSON" };
+    }
+
+    if (json.error) {
+        return { error: json.error };
+    }
+
+    // TODO: add Zod schema for numbers response
+    return { q, results: json };
 };

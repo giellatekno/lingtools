@@ -9,10 +9,9 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         error(404, "Not Found");
     }
     const lang = params.lang;
-    const query_params = url.searchParams;
-    const q = query_params.get("q");
+    const q = url.searchParams.get("q");
 
-    if (q === null || q === "") {
+    if (!q) {
         return {};
     }
 
@@ -26,10 +25,12 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
     }
 
     const text = await response.text();
-    if (response.status !== 200) {
-        return { error: `non-200 from API: ${text}` };
+    if (!response.ok) {
+        return { error: `Non-200 from API: ${text}` };
     }
-    const parsed = hyphenate_parser(text);
+    if (text.startsWith("Error:")) {
+        return { error: text };
+    }
 
-    return { q: q, results: parsed };
+    return { q, results: hyphenate_parser(text) };
 };

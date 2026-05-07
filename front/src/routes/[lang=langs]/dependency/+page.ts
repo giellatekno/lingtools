@@ -9,23 +9,28 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         error(404, "Not Found");
     }
     const lang = params.lang;
-    const query_params = url.searchParams;
-    const q = query_params.get("q");
+    const q = url.searchParams.get("q");
 
-    if (q === null || q === "") {
+    if (!q) {
         return {};
     }
 
     const backend_url = `${env.PUBLIC_API_ROOT}/dependency/${lang}/${q}?format=text`;
+    let response;
     try {
-        const response = await fetch(backend_url);
-        const text = await response.text();
-        if (!response.ok) {
-            return { error: `non-200 from API: ${text}` };
-        }
-        return { q: q, results: dependency_parser(text) };
+        response = await fetch(backend_url);
     } catch (e) {
         console.error(e);
         return { error: "fetch() from API failed" };
     }
+
+    const text = await response.text();
+    if (!response.ok) {
+        return { error: `Non-200 from API: ${text}` };
+    }
+    if (text.startsWith("Error:")) {
+        return { error: text };
+    }
+
+    return { q, results: dependency_parser(text) };
 };

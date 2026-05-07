@@ -9,14 +9,12 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         error(404, "Not Found");
     }
     const lang = params.lang;
-    const query_params = url.searchParams;
-    const q = query_params.get("q");
+    const q = url.searchParams.get("q");
 
-    if (q === null || q === "") {
+    if (!q) {
         return {};
     }
 
-    console.log(q);
     const backend_url = `${env.PUBLIC_API_ROOT}/generate/${lang}/${q}`;
     let response;
     try {
@@ -26,14 +24,26 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return { error: "fetch() from API failed" };
     }
 
-    const text = await response.text();
-    if (response.status !== 200) {
-        return { error: `non-200 from API: ${text}` };
+    if (!response.ok) {
+        return { error: `Non-200 from API: ${response.status}` };
     }
+
+    let json;
     try {
-        const parsed = GenerateResponse.parse(JSON.parse(text));
-        return { q, parsed };
+        json = await response.json();
     } catch (e) {
-        return { error: `Parsing JSON failed: ${e}` };
+        console.error(e);
+        return { error: "API returned invalid JSON" };
+    }
+
+    if (json.error) {
+        return { error: json.error };
+    }
+
+    try {
+        return { q, parsed: GenerateResponse.parse(json) };
+    } catch (e) {
+        console.error(e);
+        return { error: "Unexpected response format from API" };
     }
 };

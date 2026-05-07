@@ -9,12 +9,12 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         error(404, "Not Found");
     }
     const lang = params.lang;
-    const query_params = url.searchParams;
-    const q = query_params.get("q");
+    const q = url.searchParams.get("q");
 
-    if (q === null || q === "") {
+    if (!q) {
         return {};
     }
+
     const backend_url = `${env.PUBLIC_API_ROOT}/disambiguate/${lang}/${q}?format=text`;
     let response;
     try {
@@ -24,11 +24,13 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return { error: "fetch() from API failed" };
     }
 
-    let text = await response.text();
-    if (response.status !== 200) {
-        return { error: `non-200 from API: ${text}` };
+    const text = await response.text();
+    if (!response.ok) {
+        return { error: `Non-200 from API: ${text}` };
     }
-    const parsed = disambiguate_parser(text);
+    if (text.startsWith("Error:")) {
+        return { error: text };
+    }
 
-    return { q: q, results: parsed };
+    return { q, results: disambiguate_parser(text) };
 };

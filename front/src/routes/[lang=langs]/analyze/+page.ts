@@ -10,28 +10,41 @@ export const load: PageLoad = async ({ params, url, fetch }) => {
     }
 
     const lang = params.lang;
-    const query_params = url.searchParams;
-    const q = query_params.get("q");
+    const q = url.searchParams.get("q");
 
     if (!q) {
         return {};
     }
 
     const backend_route = `${env.PUBLIC_API_ROOT}/analyze/${lang}/${q}?format=json`;
+    let response;
     try {
-        const response = await fetch(backend_route);
-        const text = await response.text();
-        if (!response.ok) {
-            return { error: `Non-200 from API: ${text}` };
-        }
-        try {
-            const json_data = JSON.parse(text);
-            return { q: q, parsed: AnalyzeResponse.parse(json_data) };
-        } catch (e) {
-            return { error: `Parsing JSON failed: ${e}` };
-        }
+        response = await fetch(backend_route);
     } catch (e) {
         console.error(e);
         return { error: "fetch() from API failed" };
+    }
+
+    if (!response.ok) {
+        return { error: `Non-200 from API: ${response.status}` };
+    }
+
+    let json;
+    try {
+        json = await response.json();
+    } catch (e) {
+        console.error(e);
+        return { error: "API returned invalid JSON" };
+    }
+
+    if (json.error) {
+        return { error: json.error };
+    }
+
+    try {
+        return { q, parsed: AnalyzeResponse.parse(json) };
+    } catch (e) {
+        console.error(e);
+        return { error: "Unexpected response format from API" };
     }
 };
