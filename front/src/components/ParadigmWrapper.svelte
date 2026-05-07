@@ -101,7 +101,7 @@
 
             {#if paradigms.length !== 0}
                 {@const cur = paradigms[value]}
-                <div class="w-full">
+                <div class="w-full lg:w-fit">
                     <div
                         class="mx-2 mb-2 flex scroll-mt-24 items-baseline gap-4"
                         id="top"
