@@ -12,13 +12,13 @@ use tracing::{error, info, span, Level};
 use crate::common_url::{BoolQueryParam, Format, FormatQueryParam};
 
 /// Total number of languages we have. Change this if we add or remove any.
-const NUM_LANGS: usize = 51;
+const NUM_LANGS: usize = 52;
 
 pub const LANGS: [&str; NUM_LANGS] = [
     "bxr", "chr", "ciw", "cor", "crk", "deu", "est", "evn", "fao", "fin", "fit", "fkv", "gle",
     "hdn", "hun", "ipk", "izh", "kal", "kca", "koi", "kom", "kpv", "lav", "liv", "lut", "mdf",
-    "mhr", "mns", "mrj", "myv", "nio", "nno", "nob", "olo", "rmf", "rup", "rus", "sje", "sma",
-    "sme", "smj", "smn", "sms", "som", "swe", "tkl", "udm", "vep", "vot", "vro", "yrk",
+    "mhr", "mns", "mrj", "myv", "nio", "nno", "nob", "olo", "rmf", "rup", "rus", "sje", "sju-x-sydlapsk", 
+    "sma", "sme", "smj", "smn", "sms", "som", "swe", "tkl", "udm", "vep", "vot", "vro", "yrk",
 ];
 
 // A static hashmap to find where a file for a given language is located

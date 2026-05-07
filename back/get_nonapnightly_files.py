@@ -30,8 +30,8 @@ REPOS_URL = "https://github.com/giellalt/lang-"
 LANGS = [
     "bxr", "ciw", "cor", "evn", "fao", "fin", "fit", "fkv", "gle", "ipk",
     "izh", "kal", "kca", "koi", "kpv", "liv", "mdf", "mhr", "mns", "mrj",
-    "myv", "nio", "nob", "olo", "rus", "sjd", "sje", "sma", "sme", "smj",
-    "smn", "sms", "som", "udm", "vep", "vot", "vro", "yrk",
+    "myv", "nio", "nob", "olo", "rus", "sjd", "sje", "sju-x-sydlapsk", "sma", 
+    "sme", "smj", "smn", "sms", "som", "udm", "vep", "vot", "vro", "yrk",
 ]
 TARGET_DIR = "non-apnightly-files"
 PARADIGM_FILES = [
@@ -151,22 +151,18 @@ async def do_lang(lang, print=builtins.print):
         return err(lang=lang, **result)
 
     files = [file.format(lang=lang) for file in PARADIGM_FILES]
-    cmd = f"git checkout main -- {' '.join(files)}"
-    result = await shell(cmd, cwd=f"lang-{lang}", timeout=10, print=printer)
-    stdout = result["stdout"]
-    stderr = result["stderr"]
+    missing = []
+    for file in files:
+        cmd = f"git checkout main -- {file}"
+        result = await shell(cmd, cwd=f"lang-{lang}", timeout=10, print=printer)
+        if is_err(result):
+            stderr = result["stderr"]
+            if any(PAT_UNKNOWN_IN_GIT.match(line) for line in stderr.splitlines()):
+                missing.append(file)
+            else:
+                return err(lang=lang, **result)
 
-    if is_err(result):
-        missing = []
-        for line in stderr.splitlines():
-            if match := PAT_UNKNOWN_IN_GIT.match(line):
-                missing.append(match.group(1))
-
-        if missing:
-            return ok(lang=lang, stdout=stdout, stderr=stderr, missing=missing)
-        return err(lang=lang, **result)
-
-    return ok(lang=lang, stdout=stdout, stderr=stderr, missing=[])
+    return ok(lang=lang, stdout="", stderr="", missing=missing)
 
 
 def parse_args():
