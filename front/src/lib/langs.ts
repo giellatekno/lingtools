@@ -8,7 +8,7 @@ const all_langs = [
     "kca", "koi", "kom", "kpv", "lav", "liv",
     "lut", "mdf", "mhr", "mns", "mrj", "myv",
     "nio", "nno", "nob", "olo", "rmf", "tkl",
-    "rup", "rus", "sje", "sma", "sme", //"sjd",
+    "rup", "rus", "sje", "sju-x-sydlapsk", "sma", "sme", //"sjd",
     "smj", "smn", "sms", "som", "swe", "udm",
     "vep", "vot", "vro", "yrk"
 ];
@@ -20,14 +20,14 @@ export const langs = [
     "izh", "kal", "kca", "koi", "kpv", "liv",
     "mdf", "mhr", "mns", "mrj", "myv", "nio",
     "nob", "olo", "rmf", "tkl", "rus", //"sjd",
-    "sje", "sma", "sme", "smj", "smn", "sms",
+    "sje", "sju-x-sydlapsk", "sma", "sme", "smj", "smn", "sms",
     "som", "udm", "vep", "vot", "vro", "yrk",
 ];
 
 // for the filters when selecting language
 // prettier-ignore
 export const sami_langs = new Set([
-    "sje", //"sjd",
+    "sje", "sju-x-sydlapsk", //"sjd",
     "sma", "sme",
     "smj", "smn", 
     "sms",
@@ -67,7 +67,7 @@ export const paradigm_langs = new Set([
     "fit", "fkv", "gle", "ipk", "izh", "kal",
     "kca", "koi", "kpv", "liv", "mdf", "mhr",
     "mns", "mrj", "myv", "nio", "nob", "olo",
-    "rus", "sje", "sma", "sme", "smj", //"sjd",
+    "rus", "sje", "sju-x-sydlapsk", "sma", "sme", "smj", //"sjd",
     "smn", "sms", "som", "udm", "vep", "vot",
     "vro", "yrk",
 ]);
@@ -78,7 +78,7 @@ export const generation_langs = new Set([
     "fin", "gle", "hdn", "ipk", "izh", "kal",
     "kca", "koi", "kpv", "liv", "mdf", "mhr",
     "mns", "mrj", "myv", "nio", "nob", "olo",
-    "rus", "tkl", "sje", "sma", "sme", //"sjd",
+    "rus", "tkl", "sje", "sju-x-sydlapsk", "sma", "sme", //"sjd",
     "smj", "smn", "sms", "som", "udm", "vep",
     "vot", "vro", "yrk",
 ]);
