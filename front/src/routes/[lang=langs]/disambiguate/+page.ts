@@ -15,7 +15,7 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
     if (q === null || q === "") {
         return {};
     }
-    const backend_url = `${env.PUBLIC_API_ROOT}/disambiguate/${lang}/${q}`;
+    const backend_url = `${env.PUBLIC_API_ROOT}/disambiguate/${lang}/${q}?format=text`;
     let response;
     try {
         response = await fetch(backend_url);

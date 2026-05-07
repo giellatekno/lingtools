@@ -24,7 +24,8 @@
     "copyright": "Copyright © Centre for Sámi language technology",
     "feedback": "Send feedback about the webpage to:",
 
-    "showtoolsfor": "Show tools for...",
+    "index_description": "Linguistic tools for languages in the GiellaLT infrastructure. Select a language to get started.",
+    "searchforlangs": "Search for languages by name or ISO code",
     "filters": "Filters",
     "samilanguages": "Sámi languages",
     "nonsamiuralic": "Non-Sámi Uralic",
@@ -99,6 +100,7 @@
     "paradigm_jumpto": "Jump to section:",
     "paradigm_homonyms": "Found {num} homonyms:",
     "paradigm_noresults": "No results found for \"{search}\"",
+    "paradigm_nodirecthits": "No direct hits",
     "paradigm_results": "Results",
     "paradigm_directhits": "Direct hits",
     "paradigm_otherhits": "Other hits",

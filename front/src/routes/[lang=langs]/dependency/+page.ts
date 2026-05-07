@@ -16,7 +16,7 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return {};
     }
 
-    const backend_url = `${env.PUBLIC_API_ROOT}/dependency/${lang}/${q}`;
+    const backend_url = `${env.PUBLIC_API_ROOT}/dependency/${lang}/${q}?format=text`;
     try {
         const response = await fetch(backend_url);
         const text = await response.text();

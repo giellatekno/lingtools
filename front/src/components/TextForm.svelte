@@ -36,7 +36,7 @@
 
 <form class="flex flex-col gap-2" onsubmit={on_submit}>
     <textarea
-        class="form-textarea w-full rounded-sm"
+        class="form-textarea w-full rounded-lg"
         {rows}
         bind:this={textarea}
         bind:value
@@ -46,7 +46,7 @@
     ></textarea>
     <div class="flex flex-row items-center justify-between gap-2 lg:justify-start">
         <button
-            class="btn preset-outlined-error-600-400 hover:preset-tonal-error"
+            class="btn preset-outlined-surface-500 hover:preset-tonal"
             type="button"
             onclick={on_clear}
         >
@@ -55,7 +55,7 @@
         <button class="btn preset-filled-primary-500" type="submit">
             {m.submit()}
         </button>
-        <span class="hidden items-center gap-1 opacity-70 lg:flex">
+        <span class="hidden flex-nowrap items-center gap-1 opacity-70 lg:flex">
             {m.submit_keys_1()}
             <kbd class="kbd preset-filled-surface-200-800">{ctrl}</kbd>
             +

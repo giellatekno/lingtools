@@ -15,7 +15,7 @@
         data: PageData;
     }
     let { data }: Props = $props();
-    let { word, pos } = $derived(data);
+    let { word } = $derived(data);
 
     let lang = $derived(page.params.lang || "");
 
@@ -26,13 +26,10 @@
     <title>{m.paradigm_title()} • {langname(lang, getLocale())} • {m.page_title()}</title>
 </svelte:head>
 
-<div class="flex flex-col items-center gap-4">
-    <h3 class="h4 lg:h3">{m.paradigm_title()}</h3>
+<div class="flex flex-col items-center gap-4 lg:gap-8">
     <FormWrapper tool="paradigm">
-        <ParadigmForm {word} {pos} bind:format has_tables={hasParadigmSchema(lang)} />
+        <ParadigmForm {word} bind:format has_tables={hasParadigmSchema(lang)} />
     </FormWrapper>
-
-    <hr class="hr my-2 lg:my-8" />
 
     {#if data.parsed}
         <ParadigmWrapper data={data.parsed} {format} search={word} />

@@ -64,24 +64,30 @@
             class="mx-auto grid max-h-max max-w-max grid-cols-1 items-stretch gap-6 lg:grid-cols-2"
         >
             {#each tools_for[lang] as tool}
-                <a
-                    href={resolve(`/${lang}/${tool}`)}
-                    class="border-primary-100 hover:preset-tonal grid max-w-lg grid-cols-[auto_1fr] gap-2 rounded-lg border-2 text-wrap shadow-md"
+                <div
+                    class="border-primary-200 bg-surface-50 rounded-lg border-2 text-wrap shadow-md"
                 >
-                    <div
-                        class="preset-filled-primary-100-900 flex items-center justify-center p-2"
+                    <a
+                        href={resolve(`/${lang}/${tool}`)}
+                        class="hover:preset-tonal grid h-full max-w-lg grid-cols-[auto_1fr] gap-2"
                     >
-                        <img class="h-16" src={IMAGES[tool] || example_img} alt="" />
-                    </div>
-                    <div class="flex flex-col p-2">
-                        <span class="text-base font-bold lg:text-2xl">
-                            {button_content[tool].title()}
-                        </span>
-                        <span class="text-sm font-normal italic opacity-75 lg:text-xl">
-                            {button_content[tool].description()}
-                        </span>
-                    </div>
-                </a>
+                        <div
+                            class="preset-filled-primary-200-800 flex items-center justify-center p-2"
+                        >
+                            <img class="h-16" src={IMAGES[tool] || example_img} alt="" />
+                        </div>
+                        <div class="flex flex-col p-2">
+                            <span class="text-base font-bold lg:text-2xl">
+                                {button_content[tool].title()}
+                            </span>
+                            <span
+                                class="text-sm font-normal italic opacity-75 lg:text-xl"
+                            >
+                                {button_content[tool].description()}
+                            </span>
+                        </div>
+                    </a>
+                </div>
             {/each}
         </div>
     </div>

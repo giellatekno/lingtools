@@ -16,43 +16,44 @@
     }
 </script>
 
-<div class="mb-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-[1fr_auto]">
-    <div class="flex w-full flex-col gap-8 overflow-x-auto">
-        {#each schema.sections as section}
-            {@const activeRows = findActiveRows(section)}
-            <section
-                id={section.sId}
-                class="highlight-target flex w-full scroll-mt-24 flex-col rounded-lg lg:p-2"
-            >
-                {#if section.title}
-                    <h4 class="h4 text-primary-500 mb-6 w-full border-b-2 pb-2 font-bold">
-                        {section.title()}
-                    </h4>
-                {/if}
+<div class="flex w-full flex-col gap-8">
+    {#each schema.sections as section}
+        {@const activeRows = findActiveRows(section)}
+        <section
+            id={section.sId}
+            class="highlight-target flex w-full scroll-mt-24 flex-col rounded-lg lg:p-2"
+        >
+            {#if section.title}
+                <h4 class="h4 text-primary-500 mb-2 w-full border-b-2 pb-2 font-bold">
+                    {section.title()}
+                </h4>
+            {/if}
 
-                <div class="flex w-full flex-col gap-4 lg:flex-row lg:flex-wrap lg:gap-8">
-                    {#each section.tables as table}
-                        <div
-                            id={table.tId}
-                            class="highlight-target h-fit scroll-mt-24 rounded-lg p-2 lg:p-4"
-                        >
-                            {#if table.title}
-                                <h5 class="h5 mb-2 font-semibold italic opacity-70">
-                                    {table.title()}
-                                </h5>
-                            {/if}
+            <div class="flex w-full flex-col gap-4 lg:flex-row lg:flex-wrap lg:gap-8">
+                {#each section.tables as table}
+                    <div
+                        id={table.tId}
+                        class="highlight-target h-fit scroll-mt-24 rounded-lg p-2 lg:p-4"
+                    >
+                        {#if table.title}
+                            <h5 class="h5 mb-2 font-semibold italic opacity-70">
+                                {table.title()}
+                            </h5>
+                        {/if}
 
-                            {@render table_constructor(table, activeRows)}
-                        </div>
-                    {/each}
-                </div>
-            </section>
-        {/each}
-    </div>
+                        {@render table_constructor(table, activeRows)}
+                    </div>
+                {/each}
+            </div>
+        </section>
+    {/each}
 </div>
 
 {#snippet table_constructor(table: Table, activeRows: (boolean | "")[] | null)}
     <TableComponent>
+        <colgroup>
+            <col class="label-col" />
+        </colgroup>
         <thead>
             {#if table.headers.length > 0}
                 <tr>
@@ -69,13 +70,7 @@
                 {@const isRowDisabled = activeRows && !activeRows[rowIndex]}
                 <tr class={row.separator ? "separator" : ""}>
                     <td class={table.headers.length === 0 ? "label header" : "label"}>
-                        <span class="flex h-full items-center">
-                            {#if typeof row.label === "string"}
-                                {row.label}
-                            {:else}
-                                {row.label()}
-                            {/if}
-                        </span>
+                        {row.label()}
                     </td>
 
                     {#each row.tags as tag, i}
@@ -91,7 +86,7 @@
                                         <p
                                             class="text-surface-900-100 text-sm text-nowrap lg:text-base"
                                         >
-                                            {#if row.prefixes && row.prefixes[i]}
+                                            {#if row.prefixes && row.prefixes[i] && cellEntry !== "—"}
                                                 <span
                                                     class="text-secondary-600-400 italic"
                                                 >

@@ -14,11 +14,9 @@
     />
 </svelte:head>
 
-<div class="app bg-primary-50-950 flex h-full min-h-screen flex-col">
+<div class="app flex h-full min-h-screen flex-col">
     <AppBar />
-    <main
-        class="bg-surface-50-950 mx-auto w-full max-w-480 flex-1 p-2 pb-16 shadow-md lg:p-4"
-    >
+    <main class="mx-auto w-full max-w-480 flex-1 p-2 pb-16 lg:p-4">
         {@render children?.()}
     </main>
     <Footer />

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { Dialog, Portal, Progress } from "@skeletonlabs/skeleton-svelte";
     import ParadigmTable from "./ParadigmTable.svelte";
     import ParadigmList from "$components/ParadigmList.svelte";
     import { m } from "$lib/paraglide/messages";
@@ -7,8 +6,10 @@
     import { getParadigmSchema } from "$lib/paradigms/registry";
     import { page } from "$app/state";
     import { resolve } from "$app/paths";
+    import { goto } from "$app/navigation";
     import type { LanguageSchema } from "$lib/paradigms/paradigm_types";
-    import { ChevronDown, ChevronUp } from "@lucide/svelte";
+    import { Accordion } from "@skeletonlabs/skeleton-svelte";
+    import { ChevronDownIcon, ChevronUpIcon } from "@lucide/svelte";
 
     interface Props {
         data: any;
@@ -20,9 +21,25 @@
 
     let lang = $derived(page.params.lang || "");
 
+    const pos_names: Record<string, () => string> = {
+        N: m.partofspeech_noun,
+        V: m.partofspeech_verb,
+        A: m.partofspeech_adjective,
+        Pron: m.partofspeech_pronoun,
+        Num: m.partofspeech_numeral,
+    };
+
+    const pos_order = Object.keys(pos_names);
+    const pos_rank = (pos: string) => {
+        const i = pos_order.indexOf(pos);
+        return i === -1 ? pos_order.length : i;
+    };
+    const by_pos_subclass = <T extends { pos: string; subclass: string }>(a: T, b: T) =>
+        pos_rank(a.pos) - pos_rank(b.pos) || a.subclass.localeCompare(b.subclass);
+
     const parsed_data = $derived(paradigm_parser(data));
-    const paradigms = $derived(parsed_data.paradigms);
-    const other_hits = $derived(parsed_data.other_hits);
+    const paradigms = $derived([...parsed_data.paradigms].sort(by_pos_subclass));
+    const other_hits = $derived([...parsed_data.other_hits].sort(by_pos_subclass));
 
     let schemaPromises = $derived(
         Promise.all(
@@ -32,7 +49,6 @@
         ),
     );
 
-    // Filter out hidden sections and add Ids for navigation
     function filterSchema(
         schema: LanguageSchema | null,
         elem: ParsedParadigm,
@@ -53,48 +69,73 @@
         return schema;
     }
 
-    // Reset value when paradigms changes
-    let value = $derived(paradigms.length - paradigms.length);
+    const url_word = $derived(page.url.searchParams.get("word") || "");
+    const url_pos = $derived(page.url.searchParams.get("pos") || "");
+    const url_subclass = $derived(page.url.searchParams.get("subclass") || "");
 
-    function onResultButtonClick(i: number) {
-        value = i;
-        const tables = document.getElementById("tables");
-        if (tables) {
-            tables.scrollIntoView({ behavior: "smooth" });
-        }
-    }
-
-    // CSS for mobile navigation
-    const animBackdrop =
-        "transition transition-discrete opacity-0 starting:data-[state=open]:opacity-0 data-[state=open]:opacity-100";
-    const animModal =
-        "transition transition-discrete opacity-0 translate-y-full starting:data-[state=open]:opacity-0 starting:data-[state=open]:translate-y-full data-[state=open]:opacity-100 data-[state=open]:-translate-y-0";
+    const value = $derived.by(() => {
+        if (!url_pos) return 0;
+        const idx = paradigms.findIndex(
+            (p) => p.pos === url_pos && p.subclass === url_subclass,
+        );
+        return idx >= 0 ? idx : 0;
+    });
 </script>
 
-<div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-[auto_1fr_auto]">
+<div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-[16rem_1fr_16rem]">
     {#await schemaPromises then schemas}
         {@const cur_schema = filterSchema(schemas[value], paradigms[value])}
-        <div class="w-full place-self-center lg:w-64 lg:place-self-auto">
+
+        <div class="w-full place-self-center lg:place-self-auto">
             {#if parsed_data}
                 {@render results()}
             {/if}
         </div>
-        <hr class="hr lg:hidden" />
 
-        <div class="w-full scroll-mt-24" id="tables">
+        <div class="flex w-full flex-col items-center">
+            {#if paradigms.length === 0 && other_hits.length === 0 && search !== ""}
+                <div class="mt-4 text-lg">
+                    {m.paradigm_noresults({ search })}
+                </div>
+            {/if}
+
             {#if paradigms.length !== 0}
-                {#if cur_schema && format === "table"}
-                    <ParadigmTable schema={cur_schema} elem={paradigms[value]} />
-                {:else}
-                    <ParadigmList elem={paradigms[value]} />
-                {/if}
+                {@const cur = paradigms[value]}
+                <div class="w-full">
+                    <div
+                        class="mx-2 mb-2 flex scroll-mt-24 items-baseline gap-4"
+                        id="top"
+                    >
+                        <h2 class="h2">{cur.lemma}</h2>
+                        <span class="text-lg opacity-80">
+                            {pos_names[cur.pos]?.() ?? cur.pos}{cur.subclass
+                                ? ` (${cur.subclass})`
+                                : ""}
+                        </span>
+                    </div>
+
+                    {#if cur_schema && format === "table"}
+                        <div class="lg:hidden">
+                            {@render accordion_nav(cur_schema)}
+                        </div>
+                    {/if}
+
+                    {#if cur_schema && format === "table"}
+                        <div
+                            class="card border-surface-200-800 bg-surface-50-950 mb-8 w-full rounded-lg border p-2 shadow-lg"
+                        >
+                            <ParadigmTable schema={cur_schema} elem={cur} />
+                        </div>
+                    {:else}
+                        <ParadigmList elem={cur} />
+                    {/if}
+                </div>
             {/if}
         </div>
 
-        <div class="w-64">
-            {#if cur_schema && format == "table"}
-                {@render desktop_nav(cur_schema)}
-                {@render mobile_nav(cur_schema)}
+        <div class="hidden lg:block">
+            {#if cur_schema && format === "table" && paradigms.length !== 0}
+                {@render sticky_nav(cur_schema)}
             {/if}
         </div>
     {/await}
@@ -102,43 +143,55 @@
 
 {#snippet results()}
     <div
-        class="card lg:bg-surface-100-900 lg:border-surface-200-800 flex h-fit w-full flex-col items-center gap-2 p-2 lg:sticky lg:top-24 lg:shrink-0 lg:border lg:p-4 lg:shadow-sm"
+        class="card bg-surface-50-950 border-surface-200-800 flex h-fit w-full flex-col gap-2 rounded-lg p-2 shadow-lg lg:sticky lg:top-24 lg:shrink-0 lg:border lg:p-4"
     >
-        <div class="flex w-max flex-col gap-4 text-sm">
-            <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-4 text-sm">
+            <div class="flex flex-col gap-1">
                 <span class="font-bold uppercase opacity-80">
                     {m.paradigm_directhits()}:
                 </span>
                 {#each paradigms as paradigm_elem, i}
                     <button
-                        onclick={() => (value = i)}
-                        class="btn {value === i
-                            ? 'preset-filled-primary-500'
-                            : 'border-primary-200-800 hover:preset-tonal border'}"
+                        onclick={() =>
+                            goto(
+                                `?word=${url_word}&pos=${paradigm_elem.pos}${paradigm_elem.subclass ? `&subclass=${paradigm_elem.subclass}` : ""}`,
+                            )}
+                        class="btn flex-col items-start gap-0 px-3 py-2 text-left {value ===
+                        i
+                            ? 'border-primary-500 border'
+                            : 'hover:preset-tonal'}"
                     >
-                        {paradigm_elem.lemma}
-                        ({paradigm_elem.pos}{paradigm_elem.subclass
-                            ? "+" + paradigm_elem.subclass
-                            : ""})
+                        <span class="font-semibold">{paradigm_elem.lemma}</span>
+                        <span class="text-surface-500 text-xs">
+                            {pos_names[paradigm_elem.pos]?.() ??
+                                paradigm_elem.pos}{paradigm_elem.subclass
+                                ? ` · ${paradigm_elem.subclass}`
+                                : ""}
+                        </span>
                     </button>
                 {:else}
-                    <span>{m.paradigm_noresults({ search })}</span>
+                    {m.paradigm_nodirecthits()}
                 {/each}
             </div>
             {#if other_hits.length !== 0}
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-1">
                     <span class="font-bold uppercase opacity-80">
                         {m.paradigm_otherhits()}:
                     </span>
                     {#each other_hits as other_hit}
                         <a
-                            class="btn border-secondary-200-800 hover:preset-tonal border text-center"
+                            class="btn hover:preset-tonal flex-col items-start gap-0 px-3 py-2 text-left"
                             href={resolve(
-                                `/${lang}/paradigm?word=${other_hit.lemma}&pos=${other_hit.pos}`,
+                                `/${lang}/paradigm?word=${other_hit.lemma}&pos=${other_hit.pos}${other_hit.subclass ? `&subclass=${other_hit.subclass}` : ""}`,
                             )}
                         >
-                            {other_hit.lemma}
-                            ({other_hit.pos})
+                            <span class="font-semibold">{other_hit.lemma}</span>
+                            <span class="text-surface-500 text-xs">
+                                {pos_names[other_hit.pos]?.() ??
+                                    other_hit.pos}{other_hit.subclass
+                                    ? ` · ${other_hit.subclass}`
+                                    : ""}
+                            </span>
                         </a>
                     {/each}
                 </div>
@@ -147,33 +200,33 @@
     </div>
 {/snippet}
 
-{#snippet desktop_nav(schema: LanguageSchema)}
-    <nav
-        class="card bg-surface-100-900 border-surface-200-800 sticky top-24 hidden h-fit w-64 shrink-0 border p-4 shadow-sm lg:block"
-    >
-        <div class="space-y-2 text-sm">
-            <h3 class="text-base font-bold uppercase">{m.paradigm_jumpto()}</h3>
-            <hr class="hr" />
-            <ul class="space-y-4">
-                {#each schema.sections as section}
-                    {#if section.title}
-                        <li>
-                            <div>
+{#snippet sticky_nav(schema: LanguageSchema)}
+    {#if !schema.sections.every((s) => !s.title)}
+        <nav
+            class="card bg-surface-50-950 border-surface-200-800 sticky top-24 h-fit w-full rounded-lg border p-4 shadow-lg"
+        >
+            <div class="space-y-3 text-sm">
+                <h3 class="font-bold uppercase">{m.paradigm_jumpto()}</h3>
+                <hr class="hr" />
+                <ul class="space-y-3">
+                    {#each schema.sections as section}
+                        {#if section.title}
+                            <li>
                                 <a
                                     href="#{section.sId}"
-                                    class="anchor text-primary-500 my-1 block font-bold uppercase"
+                                    class="anchor text-primary-500 block font-semibold"
                                 >
                                     {section.title()}
                                 </a>
                                 <ul
-                                    class="border-surface-200 mb-2 ml-2 space-y-2 border-l-2 pl-1"
+                                    class="border-surface-200-800 mt-1 ml-2 space-y-1 border-l-2 pl-2"
                                 >
                                     {#each section.tables as table}
                                         {#if table.title}
                                             <li>
                                                 <a
                                                     href="#{table.tId}"
-                                                    class="anchor text-surface-700-300 my-1 block"
+                                                    class="anchor text-surface-600-400 block"
                                                 >
                                                     {table.title()}
                                                 </a>
@@ -181,71 +234,56 @@
                                         {/if}
                                     {/each}
                                 </ul>
-                            </div>
-                        </li>
-                    {/if}
-                {/each}
-            </ul>
-        </div>
-    </nav>
+                            </li>
+                        {/if}
+                    {/each}
+                </ul>
+            </div>
+        </nav>
+    {/if}
 {/snippet}
 
-{#snippet mobile_nav(schema: LanguageSchema)}
-    <div class="fixed right-6 bottom-6 z-40 lg:hidden">
-        <Dialog>
-            <Dialog.Trigger>
-                <button class="btn-icon preset-filled-primary-500">
-                    <ChevronUp class="size-5" />
-                </button>
-            </Dialog.Trigger>
-            <Portal>
-                <Dialog.Backdrop
-                    class="bg-surface-50-950/50 fixed inset-0 z-50 transition transition-discrete {animBackdrop}"
-                />
-                <Dialog.Positioner class="fixed inset-0 z-50 flex justify-start">
-                    <Dialog.Content
-                        class="card bg-surface-100-900 fixed inset-x-0 bottom-0 max-h-3/5 w-full space-y-4 overflow-y-auto px-4 shadow-xl {animModal}"
+{#snippet accordion_nav(schema: LanguageSchema)}
+    {#if !schema.sections.every((s) => !s.title)}
+        <div
+            class="border-surface-200-800 bg-surface-50-950 mb-3 overflow-hidden rounded-lg border shadow-lg"
+        >
+            <Accordion collapsible>
+                <Accordion.Item value="nav">
+                    <Accordion.ItemTrigger
+                        class="border-surface-200-800 flex min-h-12 items-center justify-between font-bold uppercase data-[state=open]:border-b"
                     >
-                        <div class="flex h-full flex-col">
-                            <div
-                                class="bg-surface-100-900 sticky top-0 flex flex-col gap-2 pt-2"
-                            >
-                                <div class="flex items-center justify-between">
-                                    <Dialog.Title class="text-2xl font-bold">
-                                        {m.paradigm_jumpto()}
-                                    </Dialog.Title>
-                                    <Dialog.CloseTrigger class="btn-icon preset-tonal">
-                                        <ChevronDown />
-                                    </Dialog.CloseTrigger>
-                                </div>
-
-                                <hr class="hr" />
-                            </div>
-                            <div class="my-4 flex flex-col gap-2">
+                        {m.paradigm_jumpto()}
+                        <Accordion.ItemIndicator class="group">
+                            <ChevronDownIcon
+                                class="block size-5 group-data-[state=open]:hidden"
+                            />
+                            <ChevronUpIcon
+                                class="hidden size-5 group-data-[state=open]:block"
+                            />
+                        </Accordion.ItemIndicator>
+                    </Accordion.ItemTrigger>
+                    <Accordion.ItemContent>
+                        {#snippet element(attributes)}
+                            <div {...attributes} class="flex flex-col px-2 pb-2">
                                 {#each schema.sections as section}
                                     {#if section.title}
-                                        <div>
-                                            <Dialog.Trigger>
-                                                <a
-                                                    href="#{section.sId}"
-                                                    class="anchor text-primary-500 mb-2 block py-2 font-bold uppercase"
-                                                >
-                                                    {section.title()}
-                                                </a>
-                                            </Dialog.Trigger>
-                                            <div
-                                                class="border-surface-200 ml-4 flex flex-col space-y-2 border-l-2 pl-2"
+                                        <div class="flex flex-col">
+                                            <a
+                                                href="#{section.sId}"
+                                                class="anchor text-primary-500 flex min-h-11 items-center px-2 font-semibold"
                                             >
+                                                {section.title()}
+                                            </a>
+                                            <div class="flex flex-col pl-4">
                                                 {#each section.tables as table}
                                                     {#if table.title}
-                                                        <Dialog.Trigger>
-                                                            <a
-                                                                href="#{table.tId}"
-                                                                class="anchor text-surface-700-300 block w-full py-1 text-left text-sm"
-                                                            >
-                                                                {table.title()}
-                                                            </a>
-                                                        </Dialog.Trigger>
+                                                        <a
+                                                            href="#{table.tId}"
+                                                            class="anchor text-surface-600-400 flex min-h-11 items-center px-2"
+                                                        >
+                                                            {table.title()}
+                                                        </a>
                                                     {/if}
                                                 {/each}
                                             </div>
@@ -253,10 +291,10 @@
                                     {/if}
                                 {/each}
                             </div>
-                        </div>
-                    </Dialog.Content>
-                </Dialog.Positioner>
-            </Portal>
-        </Dialog>
-    </div>
+                        {/snippet}
+                    </Accordion.ItemContent>
+                </Accordion.Item>
+            </Accordion>
+        </div>
+    {/if}
 {/snippet}

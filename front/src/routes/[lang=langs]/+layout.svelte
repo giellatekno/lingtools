@@ -15,16 +15,17 @@
     );
 </script>
 
-<div class="my-2 flex flex-col items-center gap-2 lg:my-4">
-    <div class="flex w-full flex-row items-center justify-between gap-1">
-        <a href={resolve(`/${lang}`)} class="lg:h3 h6 hover:underline">
-            {langname(lang, locale)}
-        </a>
-        <a href={`https://giellalt.github.io/lang-${lang}`} class="shadow">
-            <img src={maturity_url} alt="" class="h-5 lg:h-7" />
-        </a>
+<div class="flex flex-col gap-4 lg:gap-6">
+    <div class="mt-2 flex w-full flex-col items-center lg:mt-4">
+        <div class="flex w-full flex-row items-center justify-between gap-1">
+            <a href={resolve(`/${lang}`)} class="lg:h3 h6 hover:underline">
+                {langname(lang, locale)}
+            </a>
+            <a href={`https://giellalt.github.io/lang-${lang}`} class="shadow">
+                <img src={maturity_url} alt="" class="h-5 lg:h-7" />
+            </a>
+        </div>
     </div>
-    <hr class="hr" />
+    <hr class="hr border-surface-400-600" />
+    {@render children?.()}
 </div>
-
-{@render children?.()}

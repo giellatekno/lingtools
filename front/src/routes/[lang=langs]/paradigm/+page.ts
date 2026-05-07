@@ -13,15 +13,13 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
     const lang = params.lang;
     const search_params = url.searchParams;
     const word = search_params.get("word")?.trim() || "";
-    // const size = search_params.get("size") || "standard";
-    const pos = search_params.get("pos") || "any";
 
     if (!browser || word.length == 0) {
-        return { word, pos };
+        return { word };
     }
 
     const api_path = `paradigm/${lang}/${word}`;
-    const api_url = `${env.PUBLIC_API_ROOT}/${api_path}?size=full&pos=${pos}&format=json`;
+    const api_url = `${env.PUBLIC_API_ROOT}/${api_path}?size=full&format=json`;
 
     let response;
     try {
@@ -37,7 +35,7 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
     try {
         const json = await response.json();
         const parsed = ParadigmResponse.parse(json);
-        return { pos, word, parsed };
+        return { word, parsed };
     } catch (e) {
         return { word, pos, error: `Parsing JSON failed: ${e}` };
     }

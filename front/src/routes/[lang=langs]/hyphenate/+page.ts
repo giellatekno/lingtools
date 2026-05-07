@@ -16,7 +16,7 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return {};
     }
 
-    const backend_url = `${env.PUBLIC_API_ROOT}/hyphenate/${lang}/${q}`;
+    const backend_url = `${env.PUBLIC_API_ROOT}/hyphenate/${lang}/${q}?format=text`;
     let response;
     try {
         response = await fetch(backend_url);

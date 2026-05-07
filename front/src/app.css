@@ -6,23 +6,9 @@
 @import "@skeletonlabs/skeleton/themes/cerberus";
 
 @custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
-
-.preset-gradient-bg {
-    background: linear-gradient(
-        90deg,
-        var(--color-secondary-300-700) 0%,
-        var(--color-primary-300-700) 20%,
-        var(--color-primary-300-700) 80%,
-        var(--color-secondary-300-700) 100%
-    );
-}
-.preset-gradient-button {
-    background-image: linear-gradient(
-        90deg,
-        var(--color-primary-200-800),
-        var(--color-primary-100-900)
-    );
-    color: var(--color-surface-950-50);
+[data-theme="cerberus"] body {
+    --body-background-color: var(--color-surface-100);
+    --body-background-color-dark: var(--color-surface-950);
 }
 
 @layer components {
@@ -41,7 +27,7 @@
     }
 
     [data-table-container] {
-        @apply w-full overflow-x-auto rounded-lg border shadow-md;
+        @apply w-full overflow-x-auto rounded-lg border shadow-lg;
         @apply border-surface-200-800 bg-surface-50-950 lg:w-fit lg:min-w-md;
     }
 
@@ -49,35 +35,31 @@
     [data-table-theme="paradigm"] {
         @apply w-full table-auto border-collapse text-left text-xs lg:text-base;
 
-        & thead tr {
-            @apply bg-surface-200-800/60 border-surface-200-800 divide-surface-200-800 divide-x border-b;
-        }
-
-        & th {
-            @apply p-2 font-bold tracking-wider uppercase opacity-70 lg:p-4;
-        }
-
-        & tbody {
-            @apply divide-surface-100-900 divide-y;
+        & thead th {
+            @apply bg-primary-100-900 border-primary-300-700 text-surface-contrast-50-950/80 border-b-2 px-3 py-2 font-bold tracking-wider uppercase lg:px-4 lg:py-3;
         }
 
         & tbody tr {
-            @apply hover:bg-primary-500/5 divide-surface-100-900 h-full divide-x transition-colors;
+            @apply border-surface-200-800 hover:bg-primary-500/5 border-b transition-colors last:border-b-0;
         }
 
         & tbody tr.separator {
-            @apply border-surface-200-800 border-b-2;
+            @apply border-surface-400-600 border-b-2;
         }
 
-        & tbody tr td {
-            @apply h-full items-center p-2 lg:p-4;
+        & tbody td {
+            @apply px-3 py-2 lg:px-4 lg:py-3;
         }
 
-        & tbody tr td.label {
-            @apply bg-surface-100-900/50 w-px font-medium whitespace-nowrap opacity-80;
+        & col.label-col {
+            @apply bg-primary-100-900/30 w-0.5;
         }
 
-        & tbody tr td.header {
+        & tbody td.label {
+            @apply w-px font-medium whitespace-nowrap;
+        }
+
+        & tbody td.header {
             @apply font-bold;
         }
     }

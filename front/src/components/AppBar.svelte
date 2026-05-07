@@ -11,7 +11,7 @@
 </script>
 
 <AppBar
-    class="bg-primary-600 text-primary-contrast-950-50 border-surface-950-50 sticky top-0 z-50 border-b-2"
+    class="bg-primary-600 text-primary-contrast-950-50 border-surface-950-50 sticky top-0 z-50 "
 >
     <AppBar.Toolbar
         class="mx-auto w-full max-w-480 grid-cols-[1fr_auto_1fr] lg:grid-cols-[auto_auto]"

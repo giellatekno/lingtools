@@ -25,7 +25,8 @@
     "copyright": "Copyright © Senter for samisk språkteknologi",
     "feedback": "Send tilbakemelding om nettsiden til:",
 
-    "showtoolsfor": "Vis verktøy for...",
+    "index_description": "Lingvistiske verktøy for språk i GiellaLT-infrastrukturen. Velg et språk for å komme i gang.",
+    "searchforlangs": "Søk etter språk med navn eller ISO kode",
     "filters": "Filtre",
     "samilanguages": "Samiske språk",
     "nonsamiuralic": "Ikke-samiske uralske",
@@ -107,6 +108,7 @@
 
     "paradigm_homonyms": "Fant {num} homonymer:",
     "paradigm_noresults": "Ingen treff på \"{search}\"",
+    "paradigm_nodirecthits": "Ingen direkte treff",
     "paradigm_results": "Resultater",
     "paradigm_directhits": "Direkte treff",
     "paradigm_otherhits": "Andre treff",

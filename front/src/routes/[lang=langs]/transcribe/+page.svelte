@@ -25,8 +25,7 @@
     </title>
 </svelte:head>
 
-<div class="flex flex-col items-center gap-4">
-    <h3 class="h4 lg:h3">{m.transcribe_title()}</h3>
+<div class="flex flex-col items-center gap-4 lg:gap-8">
     <FormWrapper tool="transcribe">
         <TextForm bind:value />
     </FormWrapper>
@@ -36,7 +35,9 @@
     {/if}
 
     {#if data.results}
-        <div class="card border-primary-500 w-xl border-2 px-4 py-6 text-wrap shadow-md">
+        <div
+            class="card border-surface-200-800 bg-surface-50-950 w-fit rounded-lg border-2 px-4 py-6 text-wrap shadow-lg lg:min-w-sm"
+        >
             <div class="flex flex-col gap-2 text-xl">
                 {#each data.results as result}
                     <p>

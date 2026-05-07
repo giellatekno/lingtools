@@ -6,7 +6,7 @@
     let { elem }: { elem: ParsedParadigm } = $props();
 </script>
 
-<div class="mx-auto flex w-fit justify-center">
+<div class="mx-auto mb-8 flex w-fit justify-center">
     <Table>
         <thead>
             <tr>

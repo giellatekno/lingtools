@@ -25,8 +25,7 @@
     <title>{m.generate_title()} • {langname(lang, getLocale())} • {m.page_title()}</title>
 </svelte:head>
 
-<div class="flex flex-col items-center gap-4">
-    <h3 class="h4 lg:h3">{m.generate_title()}</h3>
+<div class="flex flex-col items-center gap-4 lg:gap-8">
     <FormWrapper tool="generate">
         <TextForm bind:value rows={2} />
     </FormWrapper>

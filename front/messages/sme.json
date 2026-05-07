@@ -22,6 +22,8 @@
 
     "copyright": "Copyright © Sámi giellateknologiija guovddaš",
     "feedback": "Sádde máhcahaga siiddu birra midjiide:",
+    "index_description": "Lingvisttalaš reaiddut GiellaLT-infrastruktuvrra gielaide. Vállje giela vuolábeallde.",
+    "searchforlangs": "Oza gielaid namaid dahje ISO koda",
     "showtoolsfor": "Oza gielaid:",
     "filters": "Filtarat",
     "samilanguages": "Sámegielat",
@@ -96,6 +98,7 @@
     "paradigm_jumpto": "Njuikke sekšuvdnii:",
     "paradigm_homonyms": "Gávdnan {num} homonyma:",
     "paradigm_noresults": "Ohcan \"{search}\" ii buktán bohtosiid",
+    "paradigm_nodirecthits": "Ii oktage njuolggo deaivan",
     "paradigm_results": "Bohtosat",
     "paradigm_directhits": "Njuolggo deaivamat",
     "paradigm_otherhits": "Eará deaivamat",

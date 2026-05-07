@@ -8,48 +8,57 @@
     import { getLocale } from "$lib/paraglide/runtime";
 
     let search = $state("");
+    let selectedIndex = $state(0);
 
     let locale = $derived(getLocale());
-    function filter_langs(search: string) {
-        let rootset = langs;
 
-        const mappedLangs = rootset.map((iso) => ({
-            iso,
-            name: langname(iso, locale),
-        }));
+    let all_langs = $derived(
+        langs
+            .map((iso) => ({ iso, name: langname(iso, locale) }))
+            .sort((a, b) => a.name.localeCompare(b.name)),
+    );
 
-        if (search === "") {
-            return mappedLangs.sort((a, b) => a.name.localeCompare(b.name));
-        } else {
-            return mappedLangs
-                .filter(({ iso, name }) => {
-                    const lower = search.toLowerCase();
-                    return iso.includes(lower) || name.toLowerCase().includes(lower);
-                })
-                .sort((a, b) => a.name.localeCompare(b.name));
+    let suggestions = $derived(
+        search === ""
+            ? []
+            : all_langs.filter(({ iso, name }) => {
+                  const lower = search.toLowerCase();
+                  return iso.includes(lower) || name.toLowerCase().includes(lower);
+              }),
+    );
+
+    $effect(() => {
+        // reset selection when suggestions change
+        suggestions;
+        selectedIndex = 0;
+    });
+
+    async function onkeydown(ev: KeyboardEvent) {
+        if (suggestions.length === 0) return;
+        if (ev.key === "ArrowDown") {
+            ev.preventDefault();
+            selectedIndex = (selectedIndex + 1) % suggestions.length;
+        } else if (ev.key === "ArrowUp") {
+            ev.preventDefault();
+            selectedIndex = (selectedIndex - 1 + suggestions.length) % suggestions.length;
+        } else if (ev.key === "Enter") {
+            ev.preventDefault();
+            await goto(resolve(`/${suggestions[selectedIndex].iso}`));
         }
     }
-
-    async function onenter(ev: KeyboardEvent) {
-        if (ev.key === "Enter" && visible_langs.length === 1) {
-            const lang = visible_langs[0].iso;
-            await goto(resolve(`/${lang}`));
-        }
-    }
-    let visible_langs = $derived(filter_langs(search));
 
     let groups = $derived([
         {
             title: m.samilanguages,
-            langset: visible_langs.filter((e) => sami_langs.has(e.iso)),
+            langset: all_langs.filter((e) => sami_langs.has(e.iso)),
         },
         {
             title: m.nonsamiuralic,
-            langset: visible_langs.filter((e) => nonsamiuralic_langs.has(e.iso)),
+            langset: all_langs.filter((e) => nonsamiuralic_langs.has(e.iso)),
         },
         {
             title: m.otherlanguages,
-            langset: visible_langs.filter((e) => other_langs.has(e.iso)),
+            langset: all_langs.filter((e) => other_langs.has(e.iso)),
         },
     ]);
 </script>
@@ -58,47 +67,72 @@
     <title>{m.page_title()}</title>
 </svelte:head>
 
-<div class="flex w-full flex-col gap-4">
-    <label class="label lg:ml-2">
-        <span class="label-text">{m.showtoolsfor()}</span>
-        <div class="input-group w-3xs grid-cols-[auto_1fr]">
-            <div class="ig-cell preset-tonal">
-                <SearchIcon class="size-4" />
-            </div>
-            <input
-                class="ig-input"
-                type="text"
-                onkeydown={onenter}
-                bind:value={search}
-                placeholder=""
-            />
-        </div>
-    </label>
-    <hr class="hr" />
-
-    <div class="flex w-full flex-row flex-wrap justify-evenly gap-8 lg:mx-2">
-        {#if visible_langs.length}
-            {#each groups as group}
-                {#if group.langset.length}
-                    <div class="flex w-full flex-col gap-2 lg:w-fit">
-                        <h4 class="lg:h4 h5">{group.title()}</h4>
-                        <div class="grid min-w-max grid-cols-2 gap-2">
-                            {#each group.langset as { iso, name }}
+<div class=" flex w-full flex-col items-center gap-8 p-6">
+    <div class="flex flex-col items-center gap-6">
+        <p class="max-w-lg text-center text-lg">
+            {m.index_description()}
+        </p>
+        <label class="label w-full max-w-sm">
+            <div class="relative">
+                <span class="label-text">{m.searchforlangs()}</span>
+                <div class="input-group bg-surface-50 grid-cols-[1fr_auto]">
+                    <input
+                        class="ig-input text-lg"
+                        type="text"
+                        {onkeydown}
+                        bind:value={search}
+                        placeholder=""
+                        autocomplete="off"
+                    />
+                    <div class="ig-cell preset-tonal px-4">
+                        <SearchIcon class="size-5" />
+                    </div>
+                </div>
+                {#if suggestions.length > 0}
+                    <ul
+                        class="card preset-filled-surface-50-950 absolute top-full z-50 mt-1 w-full overflow-y-auto shadow-lg"
+                        style="max-height: 16rem"
+                    >
+                        {#each suggestions as { iso, name }, i}
+                            <li>
                                 <a
-                                    class="btn preset-outlined-primary-500 hover:preset-tonal w-full text-center text-sm text-wrap lg:text-base"
+                                    class="hover:preset-tonal block px-4 py-2 text-base {i ===
+                                    selectedIndex
+                                        ? 'preset-tonal'
+                                        : ''}"
                                     href={resolve(`/${iso}`)}
                                 >
-                                    {name}
+                                    <div class="flex justify-between">
+                                        <span>{name}</span>
+                                        <span class="opacity-75">({iso})</span>
+                                    </div>
                                 </a>
-                            {/each}
-                        </div>
-                    </div>
+                            </li>
+                        {/each}
+                    </ul>
                 {/if}
-            {/each}
-        {:else}
-            <span>
-                {m.noresults()}
-            </span>
-        {/if}
+            </div>
+        </label>
+    </div>
+    <!-- <hr class="hr border-surface-400-600" /> -->
+
+    <div class="grid w-fit grid-cols-1 gap-12 lg:grid-cols-3">
+        {#each groups as group}
+            {#if group.langset.length}
+                <div class="flex flex-col gap-2">
+                    <h4 class="lg:h4 h5">{group.title()}</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        {#each group.langset as { iso, name }}
+                            <a
+                                class="btn preset-outlined-primary-500 bg-surface-50 hover:preset-tonal-primary w-full text-center text-sm text-wrap lg:text-base"
+                                href={resolve(`/${iso}`)}
+                            >
+                                {name}
+                            </a>
+                        {/each}
+                    </div>
+                </div>
+            {/if}
+        {/each}
     </div>
 </div>
