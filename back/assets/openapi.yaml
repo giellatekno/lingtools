@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Giellatekno LingTools
+  title: Giellatekno LingTools API
   version: 0.0.1
   summary: A web API for executing pre-defined pipelines
   description:
@@ -15,7 +15,7 @@ info:
     email: giellatekno@uit.no
 tags:
   - name: pipeline
-    description: "All the pipelines available on this api"
+    description: "All the pipelines available on this API."
 paths:
   /info:
     get:
