@@ -1,0 +1,75 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "indicative",
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", ""],
+                    "rows": [
+                        { "label": "mån", "tags": ["Ind+Prs+Sg1"] },
+                        { "label": "dån", "tags": ["Ind+Prs+Sg2"] },
+                        { "label": "sån", "tags": ["Ind+Prs+Sg3"], "separator": true },
+                        { "label": "måj", "tags": ["Ind+Prs+Du1"] },
+                        { "label": "dåj", "tags": ["Ind+Prs+Du2"] },
+                        { "label": "såj", "tags": ["Ind+Prs+Du3"], "separator": true },
+                        { "label": "mij", "tags": ["Ind+Prs+Pl1"] },
+                        { "label": "dij", "tags": ["Ind+Prs+Pl2"] },
+                        { "label": "sij", "tags": ["Ind+Prs+Pl3"] },
+                    ],
+                },
+                {
+                    "title": "preterite",
+                    "headers": ["person", ""],
+                    "rows": [
+                        { "label": "mån", "tags": ["Ind+Prt+Sg1"] },
+                        { "label": "dån", "tags": ["Ind+Prt+Sg2"] },
+                        { "label": "sån", "tags": ["Ind+Prt+Sg3"], "separator": true },
+                        { "label": "måj", "tags": ["Ind+Prt+Du1"] },
+                        { "label": "dåj", "tags": ["Ind+Prt+Du2"] },
+                        { "label": "såj", "tags": ["Ind+Prt+Du3"], "separator": true },
+                        { "label": "mij", "tags": ["Ind+Prt+Pl1"] },
+                        { "label": "dij", "tags": ["Ind+Prt+Pl2"] },
+                        { "label": "sij", "tags": ["Ind+Prt+Pl3"] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "imperative",
+            "tables": [
+                {
+                    "title": "imperative_i",
+                    "headers": ["person", ""],
+                    "rows": [
+                        { "label": "mån", "tags": ["Imprt+Sg1"] },
+                        { "label": "dån", "tags": ["Imprt+Sg2"] },
+                        { "label": "sån", "tags": ["Imprt+Sg3"], "separator": true },
+                        { "label": "måj", "tags": ["Imprt+Du1"] },
+                        { "label": "dåj", "tags": ["Imprt+Du2"] },
+                        { "label": "såj", "tags": ["Imprt+Du3"], "separator": true },
+                        { "label": "mij", "tags": ["Imprt+Pl1"] },
+                        { "label": "dij", "tags": ["Imprt+Pl2"] },
+                        { "label": "sij", "tags": ["Imprt+Pl3"] },
+                    ],
+                },
+                {
+                    "title": "imperative_ii",
+                    "headers": ["person", ""],
+                    "rows": [
+                        { "label": "mån", "tags": ["ImprtII+Sg1"] },
+                        { "label": "dån", "tags": ["ImprtII+Sg2"] },
+                        { "label": "sån", "tags": ["ImprtII+Sg3"], "separator": true },
+                        { "label": "måj", "tags": ["ImprtII+Du1"] },
+                        { "label": "dåj", "tags": ["ImprtII+Du2"] },
+                        { "label": "såj", "tags": ["ImprtII+Du3"], "separator": true },
+                        { "label": "mij", "tags": ["ImprtII+Pl1"] },
+                        { "label": "dij", "tags": ["ImprtII+Pl2"] },
+                        { "label": "sij", "tags": ["ImprtII+Pl3"] },
+                    ],
+                },
+            ],
+        },
+    ],
+}

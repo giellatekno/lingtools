@@ -1,0 +1,132 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "indicative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mån", "tags": ["Ind+Prs+Sg1", "Ind+Prs+ConNeg"], "prefixes": ["", "iv"] },
+                        { "label": "dån", "tags": ["Ind+Prs+Sg2", "Ind+Prs+ConNeg"], "prefixes": ["", "i"] },
+                        { "label": "dat", "tags": ["Ind+Prs+Sg3", "Ind+Prs+ConNeg"], "prefixes": ["", "ij"], "separator": true },
+                        { "label": "måj", "tags": ["Ind+Prs+Du1", "Ind+Prs+ConNeg"], "prefixes": ["", "en"] },
+                        { "label": "dåj", "tags": ["Ind+Prs+Du2", "Ind+Prs+ConNeg"], "prefixes": ["", "ehpen"] },
+                        { "label": "såj", "tags": ["Ind+Prs+Du3", "Ind+Prs+ConNeg"], "prefixes": ["", "iebá"], "separator": true },
+                        { "label": "mija", "tags": ["Ind+Prs+Pl1", "Ind+Prs+ConNeg"], "prefixes": ["", "iehpe"] },
+                        { "label": "dija", "tags": ["Ind+Prs+Pl2", "Ind+Prs+ConNeg"], "prefixes": ["", "ehpit"] },
+                        { "label": "da", "tags": ["Ind+Prs+Pl3", "Ind+Prs+ConNeg"], "prefixes": ["", "ie"] },
+                    ],
+                },
+                {
+                    "title": "perfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mån", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["liv", "iv lä"] },
+                        { "label": "dån", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lä", "i lä"] },
+                        { "label": "dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lä", "ij lä"], "separator": true },
+                        { "label": "måj", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lin", "en lä"] },
+                        { "label": "dåj", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lähppen", "ehpen lä"] },
+                        { "label": "såj", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["läba", "iebá lä"], "separator": true },
+                        { "label": "mija", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["läp", "iehpe lä"] },
+                        { "label": "dija", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lihpit", "ehpit lä"] },
+                        { "label": "da", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lä", "ie lä"] },
+                    ],
+                },
+                {
+                    "title": "preterite",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mån", "tags": ["Ind+Prt+Sg1", "Ind+Prt+ConNeg"], "prefixes": ["", "idtjiv"] },
+                        { "label": "dån", "tags": ["Ind+Prt+Sg2", "Ind+Prt+ConNeg"], "prefixes": ["", "idtji"] },
+                        { "label": "dat", "tags": ["Ind+Prt+Sg3", "Ind+Prt+ConNeg"], "prefixes": ["", "idtjij"], "separator": true },
+                        { "label": "måj", "tags": ["Ind+Prt+Du1", "Ind+Prt+ConNeg"], "prefixes": ["", "iejme"] },
+                        { "label": "dåj", "tags": ["Ind+Prt+Du2", "Ind+Prt+ConNeg"], "prefixes": ["", "iejden"] },
+                        { "label": "såj", "tags": ["Ind+Prt+Du3", "Ind+Prt+ConNeg"], "prefixes": ["", "iejga"], "separator": true },
+                        { "label": "mija", "tags": ["Ind+Prt+Pl1", "Ind+Prt+ConNeg"], "prefixes": ["", "iejme"] },
+                        { "label": "dija", "tags": ["Ind+Prt+Pl2", "Ind+Prt+ConNeg"], "prefixes": ["", "iejde"] },
+                        { "label": "da", "tags": ["Ind+Prt+Pl3", "Ind+Prt+ConNeg"], "prefixes": ["", "idtjin"] },
+                    ],
+                },
+                {
+                    "title": "pluperfect",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        { "label": "mån", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lidjiv", "idtjiv lä"] },
+                        { "label": "dån", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lidji", "idtji lä"] },
+                        { "label": "dat", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lij", "idtjij lä"], "separator": true },
+                        { "label": "måj", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijma", "iejme lä"] },
+                        { "label": "dåj", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijda", "iejden lä"] },
+                        { "label": "såj", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijga", "iejga lä"], "separator": true },
+                        { "label": "mija", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijma", "iejme lä"] },
+                        { "label": "dija", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lijda", "iejde lä"] },
+                        { "label": "da", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lidjin", "idtjin lä"] },
+                    ],
+                },
+            ],
+        },
+	/*
+        {
+            "title": "imperative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        // TODO: correct negation verb prefix
+                        { "label": "mån", "tags": ["Imprt+Sg1", "Imprt+ConNeg"], "prefixes": ["", "allon"] },
+                        { "label": "dån", "tags": ["Imprt+Sg2", "Imprt+ConNeg"], "prefixes": ["", "ale"] },
+                        { "label": "dat", "tags": ["Imprt+Sg3", "Imprt+ConNeg"], "prefixes": ["", "allos"], "separator": true },
+                        { "label": "måj", "tags": ["Imprt+Du1", "Imprt+ConNeg"], "prefixes": ["", "allu"] },
+                        { "label": "dåj", "tags": ["Imprt+Du2", "Imprt+ConNeg"], "prefixes": ["", "allet"] },
+                        { "label": "såj", "tags": ["Imprt+Du3", "Imprt+ConNeg"], "prefixes": ["", "alloska"], "separator": true },
+                        { "label": "mija", "tags": ["Imprt+Pl1", "Imprt+ConNeg"], "prefixes": ["", "allot"] },
+                        { "label": "dija", "tags": ["Imprt+Pl2", "Imprt+ConNeg"], "prefixes": ["", "allet"] },
+                        { "label": "da", "tags": ["Imprt+Pl3", "Imprt+ConNeg"], "prefixes": ["", "alloset"] },
+                    ],
+                },
+                // TODO: ImprtII table
+            ],
+        },
+	*/
+	/*
+        {
+            "title": "potential",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "positive", "negative"],
+                    "rows": [
+                        // TODO: correct negation verb prefix
+                        { "label": "mån", "tags": ["Pot+Prs+Sg1", "Pot+Prs+ConNeg"], "prefixes": ["", "in"] },
+                        { "label": "dån", "tags": ["Pot+Prs+Sg2", "Pot+Prs+ConNeg"], "prefixes": ["", "it"] },
+                        { "label": "dat", "tags": ["Pot+Prs+Sg3", "Pot+Prs+ConNeg"], "prefixes": ["", "ij"], "separator": true },
+                        { "label": "måj", "tags": ["Pot+Prs+Du1", "Pot+Prs+ConNeg"], "prefixes": ["", "ean"] },
+                        { "label": "dåj", "tags": ["Pot+Prs+Du2", "Pot+Prs+ConNeg"], "prefixes": ["", "eahppi"] },
+                        { "label": "såj", "tags": ["Pot+Prs+Du3", "Pot+Prs+ConNeg"], "prefixes": ["", "eaba"], "separator": true },
+                        { "label": "mija", "tags": ["Pot+Prs+Pl1", "Pot+Prs+ConNeg"], "prefixes": ["", "eat"] },
+                        { "label": "dija", "tags": ["Pot+Prs+Pl2", "Pot+Prs+ConNeg"], "prefixes": ["", "ehpet"] },
+                        { "label": "da", "tags": ["Pot+Prs+Pl3", "Pot+Prs+ConNeg"], "prefixes": ["", "eai"] },
+                    ],
+                },
+            ],
+        },
+	*/
+        {
+            "title": "nonfinite",
+            "tables": [
+                {
+                    "headers": [],
+                    "rows": [
+                        { "label": "infinite", "tags": ["Inf"] },
+                        { "label": "perfectparticiple", "tags": ["PrfPrc"] },
+                        { "label": "actioessive", "tags": ["Actio+Ess"] },
+                    ],
+                },
+            ],
+        },
+    ],
+}
