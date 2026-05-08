@@ -63,7 +63,7 @@ pub async fn unknown_in_x_by_freq_subprocess(
             PipelineError::missing_files(&lang1, Some(vec![file]))
         })?;
 
-    let dicthfst = format!("{}{}all.hfst", lang1, lang2);
+    let dicthfst = format!("{}{}-all.hfst", lang1, lang2);
     let Some(dict) = get_langfile(&lang1, &dicthfst) else {
         return Err(PipelineError::missing_files(&lang1, Some(vec![dicthfst])));
     };
