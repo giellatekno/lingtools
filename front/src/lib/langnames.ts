@@ -383,11 +383,11 @@ const LANGNAMES: LangNames = {
         fin: "Nenetsi",
         rus: "Ненецкий язык",
     },
-    //TODO: Fix names
+    //TODO: fin and rus names
     "sju-x-sydlapsk": {
-        eng: "Sydlapska bokspråket",
+        eng: "Old literary Southern Sámi",
         nob: "Sydlapska bokspråket",
-        sme: "Sydlapska bokspråket",
+        sme: "Dološ oarjjitsámi girjegiella",
         fin: "Sydlapska bokspråket",
         rus: "Sydlapska bokspråket",
     },

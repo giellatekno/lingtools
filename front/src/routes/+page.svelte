@@ -124,10 +124,10 @@
                     <div class="grid grid-cols-2 gap-2">
                         {#each group.langset as { iso, name }}
                             <a
-                                class="btn preset-outlined-primary-500 bg-surface-50 hover:preset-tonal-primary w-full text-center text-sm text-wrap lg:text-base"
+                                class="btn preset-outlined-primary-500 bg-surface-50 hover:preset-tonal-primary w-full text-center text-sm lg:text-base"
                                 href={resolve(`/${iso}`)}
                             >
-                                {name}
+                                <span class="truncate">{name}</span>
                             </a>
                         {/each}
                     </div>

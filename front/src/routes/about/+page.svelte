@@ -8,7 +8,7 @@
 
 <div class="flex justify-center">
     <div
-        class="border-surface-200-800 card preset-filled-surface-50-950 my-4 flex w-full max-w-3xl flex-col gap-8 rounded-lg border-2 p-6 shadow-lg lg:text-lg"
+        class="border-surface-200-800 card preset-filled-surface-50-950 my-4 flex w-full max-w-3xl flex-col gap-8 rounded-lg border p-6 shadow-lg lg:text-lg"
     >
         <div class="flex w-full flex-col gap-1">
             <h4 class="h5 lg:h4">{m.about_title()}</h4>
