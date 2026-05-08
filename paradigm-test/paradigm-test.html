@@ -106,7 +106,7 @@
         font-style: italic;
       }
       tr.separator td {
-        border-top: 2px solid #9ca3af;
+        border-bottom: 2px solid #9ca3af;
       }
       .section-heading {
         font-size: 1rem;
@@ -506,6 +506,13 @@
           resultsDiv.textContent = "No results.";
           return;
         }
+
+        const POS_ORDER = ["N", "V", "A", "Pron", "Num"];
+        data.paradigm_forms.sort(
+          (a, b) =>
+            (POS_ORDER.indexOf(a.pos) + 1 || 999) -
+            (POS_ORDER.indexOf(b.pos) + 1 || 999),
+        );
 
         const frag = document.createDocumentFragment();
 
