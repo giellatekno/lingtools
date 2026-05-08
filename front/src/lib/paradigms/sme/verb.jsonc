@@ -114,7 +114,7 @@
                         { "label": "don", "tags": ["Imprt+Sg2", "Imprt+ConNeg"], "prefixes": ["", "ale"] },
                         { "label": "son/dat", "tags": ["Imprt+Sg3", "Imprt+ConNeg"], "prefixes": ["", "allos"], "separator": true },
                         { "label": "moai", "tags": ["Imprt+Du1", "Imprt+ConNeg"], "prefixes": ["", "allu"] },
-                        { "label": "doai", "tags": ["Imprt+Du2", "Imprt+ConNeg"], "prefixes": ["", "allet"] },
+                        { "label": "doai", "tags": ["Imprt+Du2", "Imprt+ConNeg"], "prefixes": ["", "alli"] },
                         { "label": "soai", "tags": ["Imprt+Du3", "Imprt+ConNeg"], "prefixes": ["", "alloska"], "separator": true },
                         { "label": "mii", "tags": ["Imprt+Pl1", "Imprt+ConNeg"], "prefixes": ["", "allot"] },
                         { "label": "dii", "tags": ["Imprt+Pl2", "Imprt+ConNeg"], "prefixes": ["", "allet"] },
