@@ -72,27 +72,27 @@
 
     "analyze_title": "Analyze",
     "analyze_description": "Analyze one or more words in isolation.",
-    "analyze_instruction": "Use the searchbox below.",
+    "analyze_instruction": "Enter one or more words to see their morphological analysis. Each wordform is analyzed in isolation.",
 
     "dependency_title": "Dependency structure",
     "dependency_description": "Show dependancies between words in sentences.",
-    "dependency_instruction": "Use the searchbox below.",
+    "dependency_instruction": "Enter a sentence to see the grammatical dependency structure between its words.",
 
     "disambiguate_title": "Disambiguate",
     "disambiguate_description": "Show analyses that fits in the context of sentences.",
-    "disambiguate_instruction": "Use the searchbox below.",
+    "disambiguate_instruction": "Enter a sentence to see the most likely grammatical analysis of each word in context.",
 
     "generate_title": "Word generation",
     "generate_description": "Generate words from from grammatical specifications.",
-    "generate_instruction": "Use the searchbox below.",
+    "generate_instruction": "Enter a grammatical analysis string (e.g. lemma+N+Sg+Nom) to generate the corresponding wordform.",
 
     "hyphenate_title": "Hyphenate",
     "hyphenate_description": "Split words into syllables.",
-    "hyphenate_instruction": "Use the searchbox below.",
+    "hyphenate_instruction": "Enter one or more words to see how they are divided into syllables.",
 
     "paradigm_title": "Paradigms",
     "paradigm_description": "Generate conjugation patterns for any word.",
-    "paradigm_instruction": "Search for words in their base form.",
+    "paradigm_instruction": "Enter a word in its base form (lemma) to see its full inflection paradigm. If the search has multiple hits, select the correct one from the results list.",
     "paradigmsize": "Paradigm size",
     "paradigmsize_minimal": "Minimal",
     "paradigmsize_standard": "Standard",
@@ -207,11 +207,11 @@
 
     "num_title": "Numbers",
     "num_description": "Generate words from numbers, times or dates.",
-    "num_instruction": "Use the searchbox below.",
+    "num_instruction": "Enter a number, time, or date to generate the corresponding word form.",
 
     "transcribe_title": "Transcribe",
     "transcribe_description": "Transcribe words to IPA.",
-    "transcribe_instruction": "Write the words you want to transcribe below and submit.",
+    "transcribe_instruction": "Enter one or more words to see their pronunciation transcribed in IPA (International Phonetic Alphabet).",
 
     "toolsfor": [
         {

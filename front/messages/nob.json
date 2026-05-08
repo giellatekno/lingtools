@@ -71,27 +71,27 @@
 
     "analyze_title": "Analyser",
     "analyze_description": "Analyser ett eller flere ord hver for seg.",
-    "analyze_instruction": " ",
+    "analyze_instruction": "Skriv ett eller flere ord for å se morfologisk analyse. Hvert ord analyseres isolert.",
 
     "dependency_title": "Dependensstruktur",
     "dependency_description": "Vis dependenser mellom ord i setninger.",
-    "dependency_instruction": " ",
+    "dependency_instruction": "Skriv en setning for å se den grammatiske dependensstrukturen mellom ordene.",
 
     "disambiguate_title": "Disambiguer",
     "disambiguate_description": "Vis analyser som passer i setningkonteksten.",
-    "disambiguate_instruction": " ",
+    "disambiguate_instruction": "Skriv en setning for å se den mest sannsynlige grammatiske analysen av hvert ord i kontekst.",
 
     "generate_title": "Ordgenerering",
     "generate_description": "Generer ord fra grammatiske spesifikasjoner.",
-    "generate_instruction": " ",
+    "generate_instruction": "Skriv en grammatisk analysestreng (f.eks. lemma+N+Sg+Nom) for å generere tilsvarende ordform.",
 
     "hyphenate_title": "Ordstavelser",
     "hyphenate_description": "Del opp ord i takter og stavelser.",
-    "hyphenate_instruction": " ",
+    "hyphenate_instruction": "Skriv ett eller flere ord for å se hvordan de deles inn i stavelser.",
 
     "paradigm_title": "Paradigmer",
     "paradigm_description": "Generer bøyingsmønster for det ordet du vil.",
-    "paradigm_instruction": "Søk etter ord i grunnform.",
+    "paradigm_instruction": "Skriv et ord i grunnform (lemma) for å se hele bøyningsmønsteret. Velg riktig treff fra resultatlisten hvis det finnes flere.",
     "paradigm_jumpto": "Hopp til seksjon:",
     "paradigmsize": "Paradigmestørrelse",
     "paradigmsize_minimal": "Minimal",
@@ -202,11 +202,11 @@
 
     "num_title": "Tallord",
     "num_description": "Generer tallord fra tall, tider eller datoer.",
-    "num_instruction": " ",
+    "num_instruction": "Skriv et tall, klokkeslett eller dato for å generere tilsvarende ordform.",
 
     "transcribe_title": "Transkriber",
     "transcribe_description": "Transkriber ord til IPA.",
-    "transcribe_instruction": "Skriv ordene du vil transkribere og send.",
+    "transcribe_instruction": "Skriv ett eller flere ord for å se uttalen transkribert til IPA (det internasjonale fonetiske alfabetet).",
 
     "toolsfor": [
         {

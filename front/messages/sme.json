@@ -70,27 +70,27 @@
 
     "analyze_title": "Analysa",
     "analyze_description": "Analysere ovtta sáni dahje buot eaŋkilsániid cealkagiin.",
-    "analyze_instruction": " ",
+    "analyze_instruction": "Čále ovtta dahje máŋgga sáni vai oaidnit morfologalaš analysa. Juohke sátni analyserejuvvo sierrevuođas.",
 
     "dependency_title": "Dependeansastruktuvra ",
     "dependency_description": "Čájet dependeanssa sániid gaskkas cealkagiin.",
-    "dependency_instruction": " ",
+    "dependency_instruction": "Čále cealkaga vai oaidnit grammáhtalaš dependeansastruktuvrra sániid gaskkas.",
 
     "disambiguate_title": "Disambigueren",
     "disambiguate_description": "Čájet cealkagiid sátneanalysa mii heive kontekstii.",
-    "disambiguate_instruction": " ",
+    "disambiguate_instruction": "Čále cealkaga vai oaidnit juohke sáni jáhkehahttimus grammáhtalaš analysa cealkaga konteavsttas.",
 
     "generate_title": "Sátnegenereren",
     "generate_description": "Geavat grammatihkkalaš taggaid genereret sániid.",
-    "generate_instruction": " ",
+    "generate_instruction": "Čále grammáhtalaš analysastreŋgga (omd. lemma+N+Sg+Nom) vai genereret vástideaddji sátnehámi.",
 
     "hyphenate_title": "Botke sániid",
     "hyphenate_description": "Botke sániid stávvaliidda ja távttaide.",
-    "hyphenate_instruction": " ",
+    "hyphenate_instruction": "Čále ovtta dahje máŋgga sáni vai oaidnit movt juhkkojuvvojit stávvaliidda ja távttaide.",
 
     "paradigm_title": "Paradigmat",
     "paradigm_description": "Generere sániid sojahanminstariid.",
-    "paradigm_instruction": "Oza sániid vuođđohámiid",
+    "paradigm_instruction": "Čále sáni vuođđohámis (lemma) vai oaidnit olles sojahanminstara. Váljje rivttes deaivama boađuslisttus jus leat eanet go okta deaivan.",
     "paradigmsize": "Paradigma sturrodat",
     "paradigmsize_minimal": "Minimála",
     "paradigmsize_standard": "Standárda",
@@ -204,11 +204,11 @@
 
     "num_title": "Logut",
     "num_description": "Generere lohkosániid loguin, áiggiin dahje dáhtoniin.",
-    "num_instruction": " ",
+    "num_instruction": "Čále logu, diibmuáiggi dahje dáhtona vai genereret vástideaddji sátnehámi.",
 
     "transcribe_title": "Transkriberen",
     "transcribe_description": "Konvertere sániid IPA:i.",
-    "transcribe_instruction": " ",
+    "transcribe_instruction": "Čále ovtta dahje máŋgga sáni vai oaidnit transkriberen jietnadeami IPA:s (riikkaidgaskasaš fonetihkalaš transkriberenvuogádat)",
 
     "toolsfor": [
         {
