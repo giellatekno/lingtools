@@ -162,17 +162,6 @@
                     "rows": [{ "label": "infinite", "tags": ["Inf"] }],
                 },
                 {
-                    "title": "thirdinfinite",
-                    "headers": ["case", ""],
-                    "rows": [
-                        { "label": "adessive", "tags": ["Act+Inf3+Ade"] },
-                        { "label": "illative", "tags": ["Act+Inf3+Ill"] },
-                        { "label": "inessive", "tags": ["Act+Inf3+Ine"] },
-                        { "label": "elative", "tags": ["Act+Inf3+Ela"] },
-                        { "label": "abessive", "tags": ["Act+Inf3+Abe"] },
-                    ],
-                },
-                {
                     "title": "perfectparticiple",
                     "headers": ["case", "singular", "plural"],
                     "rows": [
@@ -195,6 +184,8 @@
                     "title": "presentparticiple",
                     "headers": ["case", "singular", "plural"],
                     "rows": [{ "label": "nominative", "tags": ["Act+PrsPrc+Sg+Nom", "Act+PrsPrc+Pl+Nom"] }],
+                    "rows": [{ "label": "nominative", "tags": ["Pss+PrsPrc+Sg+Nom", "Pss+PrsPrc+Pl+Nom"] }],
+                    "rows": [{ "label": "nominative", "tags": ["Rfl+PrsPrc+Sg+Nom", "Rfl+PrsPrc+Pl+Nom"] }],
                 },
             ],
         },
