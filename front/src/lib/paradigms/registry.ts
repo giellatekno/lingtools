@@ -8,7 +8,7 @@ const schemas = import.meta.glob<string>("./**/*.jsonc", {
 });
 
 // When .jsonc files are done for lang, add it here
-const PARADIGM_LANGS = ["fkv", "sje", "sju-x-sydlapsk", "sma", "sme", "smn"];
+const PARADIGM_LANGS = ["fkv", "sje", "sju-x-sydlapsk", "sma", "sme", "smn", "sms"];
 
 const POS_NAMES: Record<string, string> = {
     V: "verb",
