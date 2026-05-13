@@ -5,6 +5,7 @@ default:
 # start development server on port 3000
 dev:
     RUSTFLAGS="--cfg tokio_unstable" WP_LANGFOLDER=/usr/share/giella/ RUST_BACKTRACE=1 systemfd --no-pid -s http::3000 -- cargo watch -x run
+#    RUSTFLAGS="--cfg tokio_unstable" WP_LANGFOLDER=local_fst RUST_BACKTRACE=1 systemfd --no-pid -s http::3000 -- cargo watch -x run
 
 # build rust binary in target/
 build:
