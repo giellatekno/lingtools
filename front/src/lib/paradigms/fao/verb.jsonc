@@ -36,8 +36,9 @@
                     "headers": [],
                     "rows": [
                         { "label": "infinite", "tags": ["Inf"] },
-                        { "label": "perfectparticiple", "tags": ["PrfPrc"] },
-                        { "label": "presentparticiple", "tags": ["PrsPrc"] },
+                        { "label": "supine", "tags": ["Sup"] },
+                        { "label": "pastparticiple", "tags": ["PstPtc"] },
+                        { "label": "presentparticiple", "tags": ["PrsPtc"] },
                     ],
                 },
             ],
