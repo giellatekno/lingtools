@@ -1,3 +1,4 @@
+local_fst/
 target/
 Cargo.lock
 
