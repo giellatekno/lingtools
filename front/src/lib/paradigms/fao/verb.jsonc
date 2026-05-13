@@ -1,0 +1,46 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "title": "indicative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "title": "present",
+                    "headers": ["person", "present", "past"],
+                    "rows": [
+                        { "label": "eg", "tags": ["Ind+Prs+1Sg", "Ind+Prt+1SG"], "prefixes": ["", ""] },
+                        { "label": "tú", "tags": ["Ind+Prs+2Sg", "Ind+Prt+2Sg"], "prefixes": ["", ""] },
+                        { "label": "hann/hon", "tags": ["Ind+Prs+3Sg", "Ind+Prt+3Sg"], "prefixes": ["", ""], "separator": true },
+                        { "label": "vit/tit/tey", "tags": ["Ind+Prs+Pl1", "Ind+Prt+Pl"], "prefixes": ["", ""] },
+                    ],
+                },
+        {
+            "title": "imperative",
+            "validateRows": true,
+            "tables": [
+                {
+                    "headers": ["person", "imperative"],
+                    "rows": [
+                        // TODO: correct negation verb prefix
+                        { "label": "tú", "tags": ["Imprt+2Sg"], "prefixes": [""] },
+                        { "label": "tit", "tags": ["Imprt+2Pl"], "prefixes": [""] },
+                    ],
+                },
+            ],
+        },
+        {
+            "title": "nonfinite",
+            "tables": [
+                {
+                    "headers": [],
+                    "rows": [
+                        { "label": "infinite", "tags": ["Inf"] },
+                        { "label": "perfectparticiple", "tags": ["PrfPrc"] },
+                        { "label": "presentparticiple", "tags": ["PrsPrc"] },
+                    ],
+                },
+            ],
+        },
+    ],
+}

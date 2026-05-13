@@ -1,0 +1,80 @@
+{
+    "$schema": "../paradigm_schema.json",
+    "sections": [
+        {
+            "showIf": ["Msc"],
+            "tables": [
+                {
+		    "title": "indefinite",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Msc+Sg+Nom+Indef", "Msc+Pl+Nom+Indef"]},
+                        { "label": "accusative", "tags": ["Msc+Sg+Acc+Indef", "Msc+Pl+Acc+Indef"]},
+                        { "label": "genitive", "tags": ["Msc+Sg+Gen+Indef", "Msc+Pl+Gen+Indef"]},
+                        { "label": "dative", "tags": ["Msc+Sg+Dat+Indef", "Msc+Pl+Dat+Indef"]},
+                    ],
+                },
+                {
+		    "title": "definite",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Msc+Sg+Nom+Def", "Msc+Pl+Nom+Def"]},
+                        { "label": "accusative", "tags": ["Msc+Sg+Acc+Def", "Msc+Pl+Acc+Def"]},
+                        { "label": "genitive", "tags": ["Msc+Sg+Gen+Def", "Msc+Pl+Gen+Def"]},
+                        { "label": "dative", "tags": ["Msc+Sg+Dat+Def", "Msc+Pl+Dat+Def"]},
+                    ],
+                },
+            ],
+        },
+        {
+            "showIf": ["Fem"],
+            "tables": [
+                {
+		    "title": "indefinite",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Fem+Sg+Nom+Indef", "Fem+Pl+Nom+Indef"]},
+                        { "label": "accusative", "tags": ["Fem+Sg+Acc+Indef", "Fem+Pl+Acc+Indef"]},
+                        { "label": "genitive", "tags": ["Fem+Sg+Gen+Indef", "Fem+Pl+Gen+Indef"]},
+                        { "label": "dative", "tags": ["Fem+Sg+Dat+Indef", "Fem+Pl+Dat+Indef"]},
+                    ],
+                },
+                {
+		    "title": "definite",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Fem+Sg+Nom+Def", "Fem+Pl+Nom+Def"]},
+                        { "label": "accusative", "tags": ["Fem+Sg+Acc+Def", "Fem+Pl+Acc+Def"]},
+                        { "label": "genitive", "tags": ["Fem+Sg+Gen+Def", "Fem+Pl+Gen+Def"]},
+                        { "label": "dative", "tags": ["Fem+Sg+Dat+Def", "Fem+Pl+Dat+Def"]},
+                    ],
+                },
+            ],
+        },
+        {
+            "showIf": ["Neu"],
+            "tables": [
+                {
+		    "title": "indefinite",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Neu+Sg+Nom+Indef", "Neu+Pl+Nom+Indef"]},
+                        { "label": "accusative", "tags": ["Neu+Sg+Acc+Indef", "Neu+Pl+Acc+Indef"]},
+                        { "label": "genitive", "tags": ["Neu+Sg+Gen+Indef", "Neu+Pl+Gen+Indef"]},
+                        { "label": "dative", "tags": ["Neu+Sg+Dat+Indef", "Neu+Pl+Dat+Indef"]},
+                    ],
+                },
+                {
+		    "title": "definite",
+                    "headers": ["case", "singular", "plural"],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Neu+Sg+Nom+Def", "Neu+Pl+Nom+Def"]},
+                        { "label": "accusative", "tags": ["Neu+Sg+Acc+Def", "Neu+Pl+Acc+Def"]},
+                        { "label": "genitive", "tags": ["Neu+Sg+Gen+Def", "Neu+Pl+Gen+Def"]},
+                        { "label": "dative", "tags": ["Neu+Sg+Dat+Def", "Neu+Pl+Dat+Def"]},
+                    ],
+                },
+            ],
+        },
+    ],
+}
