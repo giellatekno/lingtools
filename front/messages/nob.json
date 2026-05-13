@@ -89,9 +89,10 @@
     "hyphenate_description": "Del opp ord i takter og stavelser.",
     "hyphenate_instruction": "Skriv ett eller flere ord for å se hvordan de deles inn i stavelser.",
 
-    "paradigm_title": "Paradigmer",
-    "paradigm_description": "Generer bøyingsmønster for det ordet du vil.",
-    "paradigm_instruction": "Skriv et ord i grunnform (lemma) for å se hele bøyningsmønsteret. Velg riktig treff fra resultatlisten hvis det finnes flere.",
+    "paradigms_title": "Paradigmer",
+    "paradigms_description": "Generer bøyingsmønster for det ordet du vil.",
+    "paradigms_instruction": "Skriv et ord i grunnform (lemma) for å se hele bøyningsmønsteret. Velg riktig treff fra resultatlisten hvis det finnes flere.",
+
     "paradigm_jumpto": "Hopp til seksjon:",
     "paradigmsize": "Paradigmestørrelse",
     "paradigmsize_minimal": "Minimal",
@@ -200,9 +201,17 @@
     "paradigm_dual": "Totall",
     "paradigm_plural": "Flertall",
 
-    "num_title": "Tallord",
-    "num_description": "Generer tallord fra tall, tider eller datoer.",
-    "num_instruction": "Skriv et tall, klokkeslett eller dato for å generere tilsvarende ordform.",
+    "numbers_title": "Tallord",
+    "numbers_description": "Generer tallord fra tall, tider eller datoer.",
+    "numbers_instruction": "Skriv et tall, klokkeslett eller dato for å generere tilsvarende ordform.",
+
+    "numbers_method_numbers": "Nummer",
+    "numbers_method_date": "Dato",
+    "numbers_method_clock": "Klokkeslett",
+    "numbers_minute": "Minutt",
+    "numbers_hour": "Time",
+    "numbers_month": "Måne",
+    "numbers_day": "Dag",
 
     "transcribe_title": "Transkriber",
     "transcribe_description": "Transkriber ord til IPA.",

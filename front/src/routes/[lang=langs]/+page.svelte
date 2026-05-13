@@ -15,9 +15,9 @@
     const IMAGES: { [key: string]: string } = {
         spellcheck: spellcheck_img,
         hyphenate: hyphenate_img,
-        num: num_img,
+        numbers: num_img,
         transcribe: ipa_img,
-        paradigm: paradigm_img,
+        paradigms: paradigm_img,
     };
 
     let lang = $derived(page.params.lang || "");
@@ -40,10 +40,13 @@
             title: m.hyphenate_title,
             description: m.hyphenate_description,
         },
-        num: { title: m.num_title, description: m.num_description },
-        paradigm: {
-            title: m.paradigm_title,
-            description: m.paradigm_description,
+        numbers: {
+            title: m.numbers_title,
+            description: m.numbers_description,
+        },
+        paradigms: {
+            title: m.paradigms_title,
+            description: m.paradigms_description,
         },
         transcribe: {
             title: m.transcribe_title,

@@ -6,7 +6,7 @@ import type { PageLoad } from "./$types";
 import { ParadigmResponse } from "$lib/types";
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
-    if (!tools_for[params.lang].includes("paradigm")) {
+    if (!tools_for[params.lang].includes("paradigms")) {
         error(404, "Not Found");
     }
 

@@ -90,9 +90,10 @@
     "hyphenate_description": "Split words into syllables.",
     "hyphenate_instruction": "Enter one or more words to see how they are divided into syllables.",
 
-    "paradigm_title": "Paradigms",
-    "paradigm_description": "Generate conjugation patterns for any word.",
-    "paradigm_instruction": "Enter a word in its base form (lemma) to see its full inflection paradigm. If the search has multiple hits, select the correct one from the results list.",
+    "paradigms_title": "Paradigms",
+    "paradigms_description": "Generate conjugation patterns for any word.",
+    "paradigms_instruction": "Enter a word in its base form (lemma) to see its full inflection paradigm. If the search has multiple hits, select the correct one from the results list.",
+
     "paradigmsize": "Paradigm size",
     "paradigmsize_minimal": "Minimal",
     "paradigmsize_standard": "Standard",
@@ -205,9 +206,17 @@
     "paradigm_plural": "Plural",
     "paradigm_dual": "Dual",
 
-    "num_title": "Numbers",
-    "num_description": "Generate words from numbers, times or dates.",
-    "num_instruction": "Enter a number, time, or date to generate the corresponding word form.",
+    "numbers_title": "Numbers",
+    "numbers_description": "Generate words from numbers, times or dates.",
+    "numbers_instruction": "Enter a number, time, or date to generate the corresponding word form.",
+
+    "numbers_method_numbers": "Numbers",
+    "numbers_method_date": "Date",
+    "numbers_method_clock": "Clock",
+    "numbers_minute": "Minute",
+    "numbers_hour": "Hour",
+    "numbers_month": "Month",
+    "numbers_day": "Day",
 
     "transcribe_title": "Transcribe",
     "transcribe_description": "Transcribe words to IPA.",

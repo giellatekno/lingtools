@@ -217,3 +217,12 @@ export function transcribe_parser(data: string) {
     // console.log(parsed);
     return parsed;
 }
+
+export function numbers_parser(data: string): [string, string][] {
+    return data
+        .split("\n")
+        .filter((line) => line.length > 0)
+        .map((line) => line.split("\t"))
+        .filter((splits) => splits.length >= 3 && splits[2] !== "inf")
+        .map((splits) => [splits[0], splits[1]]);
+}

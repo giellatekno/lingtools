@@ -12,8 +12,8 @@
         disambiguate: m.disambiguate_instruction,
         generate: m.generate_instruction,
         hyphenate: m.hyphenate_instruction,
-        num: m.num_instruction,
-        paradigm: m.paradigm_instruction,
+        numbers: m.numbers_instruction,
+        paradigms: m.paradigms_instruction,
         transcribe: m.transcribe_instruction,
     };
 </script>

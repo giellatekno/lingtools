@@ -21,8 +21,8 @@
         disambiguate: m.disambiguate_title,
         generate: m.generate_title,
         hyphenate: m.hyphenate_title,
-        num: m.num_title,
-        paradigm: m.paradigm_title,
+        numbers: m.numbers_title,
+        paradigms: m.paradigms_title,
         transcribe: m.transcribe_title,
     };
     const animBackdrop =

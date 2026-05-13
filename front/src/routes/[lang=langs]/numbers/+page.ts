@@ -2,9 +2,10 @@ import { tools_for } from "$lib/langs";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 import { env } from "$env/dynamic/public";
+import { numbers_parser } from "$lib/parsers";
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
-    if (!tools_for[params.lang].includes("num")) {
+    if (!tools_for[params.lang].includes("numbers")) {
         error(404, "Not Found");
     }
     const lang = params.lang;
@@ -15,7 +16,10 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return {};
     }
 
-    const backend_url = `${env.PUBLIC_API_ROOT}/numbers/${lang}/${q}?method=${method}&format=json`;
+    const method_map: Record<string, string> = { num: "numbers", time: "clock" };
+    const api_method = method_map[method ?? ""] ?? method;
+
+    const backend_url = `${env.PUBLIC_API_ROOT}/numbers/${lang}/${q}?method=${api_method}&direction=digit2text`;
     let response;
     try {
         response = await fetch(backend_url);
@@ -40,6 +44,5 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return { error: json.error };
     }
 
-    // TODO: add Zod schema for numbers response
-    return { q, results: json };
+    return { q, method: method ?? "num", results: numbers_parser(json) };
 };

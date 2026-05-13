@@ -88,9 +88,10 @@
     "hyphenate_description": "Botke sániid stávvaliidda ja távttaide.",
     "hyphenate_instruction": "Čále ovtta dahje máŋgga sáni vai oaidnit movt juhkkojuvvojit stávvaliidda ja távttaide.",
 
-    "paradigm_title": "Paradigmat",
-    "paradigm_description": "Generere sániid sojahanminstariid.",
-    "paradigm_instruction": "Čále sáni vuođđohámis (lemma) vai oaidnit olles sojahanminstara. Váljje rivttes deaivama boađuslisttus jus leat eanet go okta deaivan.",
+    "paradigms_title": "Paradigmat",
+    "paradigms_description": "Generere sániid sojahanminstariid.",
+    "paradigms_instruction": "Čále sáni vuođđohámis (lemma) vai oaidnit olles sojahanminstara. Váljje rivttes deaivama boađuslisttus jus leat eanet go okta deaivan.",
+
     "paradigmsize": "Paradigma sturrodat",
     "paradigmsize_minimal": "Minimála",
     "paradigmsize_standard": "Standárda",
@@ -202,9 +203,17 @@
     "paradigm_plural": "Plurála",
     "paradigm_dual": "Duála",
 
-    "num_title": "Logut",
-    "num_description": "Generere lohkosániid loguin, áiggiin dahje dáhtoniin.",
-    "num_instruction": "Čále logu, diibmuáiggi dahje dáhtona vai genereret vástideaddji sátnehámi.",
+    "numbers_title": "Logut",
+    "numbers_description": "Generere lohkosániid loguin, áiggiin dahje dáhtoniin.",
+    "numbers_instruction": "Čále logu, diibmuáiggi dahje dáhtona vai genereret vástideaddji sátnehámi.",
+
+    "numbers_method_numbers": "Logut",
+    "numbers_method_date": "Beaivemearri",
+    "numbers_method_clock": "Áigemearri",
+    "numbers_minute": "Minuhtta",
+    "numbers_hour": "Diibmu",
+    "numbers_month": "Mánnu",
+    "numbers_day": "Beaivi",
 
     "transcribe_title": "Transkriberen",
     "transcribe_description": "Konvertere sániid IPA:i.",

@@ -85,29 +85,33 @@ export const generation_langs = new Set([
 
 // prettier-ignore
 export const num_langs = new Set([
-    "fin", "hdn", "liv", "mdf", 
-    "mhr", "myv", "olo", "rus", 
-    "sma", "tkl", "sme", //"sjd",
-    "smj", "smn", "sms", "yrk",
+    "fin", "hdn", "kpv", "liv", "mdf", 
+    "mhr", "mrj", "myv", "nob","olo", "rus",
+    "sma", "sme", //"sjd",
+    "smj", "smn", "sms", "tkl", "vro", "yrk",
 ]);
 
-export const num_lang_details = {
-    fin: ["num", "time"],
-    hdn: ["num", "time"],
-    liv: ["num"],
-    mdf: ["num"],
-    mhr: ["num"],
-    myv: ["num"],
-    olo: ["num"],
-    rus: ["num", "date", "time"],
-    sma: ["num", "date", "time"],
-    tkl: ["num", "date", "time"],
-    sme: ["num", "date", "time"],
-    // sjd: ["num", "date", "time"],
-    smj: ["num", "date"],
-    smn: ["num", "time"],
-    sms: ["num", "time"],
-    yrk: ["num"],
+export const num_lang_details: Record<string, ("numbers" | "date" | "clock")[]> = {
+    fin: ["numbers", "date", "clock"],
+    hdn: ["numbers", "date", "clock"],
+    kpv: ["numbers", "date", "clock"],
+    liv: ["numbers"],
+    mdf: ["numbers", "date", "clock"],
+    mhr: ["numbers", "date"],
+    mrj: ["numbers", "date"],
+    myv: ["numbers", "date", "clock"],
+    nob: ["numbers"],
+    olo: ["numbers", "date", "clock"],
+    rus: ["numbers", "date", "clock"],
+    sma: ["numbers", "date", "clock"],
+    sme: ["numbers", "date", "clock"],
+    // sjd: ["numbers", "date", "clock"],
+    smj: ["numbers", "date"],
+    smn: ["numbers", "date"],
+    sms: ["numbers", "date", "clock"],
+    tkl: ["numbers"],
+    vro: ["numbers", "date"],
+    yrk: ["numbers", "date", "clock"],
 };
 export const tools = [
     "analyze",
@@ -115,8 +119,8 @@ export const tools = [
     "disambiguate",
     "generate",
     "hyphenate",
-    "num",
-    "paradigm",
+    "numbers",
+    "paradigms",
     // "spellcheck",
     "transcribe",
     //"ortography",
@@ -134,8 +138,8 @@ for (const lang of langs) {
     if (disambiguate_langs.has(lang)) tools_for[lang].push("disambiguate");
     if (generation_langs.has(lang)) tools_for[lang].push("generate");
     if (hyphenation_langs.has(lang)) tools_for[lang].push("hyphenate");
-    if (paradigm_langs.has(lang)) tools_for[lang].push("paradigm");
+    if (paradigm_langs.has(lang)) tools_for[lang].push("paradigms");
     //if (spellcheck_langs.has(lang)) tools_for[lang].push("spellcheck");
-    // if (num_langs.has(lang)) tools_for[lang].push("num");
+    if (num_langs.has(lang)) tools_for[lang].push("numbers");
     if (transcription_langs.has(lang)) tools_for[lang].push("transcribe");
 }

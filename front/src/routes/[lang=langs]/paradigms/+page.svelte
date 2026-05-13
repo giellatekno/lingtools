@@ -23,11 +23,13 @@
 </script>
 
 <svelte:head>
-    <title>{m.paradigm_title()} • {langname(lang, getLocale())} • {m.page_title()}</title>
+    <title>
+        {m.paradigms_title()} • {langname(lang, getLocale())} • {m.page_title()}
+    </title>
 </svelte:head>
 
 <div class="flex flex-col items-center gap-4 lg:gap-8">
-    <FormWrapper tool="paradigm">
+    <FormWrapper tool="paradigms">
         <ParadigmForm {word} bind:format has_tables={hasParadigmSchema(lang)} />
     </FormWrapper>
 

@@ -182,7 +182,7 @@
                         <a
                             class="btn hover:preset-tonal flex-col items-start gap-0 px-3 py-2 text-left"
                             href={resolve(
-                                `/${lang}/paradigm?word=${other_hit.lemma}&pos=${other_hit.pos}${other_hit.subclass ? `&subclass=${other_hit.subclass}` : ""}`,
+                                `/${lang}/paradigms?word=${other_hit.lemma}&pos=${other_hit.pos}${other_hit.subclass ? `&subclass=${other_hit.subclass}` : ""}`,
                             )}
                         >
                             <span class="font-semibold">{other_hit.lemma}</span>
