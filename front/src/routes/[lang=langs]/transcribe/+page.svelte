@@ -5,7 +5,7 @@
     import TextForm from "$components/TextForm.svelte";
     import { m } from "$lib/paraglide/messages";
     import { getLocale } from "$lib/paraglide/runtime";
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
     import { page } from "$app/state";
 
     interface Props {

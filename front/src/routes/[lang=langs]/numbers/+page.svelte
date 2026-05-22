@@ -4,7 +4,7 @@
     import FormWrapper from "$components/FormWrapper.svelte";
     import { m } from "$lib/paraglide/messages";
     import { getLocale } from "$lib/paraglide/runtime";
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
     import { page } from "$app/state";
     import { goto } from "$app/navigation";
     import { num_lang_details } from "$lib/langs";
@@ -70,7 +70,9 @@
 </script>
 
 <svelte:head>
-    <title>{m.numbers_title()} • {langname(lang, getLocale())} • {m.page_title()}</title>
+    <title>
+        {m.numbers_title()} • {langname(lang, getLocale())} • {m.page_title()}
+    </title>
 </svelte:head>
 
 <div class="flex flex-col items-center gap-4 lg:gap-8">

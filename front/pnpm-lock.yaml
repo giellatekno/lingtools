@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@giellatekno/langnames':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@lucide/svelte':
         specifier: ^0.575.0
         version: 0.575.0(svelte@5.53.0)
@@ -261,6 +264,9 @@ packages:
 
   '@fontsource/fira-mono@5.2.7':
     resolution: {integrity: sha512-wYrAn6i3nH6luqQBZxtWUpl4UTUvs9AEbEeZxksPMwIqyjRRaxHTNW3c2VfM50gabS2IS7pT8lVWS2USB4ukYA==}
+
+  '@giellatekno/langnames@1.2.0':
+    resolution: {integrity: sha512-YBo6hJBLMQnDvGEhOkqk5ySFEDyUvehwCHL1ieXD52staj8N63u1+9BapfbQZBtWF8Xq4wy3buyhA0iA6UUtcA==}
 
   '@img/colour@1.0.0':
     resolution: {integrity: sha512-A5P/LfWGFSl6nsckYtjw9da+19jB8hkJ6ACTGcDfEJ0aE+l2n2El7dsVM7UVHZQ9s2lmYMWlrS21YLy2IR1LUw==}
@@ -1602,6 +1608,8 @@ snapshots:
   '@floating-ui/utils@0.2.10': {}
 
   '@fontsource/fira-mono@5.2.7': {}
+
+  '@giellatekno/langnames@1.2.0': {}
 
   '@img/colour@1.0.0': {}
 

@@ -8,7 +8,7 @@
     import paradigm_img from "$assets/paradigm.svg";
     import { tools_for } from "$lib/langs";
     import { page } from "$app/state";
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
     import { getLocale } from "$lib/paraglide/runtime";
     import { m } from "$lib/paraglide/messages";
 

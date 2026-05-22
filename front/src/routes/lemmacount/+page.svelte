@@ -1,7 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import ErrorBox from "$components/ErrorBox.svelte";
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
     import { m } from "$lib/paraglide/messages.js";
     import { getLocale } from "$lib/paraglide/runtime";
     import { FileIcon } from "@lucide/svelte";

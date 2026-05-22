@@ -2,7 +2,7 @@
     import { goto } from "$app/navigation";
     import { resolve } from "$app/paths";
     import { langs, sami_langs, nonsamiuralic_langs, other_langs } from "$lib/langs";
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
     import { SearchIcon } from "@lucide/svelte";
     import { m } from "$lib/paraglide/messages";
     import { getLocale } from "$lib/paraglide/runtime";
@@ -10,7 +10,7 @@
     let search = $state("");
     let selectedIndex = $state(0);
 
-    let locale = $derived(getLocale());
+    let locale = getLocale();
 
     let all_langs = $derived(
         langs

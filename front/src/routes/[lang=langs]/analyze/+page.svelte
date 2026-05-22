@@ -8,7 +8,7 @@
     import { m } from "$lib/paraglide/messages";
     import { page } from "$app/state";
     import { getLocale } from "$lib/paraglide/runtime";
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
     import { createToaster, Toast } from "@skeletonlabs/skeleton-svelte";
     import { CopyCheckIcon } from "@lucide/svelte";
 
@@ -46,7 +46,9 @@
 </script>
 
 <svelte:head>
-    <title>{m.analyze_title()} • {langname(lang, getLocale())} • {m.page_title()}</title>
+    <title>
+        {m.analyze_title()} • {langname(lang, getLocale())} • {m.page_title()}
+    </title>
 </svelte:head>
 
 <div class="flex flex-col items-center gap-4 lg:gap-8">

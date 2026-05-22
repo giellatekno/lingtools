@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
     import { FileUpload } from "@skeletonlabs/skeleton-svelte";
     import ErrorBox from "$components/ErrorBox.svelte";
     import { enhance } from "$app/forms";

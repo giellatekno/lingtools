@@ -8,7 +8,7 @@
     import rus_flag from "$assets/flags/rus.svg";
     import { m } from "$lib/paraglide/messages";
     import { locales, setLocale } from "$lib/paraglide/runtime";
-    import { langname } from "$lib/langnames";
+    import { langname } from "@giellatekno/langnames";
 
     let flag_icons: Record<string, string> = {
         sme: sme_flag,
