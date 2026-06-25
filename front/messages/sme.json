@@ -7,7 +7,7 @@
     "about": "Siiddu birra",
     "interfacelanguage": "Geavahanlaktagiella",
     "languages": "Gielat",
-    "toolspage": "Reaidosiidu",
+    "languagetools": "Giellareaiddut",
     "documentation": "Dokumentašuvdna",
 
     "notfound": "Siidu maid ozat ii gávdno.",
@@ -24,7 +24,7 @@
 
     "copyright": "Copyright © Sámi giellateknologiija guovddaš",
     "feedback": "Sádde máhcahaga siiddu birra midjiide:",
-    "index_description": "Lingvisttalaš reaiddut GiellaLT-infrastruktuvrra gielaide. Vállje giela vuolábeallde.",
+    "index_description": "Lingvisttalaš reaiddut GiellaLT-infrastruktuvrra gielaide.",
     "searchforlangs": "Oza gielaid namaid dahje ISO koda",
     "showtoolsfor": "Oza gielaid:",
     "filters": "Filtarat",

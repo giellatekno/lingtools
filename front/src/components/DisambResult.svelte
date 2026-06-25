@@ -2,7 +2,7 @@
     import type { ParsedAnalysis } from "$lib/parsers";
 
     let { results }: { results: ParsedAnalysis[] | undefined } = $props();
-    $effect(() => console.log(results));
+    // $effect(() => console.log(results));
 </script>
 
 <div class="w-full text-sm lg:w-fit lg:text-lg">

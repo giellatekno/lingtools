@@ -7,7 +7,7 @@
     "about": "About",
     "interfacelanguage": "Interface language",
     "languages": "Languages",
-    "toolspage": "Tools page",
+    "languagetools": "Language tools",
     "documentation": "Documentation",
 
     "notfound": "The page you're looking for doesn't exist.",
@@ -25,7 +25,7 @@
     "copyright": "Copyright © Centre for Sámi language technology",
     "feedback": "Send feedback about the webpage to:",
 
-    "index_description": "Linguistic tools for languages in the GiellaLT infrastructure. Select a language to get started.",
+    "index_description": "Linguistic tools for languages in the GiellaLT infrastructure.",
     "searchforlangs": "Search for languages by name or ISO code",
     "filters": "Filters",
     "samilanguages": "Sámi languages",

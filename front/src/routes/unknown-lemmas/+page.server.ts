@@ -6,7 +6,7 @@ import { gzipSync } from "zlib";
 export const actions = {
     default: async ({ request, fetch }) => {
         const formData = await request.formData();
-        console.debug(formData);
+        // console.debug(formData);
 
         // Extract form data
         const lang1 = formData.get("lang1") as string;
@@ -75,9 +75,9 @@ export const actions = {
                 });
             }
 
-            const result = await response.text();
+            const result = await response.json();
             // console.log(result);
-            return { success: true, result };
+            return { success: true, results: result.split("\n") };
         } catch (error) {
             console.error("Backend communication failed:", error);
             return fail(500, {

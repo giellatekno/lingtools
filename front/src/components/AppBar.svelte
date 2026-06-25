@@ -3,11 +3,33 @@
     import SelectLocale from "./SelectLocale.svelte";
     import { resolve } from "$app/paths";
     import { page } from "$app/state";
-    import { GlobeIcon, InfoIcon, ToolboxIcon, WrenchIcon } from "@lucide/svelte";
+    import { InfoIcon } from "@lucide/svelte";
     import MobileSideBar from "./MobileSideBar.svelte";
     import { m } from "$lib/paraglide/messages";
+    import { tools_for } from "$lib/langs";
+    import AppBarMenu from "./AppBarMenu.svelte";
 
     let lang = $derived(page.params.lang || "");
+
+    const lang_tools = $derived(
+        (
+            [
+                { title: m.analyze_title, route: "analyze" },
+                { title: m.dependency_title, route: "dependency" },
+                { title: m.disambiguate_title, route: "disambiguate" },
+                { title: m.generate_title, route: "generate" },
+                { title: m.hyphenate_title, route: "hyphenate" },
+                { title: m.numbers_title, route: "numbers" },
+                { title: m.paradigms_title, route: "paradigms" },
+                { title: m.transcribe_title, route: "transcribe" },
+            ] as const
+        ).filter((tool) => lang && tools_for[lang].includes(tool.route)),
+    );
+
+    const other_tools = [
+        { title: m.unknownlemmas_title, route: "unknown-lemmas" },
+        { title: m.lemmacount_title, route: "lemmacount" },
+    ];
 </script>
 
 <AppBar
@@ -19,50 +41,31 @@
         <AppBar.Lead class="lg:hidden">
             <MobileSideBar />
         </AppBar.Lead>
-        <AppBar.Headline class="flex flex-row gap-4">
-            <a href={resolve("/")} class="text-xl font-bold lg:text-3xl">
+        <AppBar.Headline class="hidden flex-row items-center gap-1 lg:flex">
+            <a href={resolve("/")} class="mr-4 text-xl font-bold lg:text-3xl">
                 {m.page_title()}
             </a>
-            <a href={resolve("/")} class="lg:btn ml-4 hidden hover:underline">
-                <GlobeIcon class="size-6" />
+
+            <a
+                href={resolve("/")}
+                class="btn hover:preset-tonal hover:text-surface-50 flex items-center gap-2"
+            >
                 {m.languages()}
             </a>
-            <!-- <div class="group relative flex items-center"> -->
-            <!--     <button class="btn hover:underline">{m.other_tools()}</button> -->
-            <!---->
-            <!--     <div -->
-            <!--         class="invisible absolute top-full left-0 -->
-            <!--     z-50 w-fit opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100" -->
-            <!--     > -->
-            <!--         <div -->
-            <!--             class="card preset-filled-primary-50-950 space-y-2 p-2 shadow-xl" -->
-            <!--         > -->
-            <!--             <a -->
-            <!--                 href={resolve("/unknown-lemmas")} -->
-            <!--                 class="hover:preset-tonal btn block w-full" -->
-            <!--             > -->
-            <!--                 {m.unknownlemmas_title()} -->
-            <!--             </a> -->
-            <!--             <a -->
-            <!--                 href={resolve("/lemmacount")} -->
-            <!--                 class="hover:preset-tonal btn w-full" -->
-            <!--             > -->
-            <!--                 {m.lemmacount_title()} -->
-            <!--             </a> -->
-            <!--         </div> -->
-            <!--     </div> -->
-            <!-- </div> -->
+
             {#if lang}
-                <a href={resolve(`/${lang}`)} class="lg:btn hidden hover:underline">
-                    <ToolboxIcon />
-                    {m.toolspage()}
-                </a>
+                <AppBarMenu title={m.languagetools} items={lang_tools} {lang} />
             {/if}
+
+            <AppBarMenu title={m.other_tools} items={other_tools} />
         </AppBar.Headline>
 
-        <AppBar.Trail class="hidden h-full flex-row gap-4 lg:flex">
-            <a class="btn hover:underline" href={resolve("/about")}>
-                <InfoIcon />
+        <AppBar.Trail class="hidden h-full flex-row items-center gap-1 lg:flex">
+            <a
+                class="btn hover:preset-tonal hover:text-surface-50"
+                href={resolve("/about")}
+            >
+                <InfoIcon class="size-5" />
                 {m.about()}
             </a>
             <SelectLocale />

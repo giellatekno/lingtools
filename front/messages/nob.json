@@ -7,7 +7,7 @@
     "about": "Om siden",
     "interfacelanguage": "Grensesnittspråk",
     "languages": "Språk",
-    "toolspage": "Verktøyside",
+    "languagetools": "Språkverktøy",
     "documentation": "Dokumentasjon",
 
     "notfound": "Siden du ser etter finnes ikke.",
@@ -26,7 +26,7 @@
     "copyright": "Copyright © Senter for samisk språkteknologi",
     "feedback": "Send tilbakemelding om nettsiden til:",
 
-    "index_description": "Lingvistiske verktøy for språk i GiellaLT-infrastrukturen. Velg et språk for å komme i gang.",
+    "index_description": "Lingvistiske verktøy for språk i GiellaLT-infrastrukturen.",
     "searchforlangs": "Søk etter språk med navn eller ISO kode",
     "filters": "Filtre",
     "samilanguages": "Samiske språk",

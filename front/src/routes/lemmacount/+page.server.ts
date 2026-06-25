@@ -72,9 +72,9 @@ export const actions = {
                 });
             }
 
-            const result = await response.text();
+            const result = await response.json();
             // console.log(result);
-            return { success: true, result };
+            return { success: true, results: result.split("\n") };
         } catch (error) {
             console.error("Backend communication failed:", error);
             return fail(500, {

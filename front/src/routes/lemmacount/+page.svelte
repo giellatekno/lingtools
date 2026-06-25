@@ -37,6 +37,14 @@
     // $effect(() => {
     //     console.log(form);
     // });
+    let formElement: HTMLFormElement;
+
+    async function on_textarea_keydown(ev: KeyboardEvent) {
+        if ((ev.metaKey || ev.ctrlKey) && ev.key === "Enter") {
+            ev.preventDefault();
+            if (!(textarea_value === "")) formElement.requestSubmit();
+        }
+    }
 
     function reset() {
         textarea_value = "";
@@ -55,6 +63,7 @@
 <div class="mb-32 grid grid-cols-2 items-start gap-4">
     <form
         method="POST"
+        bind:this={formElement}
         use:enhance={({ formData }) => {
             // Removes rejected files, so they don't get uploaded
             formData.delete("documents");
@@ -65,7 +74,7 @@
             };
         }}
         enctype="multipart/form-data"
-        class="card preset-filled-surface-100-900 border-surface-200-800 flex w-2xl flex-col gap-2 justify-self-center rounded-md border p-4 shadow-md"
+        class="card preset-filled-surface-50-950 border-surface-200-800 flex w-full max-w-2xl flex-col gap-2 justify-self-center rounded-lg border p-4 shadow-lg lg:p-6"
         onsubmit={() => (is_processing = true)}
     >
         <h5 class="h5">{m.fileform_choose_language()}:</h5>
@@ -138,11 +147,12 @@
             name="text"
             placeholder={m.fileform_text_placeholder()}
             disabled={textinput_disabled}
+            onkeydown={on_textarea_keydown}
         ></textarea>
 
         <div class="flex justify-between">
             <button
-                class="btn preset-outlined-error-500 hover:preset-tonal-surface"
+                class="btn preset-outlined-surface-500 hover:preset-tonal"
                 onclick={reset}
                 type="button"
                 disabled={is_processing}
@@ -162,20 +172,24 @@
     <div class="flex w-2xl flex-col gap-4 justify-self-center">
         <h3 class="h3">{m.fileform_results()}:</h3>
         {#if form}
-            <div>
-                {#if form.error}
-                    <ErrorBox error={form.error} />
-                {/if}
+            {#if form.error}
+                <ErrorBox error={form.error} />
+            {/if}
 
-                {#if form.success}
-                    {#if form.result === ""}
-                        <p>
-                            {m.lemmacount_no_results()}
-                        </p>
-                    {/if}
-                    <pre>{form.result}</pre>
+            {#if form.success}
+                {#if form.results && form.results.length === 0}
+                    <p>
+                        {m.lemmacount_no_results()}
+                    </p>
                 {/if}
-            </div>
+                <div
+                    class="card preset-filled-surface-50-950 border-surface-200-800 flex w-fit min-w-sm flex-col gap-2 rounded-lg border p-4 font-mono shadow-lg lg:p-6"
+                >
+                    {#each form.results as result}
+                        <span>{result}</span>
+                    {/each}
+                </div>
+            {/if}
         {:else}
             <p class="text-surface-950/80">
                 {m.fileform_not_submitted()}

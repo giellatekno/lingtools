@@ -90,29 +90,29 @@
                                 {/each}
                             </Navigation.Group>
                         {/if}
-                        <!-- <Navigation.Group> -->
-                        <!--     <Navigation.Label> -->
-                        <!--         {m.other_tools()} -->
-                        <!--     </Navigation.Label> -->
-                        <!--     <Dialog.Trigger> -->
-                        <!--         <a -->
-                        <!--             href={resolve("/unknown-lemmas")} -->
-                        <!--             title="unknown lemmas" -->
-                        <!--             class="btn text-primary-900-100 w-full justify-start px-2 text-sm" -->
-                        <!--         > -->
-                        <!--             {m.unknownlemmas_title()} -->
-                        <!--         </a> -->
-                        <!--     </Dialog.Trigger> -->
-                        <!--     <Dialog.Trigger> -->
-                        <!--         <a -->
-                        <!--             href={resolve("/lemmacount")} -->
-                        <!--             title="lemmacount" -->
-                        <!--             class="btn text-primary-900-100 w-full justify-start px-2 text-sm" -->
-                        <!--         > -->
-                        <!--             {m.lemmacount_title()} -->
-                        <!--         </a> -->
-                        <!--     </Dialog.Trigger> -->
-                        <!-- </Navigation.Group> -->
+                        <Navigation.Group>
+                            <Navigation.Label>
+                                {m.other_tools()}
+                            </Navigation.Label>
+                            <Dialog.Trigger>
+                                <a
+                                    href={resolve("/unknown-lemmas")}
+                                    title="unknown lemmas"
+                                    class="btn text-primary-900-100 w-full justify-start px-2 text-sm"
+                                >
+                                    {m.unknownlemmas_title()}
+                                </a>
+                            </Dialog.Trigger>
+                            <Dialog.Trigger>
+                                <a
+                                    href={resolve("/lemmacount")}
+                                    title="lemmacount"
+                                    class="btn text-primary-900-100 w-full justify-start px-2 text-sm"
+                                >
+                                    {m.lemmacount_title()}
+                                </a>
+                            </Dialog.Trigger>
+                        </Navigation.Group>
                     </Navigation.Content>
                     <Navigation.Footer>
                         <SelectLocale />
