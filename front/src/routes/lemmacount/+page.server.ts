@@ -72,7 +72,8 @@ export const actions = {
                 });
             }
 
-            const result = await response.json();
+            // TODO: json response
+            const result = await response.text();
             // console.log(result);
             return { success: true, results: result.split("\n") };
         } catch (error) {

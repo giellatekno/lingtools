@@ -160,7 +160,7 @@
                     class="card preset-filled-surface-50-950 border-surface-200-800 flex w-fit min-w-sm flex-col gap-2 rounded-lg border p-4 font-mono shadow-lg lg:p-6"
                 >
                     {#each form.results as result}
-                        <span>{result}</span>
+                        <span class="wrap-anywhere">{result}</span>
                     {/each}
                 </div>
             {/if}
