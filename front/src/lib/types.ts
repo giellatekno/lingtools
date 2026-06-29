@@ -50,4 +50,7 @@ export const ParadigmResponse = z.object({
 });
 export type ParadigmResponseType = z.infer<typeof ParadigmResponse>;
 
+export const StringResponse = z.string();
+export type StringResponseType = z.infer<typeof StringResponse>;
+
 // export const TranscribeResponse = z.object();

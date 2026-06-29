@@ -34,5 +34,5 @@
     {#if data.error}
         <ErrorBox error={data.error} />
     {/if}
-    <DisambResult results={data.results} />
+    <DisambResult results={data.result} />
 </div>

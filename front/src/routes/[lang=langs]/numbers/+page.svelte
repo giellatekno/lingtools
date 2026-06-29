@@ -169,12 +169,12 @@
     <div>
         {#if data.error}
             <ErrorBox error={data.error} />
-        {:else if data.results && data.results.length > 0}
+        {:else if data.result && data.result.length > 0}
             <div
                 class="card preset-filled-surface-50-950 border-surface-200-800 rounded-lg border p-4 shadow-lg"
             >
                 <div class="grid grid-cols-[1fr_auto] gap-4 text-base lg:text-lg">
-                    {#each data.results as [input, output]}
+                    {#each data.result as [input, output]}
                         <span class="font-bold">
                             {input}
                         </span>

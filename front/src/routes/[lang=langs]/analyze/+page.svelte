@@ -59,7 +59,7 @@
     <div class="mt-6 flex flex-col gap-2">
         {#if data.error}
             <ErrorBox error={data.error} />
-        {:else if data.parsed}
+        {:else if data.result}
             <div class="flex max-w-dvw flex-col p-2">
                 <Table>
                     <thead>
@@ -68,13 +68,13 @@
                             <th>{m.analysis()}</th>
                         </tr>
                     </thead>
-                    {#each data.parsed.results as { wordform, analyses }, i}
+                    {#each data.result.results as { wordform, analyses }, i}
                         <tbody>
                             {#each analyses as analysis, j}
                                 {@const html_tags = color_tags(analysis)}
                                 <tr
                                     class:separator={j === analyses.length - 1 &&
-                                        i !== data.parsed.results.length - 1}
+                                        i !== data.result.results.length - 1}
                                 >
                                     <td>
                                         <span class="text-green-700">
@@ -105,7 +105,7 @@
         <Toast {toast}>
             <Toast.Message>
                 <CopyCheckIcon />
-                Text copied
+                Analysis copied
             </Toast.Message>
             <Toast.CloseTrigger />
         </Toast>

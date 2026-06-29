@@ -34,12 +34,12 @@
         <ErrorBox error={data.error} />
     {/if}
 
-    {#if data.results}
+    {#if data.result}
         <div
             class="card border-surface-200-800 bg-surface-50-950 w-fit rounded-lg border-2 px-4 py-6 text-wrap shadow-lg lg:min-w-sm"
         >
             <div class="flex flex-col gap-2 text-xl">
-                {#each data.results as result}
+                {#each data.result as result}
                     <p>
                         {result}
                     </p>

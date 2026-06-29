@@ -1,8 +1,8 @@
-import { env } from "$env/dynamic/public";
 import { tools_for } from "$lib/langs";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 import { GenerateResponse } from "$lib/types";
+import { api_fetch } from "$lib/api";
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
     if (!tools_for[params.lang].includes("generate")) {
@@ -15,35 +15,11 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return {};
     }
 
-    const backend_url = `${env.PUBLIC_API_ROOT}/generate/${lang}/${q}`;
-    let response;
+    const api_path = `generate/${lang}/${q}`;
     try {
-        response = await fetch(backend_url);
-    } catch (e) {
-        console.error(e);
-        return { error: "fetch() from API failed" };
-    }
-
-    if (!response.ok) {
-        return { error: `Non-200 from API: ${response.status}` };
-    }
-
-    let json;
-    try {
-        json = await response.json();
-    } catch (e) {
-        console.error(e);
-        return { error: "API returned invalid JSON" };
-    }
-
-    if (json.error) {
-        return { error: json.error };
-    }
-
-    try {
-        return { q, parsed: GenerateResponse.parse(json) };
-    } catch (e) {
-        console.error(e);
-        return { error: "Unexpected response format from API" };
+        const result = await api_fetch(api_path, fetch, GenerateResponse);
+        return { q, result };
+    } catch (error) {
+        return { error };
     }
 };

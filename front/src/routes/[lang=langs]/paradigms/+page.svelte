@@ -33,8 +33,8 @@
         <ParadigmForm {word} bind:format has_tables={hasParadigmSchema(lang)} />
     </FormWrapper>
 
-    {#if data.parsed}
-        <ParadigmWrapper data={data.parsed} {format} search={word} />
+    {#if data.result}
+        <ParadigmWrapper data={data.result} {format} search={word} />
     {:else if data.error}
         <ErrorBox error={data.error} />
     {:else if word}

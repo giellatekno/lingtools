@@ -34,7 +34,7 @@
         {#if data.error}
             Error: {data.error}
         {/if}
-        {#if data.results}
+        {#if data.result}
             <Table>
                 <thead>
                     <tr>
@@ -44,10 +44,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {#each data.results as { input_word, variations }, i}
+                    {#each data.result as { input_word, variations }, i}
                         {#each variations as { hyphenated_word, score }, j}
                             <tr
-                                class:separate={i !== data.results.length - 1 &&
+                                class:separate={i !== data.result.length - 1 &&
                                     j === variations.length - 1}
                             >
                                 <td>{input_word}</td>

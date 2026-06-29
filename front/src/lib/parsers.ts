@@ -220,9 +220,10 @@ export function transcribe_parser(data: string) {
 
 export function numbers_parser(data: string): [string, string][] {
     return data
-        .split("\n")
+        .slice(1, data.length - 1)
+        .split("\\n")
         .filter((line) => line.length > 0)
-        .map((line) => line.split("\t"))
+        .map((line) => line.split("\\t"))
         .filter((splits) => splits.length >= 3 && splits[2] !== "inf")
         .map((splits) => [splits[0], splits[1]]);
 }

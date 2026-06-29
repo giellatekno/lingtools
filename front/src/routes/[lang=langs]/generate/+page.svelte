@@ -36,7 +36,7 @@
             <ErrorBox error={data.error} />
         {/if}
 
-        {#if data.parsed && data.parsed.results.length > 0}
+        {#if data.result && data.result.results.length > 0}
             <Table>
                 <thead>
                     <tr>
@@ -45,7 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {#each data.parsed.results as { analysis, wordforms }}
+                    {#each data.result.results as { analysis, wordforms }}
                         <tr>
                             <td>{analysis}</td>
                             <td>{wordforms.join(", ")}</td>

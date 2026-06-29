@@ -1,8 +1,9 @@
-import { env } from "$env/dynamic/public";
 import { tools_for } from "$lib/langs";
 import { hyphenate_parser } from "$lib/parsers";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
+import { api_fetch } from "$lib/api";
+import { StringResponse } from "$lib/types";
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
     if (!tools_for[params.lang].includes("hyphenate")) {
@@ -15,22 +16,11 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
         return {};
     }
 
-    const backend_url = `${env.PUBLIC_API_ROOT}/hyphenate/${lang}/${q}?format=text`;
-    let response;
+    const api_path = `hyphenate/${lang}/${q}?format=text`;
     try {
-        response = await fetch(backend_url);
-    } catch (e) {
-        console.error(e);
-        return { error: "fetch() from API failed" };
+        const result = await api_fetch(api_path, fetch, StringResponse);
+        return { q, result: hyphenate_parser(result) };
+    } catch (error) {
+        return { error };
     }
-
-    const text = await response.text();
-    if (!response.ok) {
-        return { error: `Non-200 from API: ${text}` };
-    }
-    if (text.startsWith("Error:")) {
-        return { error: text };
-    }
-
-    return { q, results: hyphenate_parser(text) };
 };
