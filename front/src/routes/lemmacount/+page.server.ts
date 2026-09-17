@@ -1,7 +1,7 @@
 import type { Actions } from "./$types";
-import { env } from "$env/dynamic/public";
 import { fail } from "@sveltejs/kit";
 import { gzipSync } from "zlib";
+import { api_post } from "$lib/api";
 
 export const actions = {
     default: async ({ request, fetch }) => {
@@ -53,34 +53,12 @@ export const actions = {
             return fail(400, { error: "Either text input or file upload is required" });
         }
 
-        // Call backend API
-        const backendUrl = `${env.PUBLIC_API_ROOT}/lemma-count`;
-
         try {
-            const response = await fetch(backendUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body,
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                return fail(response.status, {
-                    error: `Backend error: ${response.status} - ${errorText}`,
-                });
-            }
-
             // TODO: json response
-            const result = await response.text();
-            // console.log(result);
+            const result = await api_post("lemma-count", body, fetch, false);
             return { success: true, results: result.split("\n") };
         } catch (error) {
-            console.error("Backend communication failed:", error);
-            return fail(500, {
-                error: "Failed to communicate with backend service",
-            });
+            return fail(500, { error });
         }
     },
 } satisfies Actions;

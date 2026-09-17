@@ -8,7 +8,7 @@
     import rus_flag from "$assets/flags/rus.svg";
     import { m } from "$lib/paraglide/messages";
     import { locales, setLocale } from "$lib/paraglide/runtime";
-    import { langname } from "@giellatekno/langnames";
+    import { interface_language } from "@giellatekno/langnames";
 
     let flag_icons: Record<string, string> = {
         sme: sme_flag,
@@ -44,7 +44,7 @@
                                         alt={iso + " flag"}
                                         class="w-8 shadow-md"
                                     />
-                                    {langname(iso, iso)}
+                                    {interface_language(iso, iso)}
                                 </button>
                             </li>
                         {/each}

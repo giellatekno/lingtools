@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@giellatekno/langnames':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.1
+        version: 1.2.1
       '@lucide/svelte':
         specifier: ^1.16.0
         version: 1.16.0(svelte@5.55.9)
@@ -265,8 +265,8 @@ packages:
   '@fontsource/fira-mono@5.2.7':
     resolution: {integrity: sha512-wYrAn6i3nH6luqQBZxtWUpl4UTUvs9AEbEeZxksPMwIqyjRRaxHTNW3c2VfM50gabS2IS7pT8lVWS2USB4ukYA==}
 
-  '@giellatekno/langnames@1.2.0':
-    resolution: {integrity: sha512-YBo6hJBLMQnDvGEhOkqk5ySFEDyUvehwCHL1ieXD52staj8N63u1+9BapfbQZBtWF8Xq4wy3buyhA0iA6UUtcA==}
+  '@giellatekno/langnames@1.2.1':
+    resolution: {integrity: sha512-Aiy40Hs4wXgh5aKjyF3EE+oaTSi7mqG1o+ZcN43HEYpqMzbF5FsYvbpZuK+y0MkPSagGgrQqE3RBYNOLS0YrAA==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -1619,7 +1619,7 @@ snapshots:
 
   '@fontsource/fira-mono@5.2.7': {}
 
-  '@giellatekno/langnames@1.2.0': {}
+  '@giellatekno/langnames@1.2.1': {}
 
   '@img/colour@1.1.0': {}
 

@@ -23,6 +23,7 @@
                 {
                     "title": "perfect",
                     "headers": ["person", "positive", "negative"],
+                    "showIf": ["PrfPrc"],
                     "rows": [
                         { "label": "manne", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leam", "im leah"] },
                         { "label": "datne", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["leah", "ih leah"] },
@@ -53,6 +54,7 @@
                 {
                     "title": "pluperfect",
                     "headers": ["person", "positive", "negative"],
+                    "showIf": ["PrfPrc"],
                     "rows": [
                         { "label": "manne", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lim", "im lim"] },
                         { "label": "datne", "tags": ["PrfPrc", "PrfPrc"], "prefixes": ["lih", "ih lih"] },
@@ -70,6 +72,7 @@
         {
             "title": "imperative",
             "validateRows": true,
+            "showIf": ["Imprt"],
             "tables": [
                 {
                     "headers": ["person", "positive", "imperative_i", "imperative_ii"],
@@ -89,12 +92,14 @@
         },
         {
             "title": "nonfinite",
+            "showIf": ["Inf"],
             "tables": [
                 {
                     "headers": [],
                     "rows": [
                         { "label": "infinite", "tags": ["Inf"] },
                         { "label": "perfectparticiple", "tags": ["PrfPrc"] },
+                        { "label": "connegative", "tags": ["ConNeg"] },
                         { "label": "verbgenitive", "tags": ["VGen"] },
                         { "label": "gerund", "tags": ["Ger"] },
                     ],

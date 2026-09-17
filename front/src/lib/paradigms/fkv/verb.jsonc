@@ -15,7 +15,8 @@
                         { "label": "met", "tags": ["Act+Ind+Prs+Pl1", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "emmä"] },
                         { "label": "tet", "tags": ["Act+Ind+Prs+Pl2", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "että"] },
                         { "label": "het/net", "tags": ["Act+Ind+Prs+Pl3", "Act+Ind+Prs+ConNeg"], "prefixes": ["", "ei"], "separator": true },
-                        { "label": "passive", "tags": ["Pass+Ind+Prs", "Pass+Ind+Prs+ConNeg"], "prefixes": ["", "ei"] }, // NOTE: Missing form: Pass+Ind+Prs+ConNeg
+                        // NOTE: Missing form: Pass+Ind+Prs+ConNeg
+                        { "label": "passive", "tags": ["Pass+Ind+Prs", "Pass+Ind+Prs+ConNeg"], "prefixes": ["", "ei"] },
                     ],
                 },
                 {
@@ -38,10 +39,12 @@
                         { "label": "mie", "tags": ["Act+Ind+Prt+Sg1", "Act+Ind+Prt+ConNeg+Sg"], "prefixes": ["", "en"] },
                         { "label": "sie", "tags": ["Act+Ind+Prt+Sg2", "Act+Ind+Prt+ConNeg+Sg"], "prefixes": ["", "et"] },
                         { "label": "hän/se", "tags": ["Act+Ind+Prt+Sg3", "Act+Ind+Prt+ConNeg+Sg"], "prefixes": ["", "ei"], "separator": true },
+                        // NOTE: Using PrfPrc for plural negation because Act+Ind+Prt+ConNeg+Pl doesn't exist
                         { "label": "met", "tags": ["Act+Ind+Prt+Pl1", "Act+PrfPrc+Pl+Nom"], "prefixes": ["", "emmä"] },
                         { "label": "tet", "tags": ["Act+Ind+Prt+Pl2", "Act+PrfPrc+Pl+Nom"], "prefixes": ["", "että"] },
                         { "label": "het/net", "tags": ["Act+Ind+Prt+Pl3", "Act+PrfPrc+Pl+Nom"], "prefixes": ["", "ei"], "separator": true },
-                        { "label": "passive", "tags": ["Pass+Ind+Prt", "Pass+Ind+Prt+ConNeg"], "prefixes": ["", "ei"] }, // NOTE: Missing form: Pass+Ind+Prt+ConNeg
+                        // NOTE: Missing form: Pass+Ind+Prt+ConNeg
+                        { "label": "passive", "tags": ["Pass+Ind+Prt", "Pass+Ind+Prt+ConNeg"], "prefixes": ["", "ei"] },
                     ],
                 },
                 {
@@ -112,9 +115,8 @@
             "title": "nonfinite",
             "tables": [
                 {
-                    "title": "firstinfinite",
                     "headers": [],
-                    "rows": [{ "label": "infinite", "tags": ["Inf"] }],
+                    "rows": [{ "label": "firstinfinite", "tags": ["Inf"] }],
                 },
                 {
                     "title": "thirdinfinite",
@@ -143,13 +145,18 @@
                         { "label": "abessive", "tags": ["Act+PrfPrc+Sg+Abe", "Act+PrfPrc+Pl+Abe"] },
                         { "label": "essive", "tags": ["Act+PrfPrc+Sg+Ess", "Act+PrfPrc+Pl+Ess"] },
                         { "label": "translative", "tags": ["Act+PrfPrc+Sg+Tra", "Act+PrfPrc+Pl+Tra"] },
-                        { "label": "comitative", "tags": ["Act+PrfPrc+Sg+Com", "Act+PrfPrc+Pl+Com"] },
+                        { "label": "comitative", "tags": ["Act+PrfPrc+Sg+Com", "Act+PrfPrc+Pl+Com"], "separator": true },
+                        // TODO: Find a better way to show passive PrfPrc and PrsPrc
+                        { "label": "Pass. Nom.", "tags": ["Pass+PrfPrc+Sg+Nom", "Pass+PrfPrc+Pl+Nom"] },
                     ],
                 },
                 {
                     "title": "presentparticiple",
                     "headers": ["case", "singular", "plural"],
-                    "rows": [{ "label": "nominative", "tags": ["Act+PrsPrc+Sg+Nom", "Act+PrsPrc+Pl+Nom"] }],
+                    "rows": [
+                        { "label": "nominative", "tags": ["Act+PrsPrc+Sg+Nom", "Act+PrsPrc+Pl+Nom"], "separator": true },
+                        { "label": "Pass. Nom.", "tags": ["Pass+PrsPrc+Sg+Nom", "Pass+PrsPrc+Pl+Nom"] },
+                    ],
                 },
             ],
         },
