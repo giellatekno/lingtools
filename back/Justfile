@@ -18,6 +18,14 @@ image:
 errors:
     CARGO_BUILD_WARNINGS=allow cargo +nightly check -Zwarnings
 
+# Save container image to a tar.gz file
+image-tar:
+    echo "export image..."
+    podman save -o lingtools-api.tar lingtools-api:latest
+    echo "gzipping, make take some time..."
+    gzip -9 lingtools-api.tar
+    echo "done"
+
 # push the container image to gtlabcontainerregistry.azurecr.io
 push-labacr:
     podman tag lingtools-api gtlabcontainerregistry.azurecr.io/lingtools-api
