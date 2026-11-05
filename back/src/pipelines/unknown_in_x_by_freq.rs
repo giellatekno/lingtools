@@ -114,7 +114,7 @@ pub async fn unknown_in_x_by_freq_subprocess(
         .write_all(recognized_words.as_bytes())
         .map_err(PipelineError::from)?;
 
-    trace!(recognized_words);
+    // trace!(recognized_words);
 
     /*
     let lookup_binary = std::env::var("LOOKUP_BINARY").unwrap_or_else(|_| String::from("lookup"));
