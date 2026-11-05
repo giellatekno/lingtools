@@ -229,7 +229,7 @@ pub fn load_langfiles() {
     for (l1, l2) in lemmalist_pairs.iter() {
         let fst = format!("{}{}-all.hfst", l1, l2);
         let path_server = std::path::PathBuf::from(format!(
-            "{}/{}/bin/{}{}-all.hfst",
+            "{}/{}/{}{}-all.hfst",
             *WP_LANGFOLDER, l1, l1, l2
         ));
         //debug!(?path_server, "looking for file");
