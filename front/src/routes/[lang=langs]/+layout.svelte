@@ -12,7 +12,7 @@
     let locale = $state(getLocale());
 
     let maturity_shield_url = $derived(
-        `https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgiellalt%2Flang-${lang}%2Fgenerated%2Fdocs-data%2Ffst-maturity.json`,
+        `https://raw.githubusercontent.com/giellalt/lang-${lang}/generated/docs-data/pkg-maturity.svg`,
     );
     let documentation_shield_url = `https://img.shields.io/badge/${m.documentation()}-blue`;
 </script>
