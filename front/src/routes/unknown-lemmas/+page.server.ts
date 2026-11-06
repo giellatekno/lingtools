@@ -60,7 +60,11 @@ export const actions = {
             const result = await api_post("unknown-lemmas-in-dict", body, fetch);
             return { success: true, results: result.split("\n") };
         } catch (error) {
-            return fail(500, { error });
+            if (error instanceof Error) {
+                return fail(500, { error: error.message });
+            } else {
+                fail(500, { error: "An unexpected error occurred" });
+            }
         }
     },
 } satisfies Actions;
