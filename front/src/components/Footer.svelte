@@ -1,5 +1,5 @@
 <script lang="ts">
-    import giellatekno_logo from "$assets/giellatekno_logo_text_under.svg";
+    import GTLogoTextUnder from "./GTLogoTextUnder.svelte";
     import uit_logo_sme from "$assets/uit_logo/uit_logo_sme.png";
     import { m } from "$lib/paraglide/messages";
 </script>
@@ -10,11 +10,7 @@
     <div class="flex flex-col items-center gap-3 lg:flex-row lg:gap-6">
         <div class="flex items-center gap-6">
             <a href="https://giellatekno.uit.no" aria-label="Giellatekno">
-                <enhanced:img
-                    class="h-7 invert lg:h-9"
-                    src={giellatekno_logo}
-                    alt="Giellatekno logo"
-                />
+                <GTLogoTextUnder class="h-9" />
             </a>
             <a href="https://uit.no" class="lg:hidden" aria-label="UiT">
                 <enhanced:img class="h-12 lg:h-14" src={uit_logo_sme} alt="UiT logo" />

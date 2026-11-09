@@ -8,6 +8,7 @@
     import { m } from "$lib/paraglide/messages";
     import { tools_for } from "$lib/langs";
     import AppBarMenu from "./AppBarMenu.svelte";
+    import GTLogo from "./GTLogo.svelte";
 
     let lang = $derived(page.params.lang || "");
 
@@ -36,13 +37,17 @@
     class="bg-primary-600 text-primary-contrast-950-50 border-surface-950-50 sticky top-0 z-50 "
 >
     <AppBar.Toolbar
-        class="mx-auto w-full max-w-480 grid-cols-[1fr_auto_1fr] lg:grid-cols-[auto_auto]"
+        class="mx-auto w-full grid-cols-[1fr_auto_1fr] lg:grid-cols-[auto_auto]"
     >
         <AppBar.Lead class="lg:hidden">
             <MobileSideBar />
         </AppBar.Lead>
         <AppBar.Headline class="hidden flex-row items-center gap-1 lg:flex">
-            <a href={resolve("/")} class="mr-4 text-xl font-bold lg:text-3xl">
+            <a
+                href={resolve("/")}
+                class="mr-4 flex flex-row text-xl font-bold lg:text-3xl"
+            >
+                <GTLogo class="h-10" />
                 {m.page_title()}
             </a>
 

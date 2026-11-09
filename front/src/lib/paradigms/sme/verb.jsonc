@@ -185,6 +185,7 @@
                         { "label": "actioessive", "tags": ["Actio+Ess"] },
                     ],
                 },
+                // TODO: Find a better way to show gerund
                 {
                     "title": "gerund",
                     "headers": ["person", "singular", "dual", "plural"],
