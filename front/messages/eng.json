@@ -94,7 +94,7 @@
     "hyphenate_instruction": "Enter one or more words to see how they are divided into syllables.",
 
     "paradigms_title": "Paradigms",
-    "paradigms_description": "Generate conjugation patterns for any word.",
+    "paradigms_description": "Generate inflection patterns for any word.",
     "paradigms_instruction": "Enter a word in its base form (lemma) to see its full inflection paradigm. If the search has multiple hits, select the correct one from the results list.",
 
     "paradigmsize": "Paradigm size",
